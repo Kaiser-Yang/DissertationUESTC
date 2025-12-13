@@ -1,13 +1,11 @@
 % !TEX Program = xelatex
-\documentclass[doctor, vlined]{DissertUESTC}
-
-
+\documentclass[master, vlined]{DissertUESTC}
 
 \begin{document}
 	
 	% 以下两条命令为高亮示例文档中的关键内容而设，正式撰写时切不可使用
-	\newcommand{\shad}[1]{\textcolor{DodgerBlue}{\ttfamily #1}}
-	\newcommand{\shadcmd}[1]{\shad{$\backslash$#1}}
+	% \newcommand{\shad}[1]{\textcolor{DodgerBlue}{\ttfamily #1}}
+	% \newcommand{\shadcmd}[1]{\shad{$\backslash$#1}}
 
 
 	% 下方命令允许跨页排版包含多个行间公式的公式组，可选参数可取值为1,2,3,4，越大表示跨页倾向越高
@@ -22,126 +20,66 @@
 
 	% \setconfidential命令用于设置论文封面中的“密级信息”。慎用！！！学生个人不应随意将论文定性为涉密，需要先经过审批。此命令必须先于\uestccover使用才有效
 	% 命令参数：\setconfidential(<信息右上角与纸张左、上边界的距离，以逗号分隔>)[<字体格式>]{<密级>}{<保密期限>}。可选参数默认值：(18cm,2cm)[\zihao{4}\bfseries]
-	\setconfidential{密级}{保密期限}  % 非涉密论文一定要注释掉该命令
+	% \setconfidential{密级}{保密期限}  % 非涉密论文一定要注释掉该命令
 
 	% 封面示例————“双学位学士”以外的学位论文
-%	\uestccover[<学院名称排版风格>]{<论文题目>}{<学科专业>}{<学号>}{<作者姓名>}{<指导教师>}{<教师职称>}{<学院>} % 单学位学士、研究生通用
-	\uestccover{}{}{}{}{}{}{}  % 空封面
-
-	\uestccover{关于我的杀父仇人疑似是名震天下的大侠时该如何报仇}
-				{玉女素心剑法}
-				{1182000}
-				{杨\hspace{1em}过}
-				{小龙女}
-				{掌\hspace{1em}门}%{终南山古墓派}
-				{终南山古墓派终南山古墓派终南山古墓派}  % 默认将过长的学院名称压缩至下划线宽度
-
-	\uestccover[par]{关于我的杀父仇人疑似是名震天下的大侠时该如何报仇}
-				{玉女素心剑法}
-				{1182000}
-				{杨\hspace{1em}过}
-				{小龙女}
-				{掌\hspace{1em}门}%{终南山古墓派}
-				{终南山古墓派终南山古墓派终南山古墓派}  % par参数将过长学院名称换行排版，此参数必影响封面布局，无可避免
-
-	% 封面示例————“双学位学士”论文，需要doublebachelor选项
-	% \uestccover{<论文题目>}{<学院>}{<第一专业>}{<第二专业>}{<学号>}{<作者姓名>}{<第一导师及职称>}{<第二导师及职称>} % 仅双学位学士论文，需要doublebachelor选项
-	% \uestccover{}{}{}{}{}{}{}{}  % 空封面
-	% \uestccover{关于我的杀父仇人疑似是名震天下的大侠时该如何报仇}
-	% 			{终南山古墓派终南山古墓派终南山古墓派}  % 空间有限，过长的学院名称必须压缩至下划线宽度
-	% 			{玉女素心剑法}
-	% 			{打狗棒法}
-	% 			{1182000}
-	% 			{杨\hspace{1em}过}
-	% 			{小龙女\hspace*{4em}掌\hspace{1em}门}
-	% 			{洪七公\hspace*{4em}帮\hspace{1em}主}
-
+	\uestccover[par]{分布式机器学习与联邦学习的自适应通信调度策略研究}
+				{信息与通信工程}
+				{} % TODO: 学号
+				{} % TODO: 作者姓名
+				{} % TODO: 指导教师
+				{} % TODO: 教师职称
+				{信息与通信工程学院} % par参数将过长学院名称换行排版，此参数必影响封面布局，无可避免
 
 	
 	% 中文扉页，仅研究生用
-	\DegLv{}  % 清空文档类选项设置的<申请学位级别>
-	\uestczhtitlepage  % 空白中文扉页
-
 	\ClsNum{TN828.6}  % \ClsNum{<分类号>}
 	\ClsLv{公开}  % \ClsLv{<密级>}
 	\UDC{621.39}  % \UDC{<UDC号>}
-	\DissertationTitle{关于我的杀父仇人疑似是名震天下的大侠时\\该如何报仇}  % \DissertationTitle{<题名>}
-	\Author{杨过}  % \Author{<作者姓名>}
-	\Supervisor{小龙女}{掌门}{古墓派}{活死人墓}  % \Supervisor{<指导教师>}{<职称>}{<单位名称>}{<单位地址>}
-	% 副导师信息，无则注释
-	\AssociateSupervisor{洪七公}{前帮主}{丐帮}{襄阳}  % \AssociateSupervisor{<副导师名称>}{<职称}>{<单位名称>}{<单位地址>}
-	\DegLv{西狂}  % \DegLv{<申请学位级别>}，该信息由文档类选项自动确定，需修改默认内容时使用，否则注释即可
-	\Major{玉女素心剑法}  % \Major{<学科专业>}
-	\Profield{剑道}  % \Profield{专业学位领域代码}，此为专业学位独有，学术学位用户注释即可
-	\Date{1959年1月1日}{1961年1月1日}  % \Date{<论文提交日期>}{<论文答辩日期>}
-	\Grant{中华武林}{1961年2月2日}  % \Grant{<学位授予单位>}{<学位授予日期>}
-	\Reviewer{黄蓉}{一灯大师、老顽童、黄老邪、郭靖、小龙女}  % \Reviewer{<答辩委员为主席>}{<评阅人>}
+	\DissertationTitle{分布式机器学习与联邦学习的自适应通信调度策略研究}
+	\Author{} % TODO:
+	\Supervisor{}{}{}{}  % TODO: {<指导教师>}{<职称>}{<单位名称>}{<单位地址>}
+	\Major{信息与通信工程}
+	\Date{}{}  % TODO: {<论文提交日期>}{<论文答辩日期>}
+	\Grant{}{}  % TODO: {<学位授予单位>}{<学位授予日期>}
+	\Reviewer{}{}  % TODO: {<答辩委员为主席>}{<评阅人>}
 	\uestczhtitlepage
 
-
-	\Supervisor{小龙女}{古墓派末代掌门}{古墓派}{活死人墓}  % \Supervisor{<指导教师>}{<职称>}{<单位名称>}{<单位地址>}
-	% 副导师信息，无则注释
-	\AssociateSupervisor{洪七公}{天下第一帮前帮主}{丐帮}{襄阳}  % \AssociateSupervisor{<副导师名称>}{<职称}>{<单位名称>}{<单位地址>}
-	\Reviewer{黄蓉}{一灯大师、老顽童、黄老邪、郭靖、小龙女、金轮法王、洪七公、欧阳锋}  % \Reviewer{<答辩委员为主席>}{<评阅人>}
-	\uestczhtitlepage  % 过长评阅人文本将被自动压缩至下划线宽度，不会超出页面边界
-
-	\uestczhtitlepage[compress]  % 在compress选项下，“中文扉页”将自动压缩过长职称的字宽，使之不超出官方模板为该内容设定的长度
-	
-
 	% 英文扉页，仅研究生用
-	% \uestcentitlepage{<文题>}{<专业>}{<学号>}{<作者>}{<导师>}{<副导师>}{<学院>}，若无副导师，则将“<副导师>”参数留空即可
-	\uestcentitlepage{}{}{}{}{}{}{}  % 空白英文扉页
-	\uestcentitlepage{How to Take Revenge When My Father's Murderer is Suspected to Be a Famous Hero}
-					{Jade Lady Soul Sword Technique Jade Lady Soul Sword Technique}
-					{1182000}
-					{Yang Guo}
-					{Grandmaster Dragondaughter Little}{Grandmaster Northern Beggar}
-					{Ancient Tomb Sect Ancient Tomb Sect Ancient Tomb Sect Ancient Tomb Sect}
+	\uestcentitlepage
+		{Research on Adaptive Communication Scheduling Strategies for Distributed Machine Learning and Federated Learning}
+		{Information and Communication Engineering}
+		{} % TODO: <学号>
+		{} % TODO: Author
+		{} {} % TODO: <导师> <副导师>
+		{School of Information and Communication Engineering}
 	
 	% 独创性声明：[<签名宽度>]{<日期>}{<作者签名图片1>}[<作者签名图片2 默认值为作者签名图片1>]{<导师签名图片>}，仅研究生用
-	\declaration{}{}{}  % 空白独创性声明
-	
-	\declaration[3cm]{2024年08月31日}{authsign}{spvrsign}
-
 	\declaration[3cm]{2024年08月31日}{authsign}[杨过1]{spvrsign}
-
-	
 	
 	% 开启中文摘要
 	\zhabstract
-	
-	杨过少年时期母亲染病而亡，随后他便过着四处流浪的生活。后来遇到郭靖夫妇，便由他们照看。但之后因杨过与郭芙等人之间的矛盾，郭靖便送其去全真派习武。其后，又从全真派逃出，机缘巧合下于古墓遇见小龙女，之后便跟随小龙女练功。他身边有许多红颜知己钟情于他，而他却一心只爱小龙女，后结为夫妇；他和郭家恩怨难分，数度因误会关系紧张，却始终挺身而出相助他们，解除嫌隙，化气为和；命运多舛，与小龙女分隔十六年里，随伴亦师亦友的神雕行侠仗义，惩恶扬善。江湖人称“神雕大侠”。后等小龙女不至毅然跳崖殉情，在谷底与小龙女重逢后携手保卫襄阳城，杨过一展其旷世武学的威力，打败金轮法王，飞石击杀蒙古大汗，保大宋十三年和平。成为名扬天下的“神雕侠侣”。最后一次华山论剑后，与妻子小龙女绝迹江湖。
 
-	% \null\newpage
+	通信瓶颈是联邦学习众多挑战中被广泛关注的一点，在跨设备联邦学习场景中，海量终端设备（如手机、传感器）需频繁与中央服务器交换模型参数（如模型梯度、权重），而此类通信通常耗时较长。尤其在带宽受限的边缘网络（如蜂窝网络、Wi-Fi 6）或资源受限的物联网终端（如低功耗传感器）中，高频次的模型参数传输不仅会导致训练效率低下，模型数据在网络传输的过程中还可能因网络丢包、延迟等问题引发训练不稳定。因此，设计面向联邦学习的高效通信策略，在保障模型收敛性与精度的同时显著降低通信开销，成为推动联邦学习大规模落地的关键问题。
 
-	% 杨过少年时期母亲染病而亡，随后他便过着四处流浪的生活。后来遇到郭靖夫妇，便由他们照看。但之后因杨过与郭芙等人之间的矛盾，郭靖便送其去全真派习武。其后，又从全真派逃出，机缘巧合下于古墓遇见小龙女，之后便跟随小龙女练功。他身边有许多红颜知己钟情于他，而他却一心只爱小龙女，后结为夫妇；他和郭家恩怨难分，数度因误会关系紧张，却始终挺身而出相助他们，解除嫌隙，化气为和；命运多舛，与小龙女分隔十六年里，随伴亦师亦友的神雕行侠仗义，惩恶扬善。江湖人称“神雕大侠”。后等小龙女不至毅然跳崖殉情，在谷底与小龙女重逢后携手保卫襄阳城，杨过一展其旷世武学的威力，打败金轮法王，飞石击杀蒙古大汗，保大宋十三年和平。成为名扬天下的“神雕侠侣”。最后一次华山论剑后，与妻子小龙女绝迹江湖。
+	本文围绕“可扩展网络拓扑”、“TCP上层拥塞控制”、“流量的负载均衡”，提出了一套新型的联邦学习体系——LeMethod（Lax Engine Method，LeMethod）。LeMethod不会影响原模型的收敛速度，整个过程中通信的数据会进行完整的收发，其通过对网络拓扑的扩展分担中央服务器的通信压力、调度算法来实现高效通信、上层拥塞控制来减少网络丢包的概率。本文的主要贡献与创新成果可概括为四个方面：1）提出可以在传统联邦学习网络拓扑基础上进行扩展的网络拓扑结构。其不要求将传统的网络拓扑结构扩展成全连接网络拓扑，可以根据实际的情况选择性的进行扩展，使得网络拓扑扩展的成本更加可控、灵活性更高。2）在TCP上层进行拥塞控制减少TCP拥塞控制的触发从而减少网络拥塞抖动对整个通信效率的影响。3）根据当前的网络拓扑自适应的将流量从中央服务器负载均衡到其他节点。在传统的架构下只能通过升级中央服务器和各个节点之间的带宽来提升通信效率。在引入了负载均衡后，不仅可以通过升级中央服务器和各个节点之间的带宽来提升通信效率，还可以通过增加网络拓扑中链路数量以及对其他节点之间的链路进行带宽升级来提升通信效率。4）设计动态调度算法。该算法可以在传输过程中对网络的带宽进行记录并分析，根据历史带宽动态进行调度。
 
-	% 杨过少年时期母亲染病而亡，随后他便过着四处流浪的生活。后来遇到郭靖夫妇，便由他们照看。但之后因杨过与郭芙等人之间的矛盾，郭靖便送其去全真派习武。其后，又从全真派逃出，机缘巧合下于古墓遇见小龙女，之后便跟随小龙女练功。他身边有许多红颜知己钟情于他，而他却一心只爱小龙女，后结为夫妇；他和郭家恩怨难分，数度因误会关系紧张，却始终挺身而出相助他们，解除嫌隙，化气为和；命运多舛，与小龙女分隔十六年里，随伴亦师亦友的神雕行侠仗义，惩恶扬善。江湖人称“神雕大侠”。后等小龙女不至毅然跳崖殉情，在谷底与小龙女重逢后携手保卫襄阳城，杨过一展其旷世武学的威力，打败金轮法王，飞石击杀蒙古大汗，保大宋十三年和平。成为名扬天下的“神雕侠侣”。最后一次华山论剑后，与妻子小龙女绝迹江湖。
-
-	% 杨过少年时期母亲染病而亡，随后他便过着四处流浪的生活。后来遇到郭靖夫妇，便由他们照看。但之后因杨过与郭芙等人之间的矛盾，郭靖便送其去全真派习武。其后，又从全真派逃出，机缘巧合下于古墓遇见小龙女，之后便跟随小龙女练功。他身边有许多红颜知己钟情于他，而他却一心只爱小龙女，后结为夫妇；他和郭家恩怨难分，数度因误会关系紧张，却始终挺身而出相助他们，解除嫌隙，化气为和；命运多舛，与小龙女分隔十六年里，随伴亦师亦友的神雕行侠仗义，惩恶扬善。江湖人称“神雕大侠”。后等小龙女不至毅然跳崖殉情，在谷底与小龙女重逢后携手保卫襄阳城，杨过一展其旷世武学的威力，打败金轮法王，飞石击杀蒙古大汗，保大宋十三年和平。成为名扬天下的“神雕侠侣”。最后一次华山论剑后，与妻子小龙女绝迹江湖。
-
-	% 杨过少年时期母亲染病而亡，随后他便过着四处流浪的生活。后来遇到郭靖夫妇，便由他们照看。但之后因杨过与郭芙等人之间的矛盾，郭靖便送其去全真派习武。其后，又从全真派逃出，机缘巧合下于古墓遇见小龙女，之后便跟随小龙女练功。他身边有许多红颜知己钟情于他，而他却一心只爱小龙女，后结为夫妇；
+	实验表明，在使用LeMethod后，即使不进行任何的链路扩展，在相同的实验环境下，LeMethod的训练耗时仅为传统架构的X％。在逐步对网络的拓扑进行扩展的过程中，LeMethod的训练耗时最终可以下降到传统架构的Y％。这些结果验证了LeMethod在平衡沟通效率与模型性能方面的有效性。
 
 	% 中文关键词
-	\zhkeywords{练武；离经叛道；复仇；抗敌；练武；离经叛道；复仇；抗敌；练武；离经叛道；复仇；抗敌；练武；离经叛道；复仇；抗敌；\textcolor{DarkRed}{注意：2025年09月03日修订的\href{https://gr.uestc.edu.cn/xiazai/114/3917}{\color{DarkRed}\CJKunderline*[thickness=0.5bp, format=\color{DarkRed}]{研究生论文撰写规范}}要求改用“；”分隔关键词；（\href{https://www.jwc.uestc.edu.cn/info/1507170256521551874}{\color{DarkRed}\CJKunderline*[thickness=0.5bp, format=\color{DarkRed}]{双学位}}）\href{https://www.sice.uestc.edu.cn/info/1140/14689.htm}{\color{DarkRed}\CJKunderline*[thickness=0.5bp, format=\color{DarkRed}]{学士论文撰写规范}}尚未调整，仍使用“，”分隔关键词}}
-	
-	
-	
-	
+	\zhkeywords{联邦学习；负载均衡；流量调度；网络拓扑；拥塞控制}
+
 	% 开启英文摘要
 	\enabstract
-	
-	When Yang was a teenager, his mother contracted a disease and died, and he then lived a wandering life. When he met Guo Jing and his wife, they took care of him. However, due to the conflict between Yang and Guo Fu, Guo Jing sent him to learn martial arts in the Quanzhen Sect. Later, he escaped from the Quanzhen Sect and met Xiao Longnian at the ancient tomb, where he practised kung fu with Xiao Longnian. He was surrounded by many confidantes who were in love with him, but he only loved Little Dragon Girl, and later married; he and the Guo family feud, several times due to misunderstanding tension, but always stepped forward to help them, lifting the suspicion, turning the gas into peace; ill-fated, separated from Little Dragon Girl for sixteen years, along with the Divine Eagle who is also a teacher and friend of the chivalrous, punishing the evil and promoting the good. Jianghu people ``divine eagle hero". After the little dragon lady is not to perseverance to jump off the cliff to martyrdom, in the bottom of the valley and the little dragon lady reunited with the defence of Xiangyang City, Yang past a show of its unparalleled martial arts power to defeat the Golden Wheel of the Fa Wang, flying stone to kill the Mongolian Khan, to protect the thirteen years of peace in the Great Song Dynasty. He became the world-famous ``Divine Eagle Couple". After the last Mount Hua sword debate, he and his wife Xiaolongnu went into exile.
 
-	% When Yang was a teenager, his mother contracted a disease and died, and he then lived a wandering life. When he met Guo Jing and his wife, they took care of him. However, due to the conflict between Yang and Guo Fu, Guo Jing sent him to learn martial arts in the Quanzhen Sect. Later, he escaped from the Quanzhen Sect and met Xiao Longnian at the ancient tomb, where he practised kung fu with Xiao Longnian. He was surrounded by many confidantes who were in love with him, but he only loved Little Dragon Girl, and later married; he and the Guo family feud, several times due to misunderstanding tension, but always stepped forward to help them, lifting the suspicion, turning the gas into peace; ill-fated, separated from Little Dragon Girl for sixteen years, along with the Divine Eagle who is also a teacher and friend of the chivalrous, punishing the evil and promoting the good. Jianghu people ``divine eagle hero". After the little dragon lady is not to perseverance to jump off the cliff to martyrdom, in the bottom of the valley and the little dragon lady reunited with the defence of Xiangyang City.
+	With communication bottlenecks being a critical issue in Federated Learning, in cross-device federated learning scenarios, massive terminal devices (e.g., smartphones, sensors) must frequently exchange model parameters (e.g., gradients, weights) with a central server. Such communication is often time-consuming, especially in bandwidth-constrained edge networks (e.g., cellular networks, Wi-Fi 6) or resource-limited IoT devices (e.g., low-power sensors). High-frequency parameter transmission not only degrades training efficiency but may also cause instability due to network packet loss or latency. Therefore, designing efficient communication strategies for federated learning—strategies that preserve model convergence and accuracy while significantly reducing communication overhead—has become key to enabling large-scale deployment of federated learning.
 
-	% When Yang was a teenager, his mother contracted a disease and died, and he then lived a wandering life. When he met Guo Jing and his wife, they took care of him. However, due to the conflict between Yang and Guo Fu, Guo Jing sent him to learn martial arts in the Quanzhen Sect. Later, he escaped from the Quanzhen Sect and met Xiao Longnian at the ancient tomb, where he practised kung fu with Xiao Longnian. He was surrounded by many confidantes who were in love with him, but he only loved Little Dragon Girl, and later married; he and the Guo family feud, several times due to misunderstanding tension, but always stepped forward to help them, lifting the suspicion, turning the gas into peace; ill-fated, separated from Little Dragon Girl for sixteen years, along with the Divine Eagle who is also a teacher and friend of the chivalrous, punishing the evil and promoting the good. Jianghu people ``divine eagle hero". After the little dragon lady is not to perseverance to jump off the cliff to martyrdom, in the bottom of the valley and the little dragon lady reunited with the defence of Xiangyang City, Yang past a show of its unparalleled martial arts power to defeat the Golden Wheel of the Fa Wang, flying stone to kill the Mongolian Khan, to protect the thirteen years of peace in the Great Song Dynasty. He became the world-famous ``Divine Eagle Couple". After the last Mount Hua sword debate, he and his wife Xiaolongnu went into exile.
+	This paper proposes LeMethod (Lax Engine Method, LeMethod), a novel federated learning framework centered on three pillars: scalable network topology, TCP upper-layer congestion control, and traffic load balancing. Unlike traditional architectures, LeMethod does not alter the original model's convergence rate and ensures complete bidirectional data transmission. Its innovations include: 1) Extended Network Topology: A topology extension mechanism that selectively expands the network without requiring full interconnection, reducing extension costs and improving flexibility. 2) TCP Congestion Control Optimization: Implementing congestion control above the TCP layer to minimize trigger frequency of congestion control, thereby reducing network jitter caused by network congestion. 3) Adaptive Load Balancing: Dynamically redistributing traffic flow from the central server to other nodes based on the network topology. This approach enhances communication efficiency not only through bandwidth upgrades but also by optimizing link utilization and node interconnections. 4) Dynamic Scheduling Algorithm: A bandwidth-aware scheduler that records and analyzes historical network conditions to adaptively adjust transmission priorities.
 
-	% When Yang was a teenager, his mother contracted a disease and died, and he then lived a wandering life. When he met Guo Jing and his wife, they took care of him. However, due to the conflict between Yang and Guo Fu, Guo Jing sent him to learn martial arts in the Quanzhen Sect. Later, he escaped from the Quanzhen Sect and met Xiao Longnian at the ancient tomb, where he practised kung fu with Xiao Longnian. He was surrounded by many confidantes who were in love with him, but he only loved Little Dragon Girl, and later married; he and the Guo family feud, several times due to misunderstanding tension, but always stepped forward to help them, lifting the suspicion, turning the gas into peace; ill-fated, separated from Little Dragon Girl for sixteen years, along with the Divine Eagle who is also a teacher and friend of the chivalrous, punishing the evil and promoting the good. Jianghu people ``divine eagle hero". After the little dragon lady is not to perseverance to jump off the cliff to martyrdom, in the bottom of the valley and the little dragon lady reunited with the defence of Xiangyang City, Yang past a show of its unparalleled martial arts power to defeat the Golden Wheel of the Fa Wang, flying stone to kill the Mongolian Khan, to protect the thirteen years of peace in the Great Song Dynasty. He became the world-famous ``Divine Eagle Couple". After the last Mount Hua sword debate, he and his wife Xiaolongnu went into exile.
-	
-	
+	Experiments demonstrate that LeMethod reduces training time to X% of traditional architectures under identical conditions. With progressive topology expansion, training time further drops to Y%. These results validate LeMethod's effectiveness in balancing communication efficiency with model performance.
+
 	% 英文关键词
-	\enkeywords{Martial arts；Apostasy；Revenge；Fighting against the enemy；Martial arts；Apostasy；Revenge；Fighting against the enemy}
+	\enkeywords{Federated Learning; Load Balancing; Traffic Flow Scheduling; Network Topology; Congestion Control}
 
 	
 	\tableofcontents  % 主目录，必要
@@ -356,7 +294,91 @@
 	\end{figure}
 	
 	
+	\chapter{绪论}
 
+	\section{研究背景及意义}
+	随着人工智能和大数据技术的飞速发展，机器学习在各行各业得到了广泛应用。而人工智能的推理能力往往是和模型的大小、训练集大小正相关，为了获得拥有更强推理能力的模型，往往需要通过增加模型的大小的训练集的大小来实现。而随着模型和训练数据的巨型化，在单台计算机上进行模型的训练变得越来越困难。分布式机器学习通过数据中心来对数据进行统一管理并通过分布式训练集群来进行模型的训练。通过并行处理和资源共享，分布式机器学习在面对海量数据和复杂模型时表现出优越的性能。然而，分布式机器学习仍需将原始数据或特征在节点间传输，难以完全解决数据隐私和安全性问题。
+	为应对日益严峻的数据隐私保护需求，联邦学习应运而生。联邦学习是一种新型的分布式机器学习框架，其核心理念是：数据不离开本地，各参与节点仅上传模型参数或梯度至中央服务器进行聚合，从而实现跨机构、跨设备的协同建模。联邦学习能够有效保护用户数据隐私，符合日益严格的数据合规要求（如GDPR、CCPA等），并促进多方数据价值的释放。// TODO: 添加引用GDPR和CCPA
+	现有的分布式机器学习和联邦学习都有一个中央服务器与若干个工作节点，工作节点在本地进行训练后定期与中央服务器进行通信来实现一次模型的同步。由于联邦学习往往是在广域网中进行，这个过程中存在跨网络通信。在联邦学习实际应用过程中，模型参数的频繁同步和巨大的模型体量使网络通信负担显著增加，尤其是在跨地域、跨机构的广域网环境下，通信延迟与带宽受限等问题愈发突出。这不仅影响了模型训练的效率和收敛速度，也可能导致系统整体性能下降。如何在保证模型精度的前提下，有效降低通信成本，成为当前联邦学习研究的关键挑战之一。
+	因此，针对联邦学习的高效通信算法与网络流量调度策略的研究具有重要意义。一方面，高效的通信算法可以通过参数压缩、量化、稀疏传输等技术，减少每轮通信的数据量，从而减轻网络负载，提高训练速度。另一方面，合理的流量调度策略能够根据网络状态、节点负载、通信优先级等因素动态分配带宽资源，优化各工作节点与中央服务器之间的通信过程，提升系统的整体吞吐效率和稳定性。
+	此外，随着联邦学习应用场景的不断扩展，参与节点的异构性和网络条件的多样性也对通信算法和流量调度提出了更高的要求。面向实际大规模部署，研究如何兼顾网络适应性、容错性和安全性，保障模型训练过程中的通信高效与数据隐私安全，成为推动联邦学习技术落地的核心问题之一。
+	综上所述，围绕联邦学习中的通信优化和网络流量调度开展深入研究，不仅能够显著提升分布式模型训练的效率，更有助于推动联邦学习在医疗、金融、工业互联网等数据敏感领域的广泛应用，对于促进人工智能的可持续发展和数据安全协同具有重要战略意义。
+
+	\section{分布式机器学习研究概述}
+	分布式机器学习指的是在多个计算节点上协同训练一个全局机器学习模型的过程。大多数的分布式机器学习均有一个数据中心和一个中央服务器，对于这样的分布式机器学习其训练过程可以抽象为以下的步骤：
+	\begin{enumerate}
+		\item 数据中心收集所有的训练数据；
+		\item 数据中心根据各个计算节点的计算能力将数据分发给各个计算节点，这个过程被称为数据分发；
+		\item 各个计算节点在本地对自己从数据中心拿到的数据进行训练，这个过程被称为本地计算；
+		\item 计算节点会周期性地将自己的模型发送给中央服务器以进行模型的全局同步，这个过程被称为模型同步。
+	\end{enumerate}
+	在上述的过程中分布式机器学习存在许多的挑战：
+	\begin{enumerate}
+		\item 在数据分发的过程中，不同的数据划分方式会影响到模型的收敛速度，且在训练的过程中计算节点的计算能力可能会发生动态的变化，在事先决定各个计算节点的训练数据大小不能很好地应对这种动态性的变化；
+		\item 在本地计算的过程中，往往需要考虑的是应该进行多少次的本地训练后进行一次模型同步操作，如果在本地进行过多次的本地计算，因为本地过程缺少全部数据，进行过多的本地训练会导致整个训练过程需要更多的迭代轮数才能收敛；如果在本地进行过少的本地计算，则会有大量的数据需要通过网络进行发送，这会导致计算节点在整个训练的大部分时间在等待中央服务器回传新的模型；
+		\item 在模型同步时，还需要考虑是否使用压缩算法对模型的参数进行压缩，而在进行压缩的过程中需要考虑模型参数的具体分布来选择不同的压缩算法以获取更大的压缩率，且在使用压缩算法的过程中需要考虑压缩算法的额外耗时与网络传输耗时之间的平衡；
+		\item 在模型同步时，还需要考虑是否通过裁剪的方式来减少数据的传输量，对于裁剪算法而言，若其裁剪过多的数据则训练过程中可能会出现抖动的现象从而导致模型的收敛需要更多的训练轮次，因此如何选择合适的裁剪算法也是分布式机器学习过程中需要考虑的问题；
+		\item 在模型同步时，中央服务器可能会遇到某几个计算节点的训练过程缓慢其需要一直等待所以的计算节点的同步数据导致拖慢整个训练过程。
+	\end{enumerate}
+	针对上述挑战，分布式机器学习领域不断涌现出新的算法与系统优化方法，包括高效的通信压缩技术、异步与同步更新策略、分布式容错与恢复机制，以及面向隐私保护的协同训练框架。随着云计算、大数据和网络基础设施的快速发展，分布式机器学习在金融、医疗、智能制造、互联网等领域展现了广阔的应用前景。
+	综上所述，分布式机器学习不仅推动了人工智能技术的规模化发展，也为多行业数据价值的深度挖掘和智能化转型提供了技术支撑。未来，随着基础理论和应用技术的不断突破，分布式机器学习将在高效计算、数据安全与智能协同等方面发挥更加重要的作用。
+
+	\section{联邦学习研究概述}
+
+	随着数据隐私保护法规的日益完善和分布式数据场景的普及，联邦学习（Federated Learning, FL）作为一种新兴的分布式机器学习框架，受到学术界和工业界的广泛关注。联邦学习的核心思想是，在保障数据不出本地的前提下，各参与节点通过本地模型训练，仅共享模型参数或梯度，在中央服务器进行模型聚合，实现跨机构、跨设备的联合建模。这一机制能够有效保护用户隐私，降低数据泄露风险，并促进多方数据价值的协同释放。
+联邦学习在本质上是一种分布式机器学习的特化形式，其与分布式机器学习有着相似的训练过程。带有中央服务器的联邦学习通常采用联邦随机梯度下降（Federated Stochastic Gradient Descent）和联邦平均（Federated Averaging）进行训练。
+
+	\subsection{联邦随机梯度下降}
+	在联邦随机梯度下降中，各个工作节点向中央服务器发送的是梯度信息。联邦随机梯度下降要求统一各个工作节点使用相同的训练方法进行本地训练。若共有N个工作节点，一个中央服务器使用联邦随机梯度下降算法进行模型的训练，其过程可以描述为：
+	\begin{enumerate}
+		\item 所有工作节点从中央服务器获取初始模型参数及损失函数；
+		\item 对于每个工作节点，其根据在本地根据拥有的数据集、模型参数和损失函数计算当前梯度。
+		\item 每个工作节将计算出的梯度发送给中央服务器；
+		\item 中央服务器对收到的N个梯度计算加权平均值，将计算结果回传给各个工作节点；
+		\item 每个工作节点根据回传的梯度值进行一次梯度下降；
+		\item 重复2-5直到达到指定的停止条件。
+	\end{enumerate}
+	联邦随机梯度下降算法中要求在每次计算梯度后均进行一个模型同步，在整个训练过程中其产生大量网络流量的周期会更短。
+
+	\subsection{联邦平均}
+	在联邦平均中，各个工作节点向中央服务器发送的模型参数信息。联邦平均不要求各个工作节点使用相同训练方法进行本地训练，各个节点可以选择不同的训练方法进行本地训练，只要求在特定的时间后（通过为固定本地训练的轮次）进行一次模型同步。若共有N个工作节点，一个中央服务器使用联邦平均算法进行模型的训练，其过程可以描为：
+	\begin{enumerate}
+		\item 所以工作结点从中央服务器获取各自初始模型参数及损失函数；
+		\item 对于每个工作节点，其根据在本地拥有的数据集、模型参数和损失函数在本地进行若干时间的本地训练；
+		\item 每个工作节点在完成当前的本地训练后，将当前的模型参数发送给中央服务器；
+		\item 中央服务器对收到的N个模型参数计算加权平均值，将计算结果回传给各个工作节点；
+		\item 每个工作节点将当前的模型参数更新为回传的模型参数；
+		\item 重复2-5直到达到指定的停止条件。
+	\end{enumerate}
+	联邦平均算法中各个工作节点可以在本地进行多次的本地训练后才进行一次模型同步，相较于联邦随机梯度下降算法，其产生大量网络流量的周期会更长。
+
+	\subsection{联邦学习的挑战}
+	联邦学习和分布式机器学习中的大部分挑战是相似的，其中主要有以下几点不同：
+	\begin{enumerate}
+		\item 因为联邦学习不存在数据分发的过程，其数据在一开始就处在各个工作节点上，数据集的分布并不符合独立同分布的特性，对于非独立同分布的数据集进行训练其结果可能会需要更多的轮次才能收敛且最终的模型可以会差于基于独立同分布性质数据集训练的模型；
+		\item 联邦学习在训练过程中还需要考虑更多恶意的更新数据对模型整体收敛带来的影响；
+	\end{enumerate}
+	对于联邦学习所面临的挑战，其研究内容主要包括模型聚合算法、隐私保护机制、安全防护技术、通信效率优化和异构数据处理等方向。典型的联邦学习架构包括同态加密与差分隐私技术、鲁棒的防攻击机制，以及针对实际网络环境的高效通信协议。针对数据分布不均、参与节点设备性能各异、广域网通信延迟高等挑战，联邦学习领域不断涌现出创新性的解决方案，以提升模型训练的效率、泛化能力和安全性。
+	随着医疗、金融、智能制造、移动设备等多个行业对数据安全和协同智能的需求持续增长，联邦学习在实际应用中展现出广阔的前景。未来，联邦学习有望与联邦强化学习、多模态学习、联邦迁移学习等前沿技术深度融合，推动人工智能在分布式、多方协同和隐私保护等方面的突破。持续探索联邦学习基础理论和关键技术，对于促进安全可信的人工智能落地、赋能数字经济发展具有重要战略意义。
+
+	\section{分布式机器学习与联邦学习研究现状}
+	% TODO:
+	一、分布式机器学习研究现状
+	国外研究现状
+	分布式机器学习作为应对大规模数据和复杂模型训练的重要技术，近十年来在国外学术界和工业界得到了广泛关注。Google、Facebook、Microsoft 等科技巨头分别推出了 TensorFlow、Horovod、Parameter Server、DistBelief 等分布式机器学习框架，实现了高效的数据切分、参数同步和容错机制。国外学者在分布式优化算法、通信压缩、异构集群调度等方面提出了大量创新性方法，例如同步与异步更新策略、模型并行与数据并行的结合，以及针对超大规模模型的弹性训练方案。最新的研究还聚焦于系统层面的高效资源管理与跨数据中心协同训练，推动分布式机器学习在推荐系统、自然语言处理、计算机视觉等领域的广泛应用。
+
+	国内研究现状
+	国内高校与企业在分布式机器学习领域起步稍晚，但近年来发展迅速。清华大学、北京大学、中科院等机构在分布式优化算法、参数服务器架构、容错机制等方面取得了一系列成果。阿里巴巴、腾讯、百度等互联网公司也推出了自研的分布式机器学习平台，如 Aliyun PAI、Tencent Angel、Baidu PaddlePaddle 等，支持大规模并行训练与异构硬件适配。国内研究者在低带宽高延迟环境下的通信优化、边缘计算场景下的分布式训练、以及数据安全与隐私保护方面开展了深入探索。总体来看，国内分布式机器学习研究已经与国际前沿逐步接轨，但在底层系统的自主创新和大规模生产应用方面仍有提升空间。
+
+	二、联邦学习研究现状
+	国外研究现状
+	联邦学习作为保护数据隐私、实现多方协同建模的新型分布式机器学习框架，于 2016 年由 Google 最早提出。国外研究主要集中在模型聚合算法（如 FedAvg、FedProx）、安全与隐私保护（同态加密、差分隐私）、鲁棒性与容错机制、非独立同分布（Non-IID）数据处理等方面。Google、Apple、OpenMined 等公司已在智能手机、医疗、金融等领域实现了联邦学习的实际部署。相关国际学术会议（如 NeurIPS、ICML、AAAI）持续关注联邦学习的新理论、系统架构与应用场景，推动了算法、协议和安全机制的不断完善。
+
+	国内研究现状
+	国内高校和企业近年来也积极布局联邦学习领域。清华大学、上海交通大学、浙江大学等高校在联邦优化理论、隐私保护算法、异构数据建模等方向发表了大量高水平论文。百度、腾讯、蚂蚁集团等企业推出了产业级联邦学习平台（如 Baidu FATE、AntChain FISCO BCOS），支持跨机构、跨行业的数据协同建模。国内学者在联邦学习的安全防护、模型压缩、通信效率提升、区块链结合等方面展开了创新性研究，并推动相关标准与开源生态的建设。中国在医疗、金融、智能制造等领域已有多个联邦学习实际落地案例，但仍面临算法工程化、跨域协同和合规监管等方面的挑战。
+
+	\subsection{论文研究内容}
+	\subsection{论文结构}
 	\chapter{前言}
 	\section{当前版本编译时间}
 	\noindent%
