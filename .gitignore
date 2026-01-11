@@ -1,0 +1,3 @@
+*.pdf
+tutorial.*
+!tutorial.tex
