@@ -32,11 +32,11 @@
 				{} % TODO: 教师职称
 				{信息与通信工程学院} % par参数将过长学院名称换行排版，此参数必影响封面布局，无可避免
 
-	
 	% 中文扉页，仅研究生用
-	\ClsNum{TN828.6}  % \ClsNum{<分类号>}
-	\ClsLv{公开}  % \ClsLv{<密级>}
-	\UDC{621.39}  % \UDC{<UDC号>}
+	
+	\ClsNum{TN828.6}  % \ClsNum{<分类号>}% TODO：check if this is needed
+	\ClsLv{公开}  % \ClsLv{<密级>}% TODO：check if this is needed
+	\UDC{621.39}  % \UDC{<UDC号>}% TODO：check if this is needed
 	\DissertationTitle{分布式机器学习与联邦学习的自适应通信调度策略研究}
 	\Author{} % TODO:
 	\Supervisor{}{}{}{}  % TODO: {<指导教师>}{<职称>}{<单位名称>}{<单位地址>}
@@ -60,11 +60,17 @@
 	
 	% 开启中文摘要
 	\zhabstract
+	\nomchn{FL}{Federated Learning}{联邦学习}
+	\nomchn{DML}{Distributed Machine Learning}{分布式机器学习}
+	\nomchn{IoT}{Internet of Things}{物联网}
+	\nomchn{TCP}{Transmission Control Protocol}{传输控制协议}
+	\nomchn{LeMethod}{Lax Engine Method}{松引擎方法}
 
 	通信瓶颈是联邦学习众多挑战中被广泛关注的一点，在跨设备联邦学习场景中，海量终端设备（如手机、传感器）需频繁与中央服务器交换模型参数（如模型梯度、权重），而此类通信通常耗时较长。尤其在带宽受限的边缘网络（如蜂窝网络、Wi-Fi 6）或资源受限的物联网终端（如低功耗传感器）中，高频次的模型参数传输不仅会导致训练效率低下，模型数据在网络传输的过程中还可能因网络丢包、延迟等问题引发训练不稳定。因此，设计面向联邦学习的高效通信策略，在保障模型收敛性与精度的同时显著降低通信开销，成为推动联邦学习大规模落地的关键问题。
 
 	本文围绕“可扩展网络拓扑”、“TCP上层拥塞控制”、“流量的负载均衡”，提出了一套新型的联邦学习体系——LeMethod（Lax Engine Method，LeMethod）。LeMethod不会影响原模型的收敛速度，整个过程中通信的数据会进行完整的收发，其通过对网络拓扑的扩展分担中央服务器的通信压力、调度算法来实现高效通信、上层拥塞控制来减少网络丢包的概率。本文的主要贡献与创新成果可概括为四个方面：1）提出可以在传统联邦学习网络拓扑基础上进行扩展的网络拓扑结构。其不要求将传统的网络拓扑结构扩展成全连接网络拓扑，可以根据实际的情况选择性的进行扩展，使得网络拓扑扩展的成本更加可控、灵活性更高。2）在TCP上层进行拥塞控制减少TCP拥塞控制的触发从而减少网络拥塞抖动对整个通信效率的影响。3）根据当前的网络拓扑自适应的将流量从中央服务器负载均衡到其他节点。在传统的架构下只能通过升级中央服务器和各个节点之间的带宽来提升通信效率。在引入了负载均衡后，不仅可以通过升级中央服务器和各个节点之间的带宽来提升通信效率，还可以通过增加网络拓扑中链路数量以及对其他节点之间的链路进行带宽升级来提升通信效率。4）设计动态调度算法。该算法可以在传输过程中对网络的带宽进行记录并分析，根据历史带宽动态进行调度。
 
+	% TODO：补充实验数据
 	实验表明，在使用LeMethod后，即使不进行任何的链路扩展，在相同的实验环境下，LeMethod的训练耗时仅为传统架构的X％。在逐步对网络的拓扑进行扩展的过程中，LeMethod的训练耗时最终可以下降到传统架构的Y％。这些结果验证了LeMethod在平衡沟通效率与模型性能方面的有效性。
 
 	% 中文关键词
@@ -82,202 +88,33 @@
 	% 英文关键词
 	\enkeywords{Federated Learning; Load Balancing; Traffic Flow Scheduling; Network Topology; Congestion Control}
 
-	
 	\tableofcontents  % 主目录，必要
-	
+
+	% TODO: check if this one is needed
 	\listoffigures  % 图多则放，反之不放
-	
+
+	% TODO: check if this one is needed
 	\listoftables  % 表多则放，反之不放
-	
+
+	% TODO: check if this one is needed
 	\listofsymbs  % 生成主要符号表标题，需要额外维护符号表内容
-	
+
 	生成主要符号表的章标题需使用本模板提供的\shadcmd{listofsymbs}命令。排版主要符号表的内容则需要使用本模板提供的\shad{symbtable}环境。该环境基于\shad{longtable}环境进行封装，依次接受两个可选参数：
-	
+
 	\shadcmd{begin\{symbtable\}[<表格整体位置>](<主要符号表的列控制参数>)}
-	
+
 	\noindent 其中，第一项可选参数用于设置\shad{longtable}环境的可选参数，且默认值与\shad{longtable}环境保持一致；第二项可选参数用于设置\shad{longtable}环境的必选参数，其默认值设置为\shad{p\{3.5em\} p\{$\backslash$linewidth-9em\} p\{3em\}<\{$\backslash$centering\}}。
-	
+
 	若非必要，用户不应指定\shad{symbtable}环境的可选参数。但若出于对排版美观性的考虑，可适当调整主要符号表各列的宽度。注意，按照学位论文撰写规范中的示例，\textbf{主要符号表有且仅有三列}。因此，切勿对第二项可选参数设置其他列数。
-	
+
 	\textbf{重要提醒}：\shadcmd{listofsymbs}命令和\shad{symbtable}环境必须同时出现或消失。不需要主要符号表时，通通注释掉即可；需要时，必须使用\shad{symbtable}环境生成表格内容。
-	
+
 	\begin{symbtable}
 		a & 加速度（acceleration） & 1 \\
-		A & 振幅（amplitude）、面积（Area)、磁场矢量势（magnetic vector potential） & 2 \\
-		B & 磁场、磁感应强度、核结合能 & 3 \\
-		c & 真空中光速 & 4 \\
-		C & 比热容(heat capacity）、电容 & 5 \\
-		d & 长度（distance）、直径（diameter）、微分（differential，如dx）& 6 \\
-		D & 电位移矢量（electric displacement） & 7 \\
-		e & 元电荷、自然底数（欧拉常数）& 8 \\
-		E & 能量、电场场强，电动势 & 9 \\
-		f & 频率、焦距（光学） & 10 \\
-		F & 力、通量（Flux） & 11 \\
-		g &（地表）重力加速度 & 12 \\
-		G & 万有引力常数 & 13 \\
-		h & 普朗克常数、高度 & 14 \\
-		H & 哈勃常数、焓、磁化强度矢量、哈密顿算符（Hamiltonian） & 15 \\
-		i & 虚数单位 & 16 \\
-		I & 电流、惯量（inertia）、冲量(impulse) & 17 \\
-		j & 辐射强度、加加速度（jerk） & 18 \\
-		J & 角动量、概率流(量子力学）、电流密度、巨配分函数里的巨势 Z(J) & 19 \\
-		k & 玻尔兹曼(Boltzmann)常数、库伦常数、用来指代某常量或固定比值 & 20 \\
-		K & 四维波矢量（相对论）、动能 & 21 \\
-		l & 长度(length) & 22 \\
-		L & 角动量、电感系数 & 23 \\
-		m & 质量 & 24 \\
-		M & 磁化率 & 25 \\
-		n & 序数、主量子数、摩尔数（化学）、折射率（光学） & 26 \\
-		N & 序数、中子数、放大倍率（光学）& 27 \\
-		o & 小o符号 & 28 \\
-		O & 大O符号 & 29 \\
-		p & 动量、压强(pressure)、电偶极矩(electric dipole moment) & 30 \\
-		P & 概率（量子力学，统计学）、功率（power)、极化度 & 31 \\
-		q & 电荷 & 32 \\
-		Q & 电荷热量、流量 & 33 \\
-		r & 半径、位置向量、球坐标系半径轴 & 34 \\
-		R & 电阻、普适气体常数（热力学）、里德伯(Rydberg)常数（光谱学）、反射率（Reflectivity，光学） & 35 \\
-		s & 自旋 & 36 \\
-		S & 熵、面积 & 37 \\
-		t & 时间 & 38 \\
-		T & 温度、周期、透射率（Transmittance，光学） & 39 \\
-		u & 原子质量单位、物距（光学） & 40 \\
-		U & 电压、电势 & 50 \\
-		v & 速度、像距（光学） & 51 \\
-		V & 体积、势能 & 52 \\
-		w & 速度 & 53 \\
-		W & 功 & 54 \\
-		x & 直角坐标系横轴 & 55 \\
-		X & 磁化率、电抗 & 56 \\
-		y & 直角坐标系纵轴 & 57 \\
-		Y & 光亮度、球谐函数 & 58 \\
-		z & 直角/圆柱坐标系竖轴、复数变量 & 59 \\
-		Z & 阻抗、原子序数（质子数）、配分函数（partition function） & 60 \\
-		$\alpha$ & 角度、精细结构常数、角加速度、四维加速度（相对论）、攻角 & 61 \\
-		Α & Alpha （与英文拼写难区分的希腊字母一般不使用） & 62 \\
-		$\beta$ & 角度；磁通系数；速度与光速的比值 & 63 \\
-		Β & Beta Β函数 & 64 \\
-		γ & 电导系数、洛伦兹因子、热容比 & 65 \\
-		Γ & Gamma Γ函数、克里斯托弗尔符号 & 66 \\
-		δ & 狄拉克δ函数、克罗内克函数（Kronecker delta）、屈光度、微分 & 67 \\
-		Δ & Delta 拉普拉斯算子、有限差 & 68 \\
-		ε & 电容率（permittivity）、介电常数、列维-奇维塔符号(Levi-Civita symbol)、发射率 & 69 \\
-		Ε & Epsilon & 70 \\
-		Ϝ & digamma & 71 \\
-		ζ & 阻尼比、黎曼ζ函数 & 72 \\
-		Ζ & Zeta & 73 \\
-		η & 黏度（viscosity）、磁滞系数、效率 & 74 \\
-		Η & Eta & 75 \\
-		θ & 角变量、温度、球坐标/圆柱坐标横角 & 76 \\
-		Θ & Theta 单位阶跃函数（Heaviside step function） & 77 \\
-		Ι & Iota & 78 \\
-		$\kappa$ & 介质常数比ε/ε0、导热率、热扩散率 & 79 \\
-		$\kappa$ & Kappa & 80 \\
-		λ & 波长、mean free path、半衰期 & 81 \\
-		$\Lambda$ & Lambda 洛伦兹变换、冯·卡门常数 & 82 \\
-		μ & 磁导率、质子质量单位、摩擦系数、离子迁移率 & 83 \\
-		Μ & Mu & 84 \\
-		ν & 频率、运动粘度、自由度 & 85 \\
-		Ν & Nu & 86 \\
-		ξ & 黎曼ξ函数、随机变量 & 87 \\
-		Ξ & Xi & 88 \\
-		Ο & Omicron & 89 \\
-		π & 圆周率、共轭动量 & 90 \\
-		∏ & Pi 乘积 & 91 \\
-		ρ & 密度、电阻率 & 92 \\
-		Ρ & Rho & 93 \\
-		σ & 导电率、斯提芬-波尔兹曼常数（Stefan–Boltzmann constant）、核反应截面、表面密度、标准差 & 94 \\
-		∑ & Sigma 总和 & 95 \\
-		τ & 扭矩(Torque)、剪应力（Shear stress）、时间常数、2π & 96 \\
-		Τ & Tau & 97 \\
-		Υ & Upsilon & 98 \\
-		φ & 球坐标纵角、波相位（wave phase）、直径 & 99 \\
-		Φ & Phi 磁通量、辐射通量、逸出功 & 100 \\
-		χ & 电极化率(Electric susceptibility) & 101 \\
-		Χ & Chi 电抗 & 102 \\
-		ψ & 角速；介质电通量（静电力线） & 103 \\
-		Ψ & Psi 波函数 & 104 \\
-		ω & 角速度 & 105 \\
-		Ω & omega 蔡廷常数（Chaitin's constant） 立体角（Solid angle） & 106 \\
 	\end{symbtable}
-	
-	
-	
+
 	% 打印缩略词表，\printnomenclature[<英文缩写宽度>](<中文全称宽度>)
 	\printnomenclature
-	\nomchn{LP}{Linear Programming}{线性规划}  % 创建缩略词条目，% \nomchn{<缩略词>}{<英文全称>}{<中文全称>}
-	\nomchn{PLE}{Path Loss Exponent}{路径损失指数}
-	\nomchn{QoS}{Quality of Service}{服务质量}
-	\nomchn{SLA}{Service Level Agreement}{服务水平协议}
-	\nomchn{NLP}{non-linear programming}{非线性规划}
-	\nomchn{4G}{Fourth Generation Mobile Communication Technology}{第四代移动通信技术}
-	\nomchn{5G}{Fifth Generation Mobile Communication Technology}{第五代移动通信技术}
-	\nomchn{B5G}{Beyond 5G}{超五代移动通信技术}
-	\nomchn{NSA}{Non-Standalone}{非独立组网}
-	\nomchn{mMIMO}{massive Multiple Input Multiple Output}{大规模多输入多输出}
-	\nomchn{FDMA}{Frequency Division Multiple Access}{频分多址}
-	\nomchn{TDMA}{Time Division Multiple Access}{时分多址}
-	\nomchn{IP}{Internet Protocol}{网际互连协议}
-	\nomchn{CDMA}{Code Division Multiple Access}{码分多址}
-	\nomchn{LTE}{Long Term Evolution}{长期演进}
-	\nomchn{OFDM}{Orthogonal Frequency Division Multiplexing}{正交频分复用}
-	\nomchn{SDMA}{Space Division Multiple Access}{空分多址}
-	\nomchn{MIMO}{Multiple Input Multiple Output}{多输入多输出}
-	\nomchn{MBS}{Macro Base Station}{宏基站}
-	\nomchn{SBS}{Small Base Station}{微基站}
-	\nomchn{PBS}{Pico Base Station}{微微基站}
-	\nomchn{FBS}{Femto Base Station}{毫微微基站}
-	\nomchn{NR}{New Radio}{新空口}
-	\nomchn{EPC}{Evolved Packet Core}{演进分组核心}
-	\nomchn{5GC}{The Fifth Generation Core Network}{5G核心网}
-	\nomchn{RAN}{Radio Access Network}{无线接入网络}
-	\nomchn{Multi-RAT}{Multi Radio Access Technology}{多制式}
-	\nomchn{HetNet}{Heterogeneous Network}{异构网络}
-	\nomchn{CSI}{Channel State Information}{信道状态信息}
-	\nomchn{3GPP}{3rd Generation Partnership Project}{第三代合作伙伴计划}
-	\nomchn{PDCP}{Packet Data Convergence Protocol}{分组数据汇聚协议}
-	\nomchn{MME}{Mobile Management Entity}{移动管理实体}
-	\nomchn{S-GW}{Serving GateWay}{服务网关}
-	\nomchn{RLC}{Radio Link Control}{无线链路控制协议}
-	\nomchn{MAC}{Media Access Control}{媒体访问控制协议}
-	\nomchn{SDN}{Software-Defined Networking}{软件定义网络}
-	\nomchn{NFV}{Network Functions Virtualization}{网络功能虚拟化}
-	\nomchn{NSI}{Network Slice Instance}{网络切片实例}
-	\nomchn{MANO}{Management and Network Orchestration}{管理和网络编排}
-	\nomchn{SDM-X}{Software-Defined Mobile Network Coordinator}{软件定义移动网络协调器}
-	\nomchn{SDM-C}{Software-Defined Mobile Network Controller}{软件定义移动网络控制器}
-	\nomchn{VNF}{Virtual Network Function}{虚拟网络功能}
-	\nomchn{PNF}{Physical Network Function}{物理网络功能}
-	\nomchn{ETSI}{European Telecommunications Standards Institute}{欧洲电信标准化协会}
-	\nomchn{NFVO}{Network Function Virtualization Orchestrator}{虚拟网络功能编排器}
-	\nomchn{VNFM}{Virtual Network Function Manager}{虚拟网络功能管理器}
-	\nomchn{VIM}{Virtual Infrastructure Manager}{虚拟基础设施管理器}
-	\nomchn{NSMF}{Network Slice Management Function}{网络切片管理功能}
-	\nomchn{NSSMF}{Network Sub-Slice Management Function}{网络子切片管理功能}
-	\nomchn{SDM-O}{Software-Defined Mobile Network Orchestrator}{软件定义移动网络编排器}
-	\nomchn{SLA}{Service Level Agreement}{服务水平协议}
-	\nomchn{5GPPP}{5G Infrastructure Public Private Partnership}{5G基础设施公私合作伙伴关系}
-	\nomchn{InP}{Infrastructure Provider}{基础设施提供商}
-	\nomchn{QoS}{Quality of Service}{服务质量}
-	\nomchn{NFC}{Network Function Component}{网络功能组件}
-	\nomchn{QoE}{Quality of Experience}{服务体验}
-	\nomchn{AI}{Artificial Intelligence}{人工智能}
-	\nomchn{RSRP}{Reference Singal Receiving Power}{参考信号接收功率}
-	\nomchn{RSSI}{Received Signal Strength Indicator}{接收信号强度指标}
-	
-	生成缩略词表相对复杂一些：
-	\begin{enumerate}
-		\item 先使用\shadcmd{printnomenclature[<英文缩写宽度>](<中文全称宽度>)}，第一项可选参数控制\textbf{英文缩写}的列宽，默认为\shad{5em}；第二项可选参数控制\textbf{中文全称}的列宽，默认为\shad{7.5em}。
-		
-		\item 然后在正文中出现缩略词的位置使用命令\\\shadcmd{nomchn[<排序前缀>]\{<缩略词>\}\{<英文全称>\}\{<中文全称>\}}添加该缩略词条目。其中\shad{排序前缀}是可选参数，仅在对特定条目有特殊排序需求时才使用。具体细节参考\href{https://mirrors.hust.edu.cn/CTAN/macros/latex/contrib/nomencl/nomencl.pdf}{\ttfamily\color{DarkRed}\CJKunderline*[thickness=0.5bp, format=\color{DarkRed}]{nomencl}}宏包对\shadcmd{nomenclature}命令的参数说明。
-	\end{enumerate}
-	
-	另外，本地用户需要先编译生成缩略词表的辅助文件，再编译完整文档才能获得正确的结果，辅助文件编译教程参见\href{https://zhuanlan.zhihu.com/p/46442713}{\color{DarkRed}\CJKunderline*[thickness=0.5bp, format=\color{DarkRed}]{编译缩略词表}} 或 \href{https://github.com/MGG1996/DissertationUESTC?tab=readme-ov-file#6-目录图目录表目录主要符号表缩略词表}{\color{DarkRed}\CJKunderline*[thickness=0.5bp, format=\color{DarkRed}]{项目readme第6节}}给出的操作图示，对应本文档中的图\ref{fig: VSCode编译缩略词表}和图\ref{fig: TeXstudio编译缩略词表}。图中用到的命令分别为：
-	\begin{itemize}
-		\item \shad{makeindex "Tex文件名".nlo -s nomencl.ist -o "Tex文件名".nls}
-		\item \shad{makeindex \%.nlo -s nomencl.ist -o \%.nls | txs:///compile | makeindex \%.nlo -s nomencl.ist -o \%.nls | txs:///compile}
-	\end{itemize}
-	Overleaf用户则可以一键搞定，无需额外操作。
 
 	\begin{figure}[!htb]
 		\centering
@@ -293,8 +130,7 @@
 		\includegraphics[width=0.95\linewidth]{TeXstudio-nomenclature3}
 		\caption{TeXstudio编译缩略词表的操作步骤} \label{fig: TeXstudio编译缩略词表}
 	\end{figure}
-	
-	
+
 	\chapter{绪论}
 
 	\section{研究背景及意义}
