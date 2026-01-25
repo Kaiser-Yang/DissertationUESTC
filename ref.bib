@@ -20,223 +20,459 @@
   year={2017},
   organization={PMLR}
 }
-@book{教育部国家语言文字工作委员2018,
-	author={教育部国家语言文字工作委员},
-	title={通用规范汉字},
-	address={北京},
-	publisher={语文出版社},
-	year={2018},
-	language={schinese},
+@article{non-iid,
+  title={Federated learning with non-iid data},
+  author={Zhao, Yue and Li, Meng and Lai, Liangzhen and Suda, Naveen and Civin, Damon and Chandra, Vikas},
+  journal={arXiv preprint arXiv:1806.00582},
+  year={2018}
 }
-
-
-@standard{学位论文编写规范555,
-	author={全国信息与文献标准化技术委员},
-	title={学位论文编写规范},
-	number={GB/T 7713.1-2006},
-	address={北京},
-	publisher={中国标准出版社},
-	year={2007},
-	month={09},
-	day={15},
-	pages={17-20},
+@misc{comm-conv-trade-off,
+      title={Local SGD Converges Fast and Communicates Little},
+      author={Sebastian U. Stich},
+      year={2019},
+      eprint={1805.09767},
+      archivePrefix={arXiv},
+      primaryClass={math.OC},
+      url={https://arxiv.org/abs/1805.09767},
 }
-
-@article{王晓琰2019关于连续出版会议论文著录格式的探讨,
-  title={关于连续出版会议论文著录格式的探讨},
-  author={王晓琰 and 殷建芳 and 王晓峰 and 邓迎 and 杨蕾},
-  journal={学报编辑丛论},
-  number={0},
-  year={2019},
-  pages={162-165},
-  language={schinese},
+@inproceedings{1-bit-sgd,
+  title     = {1-bit stochastic gradient descent and its application to data-parallel distributed training of speech DNNs},
+  author    = {Frank Seide and Hao Fu and Jasha Droppo and Gang Li and Dong Yu},
+  year      = {2014},
+  booktitle = {Interspeech 2014},
+  pages     = {1058--1062},
+  doi       = {10.21437/Interspeech.2014-274},
+  issn      = {2958-1796},
 }
-
-
-@article{hu2014domain,
-  title={Domain decomposition method based on integral equation for solution of scattering from very thin, conducting cavity},
-  author={Hu, Jun and Zhao, Ran and Tian, Mi and Zhao, Huapeng and Jiang, Ming and Wei, Xiang and Nie, Zai Ping},
-  journal={IEEE Transactions on Antennas and Propagation},
-  volume={62},
-  number={10},
-  pages={5344-5348},
+@inproceedings{compression-error-feedback,
+  title     = {Scalable distributed DNN training using commodity GPU cloud computing},
+  author    = {Nikko Strom},
+  year      = {2015},
+  booktitle = {Interspeech 2015},
+  pages     = {1488--1492},
+  doi       = {10.21437/Interspeech.2015-354},
+  issn      = {2958-1796},
+}
+@article{a-survay-on-dml,
+  author = {Verbraeken, Joost and Wolting, Matthijs and Katzy, Jonathan and Kloppenburg, Jeroen and Verbelen, Tim and Rellermeyer, Jan S.},
+  title = {A Survey on Distributed Machine Learning},
+  year = {2020},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {53},
+  number = {2},
+  issn = {0360-0300},
+  url = {https://doi.org/10.1145/3377454},
+  doi = {10.1145/3377454},
+  journal = {ACM Comput. Surv.},
+  month = {03},
+  articleno = {30},
+  numpages = {33},
+}
+@misc{fault-tolerant-async-fl,
+      title={Fault-Tolerant Decentralized Distributed Asynchronous Federated Learning with Adaptive Termination Detection},
+      author={Phani Sahasra Akkinepally and Manaswini Piduguralla and Sushant Joshi and Sathya Peri and Sandeep Kulkarni},
+      year={2025},
+      eprint={2509.02186},
+      archivePrefix={arXiv},
+      primaryClass={cs.DC},
+      url={https://arxiv.org/abs/2509.02186},
+}
+@article{parallelized-sgd,
+  title={Parallelized stochastic gradient descent},
+  author={Zinkevich, Martin and Weimer, Markus and Li, Lihong and Smola, Alex},
+  journal={Advances in neural information processing systems},
+  volume={23},
+  year={2010}
+}
+@article{distbelief,
+  title={Large scale distributed deep networks},
+  author={Dean, Jeffrey and Corrado, Greg and Monga, Rajat and Chen, Kai and Devin, Matthieu and Mao, Mark and Ranzato, Marc'aurelio and Senior, Andrew and Tucker, Paul and Yang, Ke and others},
+  journal={Advances in neural information processing systems},
+  volume={25},
+  year={2012}
+}
+@article{revisiting-distributed-sync-sgd,
+  title={Revisiting distributed synchronous SGD},
+  author={Chen, Jianmin and Pan, Xinghao and Monga, Rajat and Bengio, Samy and Jozefowicz, Rafal},
+  journal={arXiv preprint arXiv:1604.00981},
+  year={2016}
+}
+@article{stalenss-aware-async-sgd,
+  title={Staleness-aware async-sgd for distributed deep learning},
+  author={Zhang, Wei and Gupta, Suyog and Lian, Xiangru and Liu, Ji},
+  journal={arXiv preprint arXiv:1511.05950},
+  year={2015}
+}
+@inproceedings{async-ADMM,
+  title={Asynchronous distributed ADMM for consensus optimization},
+  author={Zhang, Ruiliang and Kwok, James},
+  booktitle={International conference on machine learning},
+  pages={1701--1709},
   year={2014},
+  organization={PMLR}
+}
+@article{ADMM,
+  author = {Boyd, Stephen and Parikh, Neal and Chu, Eric and Peleato, Borja and Eckstein, Jonathan},
+  title = {Distributed Optimization and Statistical Learning via the Alternating Direction Method of Multipliers},
+  year = {2011},
+  publisher = {Now Publishers Inc.},
+  address = {Hanover, MA, USA},
+  volume = {3},
+  number = {1},
+  issn = {1935-8237},
+  url = {https://doi.org/10.1561/2200000016},
+  doi = {10.1561/2200000016},
+  journal = {Found. Trends Mach. Learn.},
+  month = {01},
+  pages = {1–122},
+  numpages = {122}
+}
+@inproceedings{ako,
+  title={Ako: Decentralised deep learning with partial gradient exchange},
+  author={Watcharapichat, Pijika and Morales, Victoria Lopez and Fernandez, Raul Castro and Pietzuch, Peter},
+  booktitle={Proceedings of the Seventh ACM Symposium on Cloud Computing},
+  pages={84--97},
+  year={2016}
+}
+@inproceedings{dlion,
+  title={Dlion: Decentralized distributed deep learning in micro-clouds},
+  author={Hong, Rankyung and Chandra, Abhishek},
+  booktitle={Proceedings of the 30th International Symposium on High-Performance Parallel and Distributed Computing},
+  pages={227--238},
+  year={2021}
+}
+@article{a-taxonomic-perspective,
+  title={Distributed training of deep learning models: A taxonomic perspective},
+  author={Langer, Matthias and He, Zhen and Rahayu, Wenny and Xue, Yanbo},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  volume={31},
+  number={12},
+  pages={2802--2818},
+  year={2020},
   publisher={IEEE}
 }
-
-@inproceedings{bergamasco2015adopting,
-  title={Adopting an unconstrained ray model in light-field cameras for 3d shape reconstruction},
-  author={Bergamasco, Filippo and Albarelli, Andrea and Cosmo, Luca and Torsello, Andrea and Rodola, Emanuele and Cremers, Daniel},
-  booktitle={IEEE Conference on Computer Vision and Pattern Recognition},
-  pages={3003-3012},
+@article{fed-fox,
+  title={Federated optimization in heterogeneous networks},
+  author={Li, Tian and Sahu, Anit Kumar and Zaheer, Manzil and Sanjabi, Maziar and Talwalkar, Ameet and Smith, Virginia},
+  journal={Proceedings of Machine learning and systems},
+  volume={2},
+  pages={429--450},
+  year={2020}
+}
+@article{fed-dm,
+  title={FedDM: Federated Learning Incorporating Dissimilarity Measure for Mobile Edge Computing Systems},
+  author={Yang, Ning and Yuan, Xin and Lin, Hai and Zhang, Haijun and Lyu, Pin and Wang, Jun},
+  journal={IEEE Transactions on Cognitive Communications and Networking},
+  year={2025},
+  publisher={IEEE}
+}
+@article{mac-fl,
+  title={Mobility-aware cluster federated learning in hierarchical wireless networks},
+  author={Feng, Chenyuan and Yang, Howard H and Hu, Deshun and Zhao, Zhiwei and Quek, Tony QS and Min, Geyong},
+  journal={IEEE Transactions on Wireless Communications},
+  volume={21},
+  number={10},
+  pages={8441--8458},
+  year={2022},
+  publisher={IEEE}
+}
+@article{fed-ada,
+  title={AFedAvg: Communication-efficient federated learning aggregation with adaptive communication frequency and gradient sparse},
+  author={Li, Yanbin and He, Ziming and Gu, Xingjian and Xu, Huanliang and Ren, Shougang},
+  journal={Journal of Experimental \& Theoretical Artificial Intelligence},
+  volume={36},
+  number={1},
+  pages={47--69},
+  year={2024},
+  publisher={Taylor \& Francis}
+}
+@article{isp,
+  title={Communication-Efficient Federated Learning with Adaptive Number of Participants},
+  author={Skorik, Sergey and Dorofeev, Vladislav and Molodtsov, Gleb and Avetisyan, Aram and Bylinkin, Dmitry and Medyakov, Daniil and Beznosikov, Aleksandr},
+  journal={arXiv preprint arXiv:2508.13803},
+  year={2025}
+}
+@article{adaptive-fl,
+  title={AdaptiveFL: Communication-Adaptive Federated Learning Under Dynamic Bandwidth},
+  author={Liu, Guozhi and Lin, Weiwei and Huang, Tiansheng and Shi, Fang and Wu, Wentai and Shen, Li},
+  journal={IEEE Transactions on Neural Networks and Learning Systems},
+  year={2025},
+  publisher={IEEE}
+}
+@article{aqg,
+  title={Communication-efficient federated learning with adaptive quantization},
+  author={Mao, Yuzhu and Zhao, Zihao and Yan, Guangfeng and Liu, Yang and Lan, Tian and Song, Linqi and Ding, Wenbo},
+  journal={ACM Transactions on Intelligent Systems and Technology (TIST)},
+  volume={13},
+  number={4},
+  pages={1--26},
+  year={2022},
+  publisher={ACM New York, NY}
+}
+@inproceedings{clipped-uniform-quantization,
+  title={Communication-Efficient Federated Learning via Clipped Uniform Quantization},
+  author={Bozorgasl, Zavareh and Chen, Hao},
+  booktitle={2025 59th Annual Conference on Information Sciences and Systems (CISS)},
+  pages={1--6},
+  year={2025},
+  organization={IEEE}
+}
+@article{fed-qcs,
+  title={Communication-efficient federated learning via quantized compressed sensing},
+  author={Oh, Yongjeong and Lee, Namyoon and Jeon, Yo-Seb and Poor, H Vincent},
+  journal={IEEE Transactions on Wireless Communications},
+  volume={22},
+  number={2},
+  pages={1087--1100},
+  year={2022},
+  publisher={IEEE}
+}
+@article{pfmlp,
+  title={Privacy preserving machine learning with homomorphic encryption and federated learning},
+  author={Fang, Haokun and Qian, Quan},
+  journal={Future Internet},
+  volume={13},
+  number={4},
+  pages={94},
+  year={2021},
+  publisher={MDPI}
+}
+@inproceedings{10602929,
+  author={Yang, Wentao and Bai, Yang and Rao, Yutang and Wu, Hongyan and Xing, Gaojie and Zhou, Yimin},
+  booktitle={2024 4th International Conference on Computer Communication and Artificial Intelligence (CCAI)},
+  title={Privacy-Preserving Federated Learning with Homomorphic Encryption and Sparse Compression},
+  year={2024},
+  volume={},
+  number={},
+  pages={192-198},
+  keywords={Privacy;Differential privacy;Accuracy;Federated learning;Computational modeling;Sparse matrices;Servers;Federated Learning;Privacy-preserving;Homomorphic Encryption;Cost optimization},
+  doi={10.1109/CCAI61966.2024.10602929}
+}
+@article{cepam,
+  title={Communication-Efficient and Privacy-Adaptable Mechanism for Federated Learning},
+  author={Ling, Chih Wei and Shiu, Chun Hei Michael and Wu, Youqi and Sun, Jiande and Li, Cheuk Ting and Song, Linqi and Xu, Weitao},
+  journal={arXiv preprint arXiv:2501.12046},
+  year={2025}
+}
+@inproceedings{dssgd,
+  title={Privacy-preserving deep learning},
+  author={Shokri, Reza and Shmatikov, Vitaly},
+  booktitle={Proceedings of the 22nd ACM SIGSAC conference on computer and communications security},
+  pages={1310--1321},
+  year={2015}
+}
+@inproceedings{safe-protocol,
+  title={Practical secure aggregation for privacy-preserving machine learning},
+  author={Bonawitz, Keith and Ivanov, Vladimir and Kreuter, Ben and Marcedone, Antonio and McMahan, H Brendan and Patel, Sarvar and Ramage, Daniel and Segal, Aaron and Seth, Karn},
+  booktitle={proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security},
+  pages={1175--1191},
+  year={2017}
+}
+@article{smith2018cocoa,
+  title={CoCoA: A general framework for communication-efficient distributed optimization},
+  author={Smith, Virginia and Forte, Simone and Ma, Chenxin and Tak{\'a}{\v{c}}, Martin and Jordan, Michael I and Jaggi, Martin},
+  journal={Journal of Machine Learning Research},
+  volume={18},
+  number={230},
+  pages={1--49},
+  year={2018}
+}
+@inproceedings{ma2015adding,
+  title={Adding vs. averaging in distributed primal-dual optimization},
+  author={Ma, Chenxin and Smith, Virginia and Jaggi, Martin and Jordan, Michael and Richt{\'a}rik, Peter and Tak{\'a}c, Martin},
+  booktitle={International Conference on Machine Learning},
+  pages={1973--1982},
   year={2015},
-  organization={Boston, USA}
+  organization={PMLR}
 }
-
-@article{xue2024survey,
-	title={A survey of beam management for mmWave and THz communications towards 6G},
-	author={Xue, Qing and Ji, Chengwang and Ma, Shaodan and Guo, Jiajia and Xu, Yongjun and Chen, Qianbin and Zhang, Wei},
-	journal={IEEE Communications Surveys \& Tutorials},
-	year={2024},
-	pages={1-41},
-	publisher={IEEE}
+@article{yang2013trading,
+  title={Trading computation for communication: Distributed stochastic dual coordinate ascent},
+  author={Yang, Tianbao},
+  journal={Advances in neural information processing systems},
+  volume={26},
+  year={2013}
 }
-
-@book{罗杰斯2011,
-	author={罗杰斯},
-	title={西方文明史：问题与源头},
-	translator={潘惠霞 and 魏婧 and 杨艳 and 汤玲},
-	edition={2},
-	address={大连},
-	publisher={东北财经大学出版社},
-	year={2011},
-	pages={1-353},
-	language={schinese},
+@inproceedings{shamir2014communication,
+  title={Communication-efficient distributed optimization using an approximate newton-type method},
+  author={Shamir, Ohad and Srebro, Nati and Zhang, Tong},
+  booktitle={International conference on machine learning},
+  pages={1000--1008},
+  year={2014},
+  organization={PMLR}
 }
-
-@book{harrington1993field,
-	title={Field computation by moment methods},
-	author={Harrington, Roger F},
-	year={1993},
-	pages={76-112},
-	edition={3},
-	address={New York},
-	publisher={Wiley-IEEE Press}
+@incollection{zhang2018communication,
+  title={Communication-efficient distributed optimization of self-concordant empirical loss},
+  author={Zhang, Yuchen and Xiao, Lin},
+  booktitle={Large-Scale and Distributed Optimization},
+  pages={289--341},
+  year={2018},
+  publisher={Springer}
 }
-
-
-@digital{电子文献1,
-	author={Deverell, W and gler, D},
-	title={A companion to California history},
-	type={M/OL},
-	modifydate={2013-11-15},
-	url={http://onlinelibrary.wiley.com/doi/.ch2/summary},
-	doi={10.1002/9781444305036},
-	address={New York},
-	publisher={John Wiley \& Sons},
-	year={2013},
-	pages={21-22},
-	citedate={2014-06-24},
+@article{zhang2013communication,
+  title={Communication-efficient algorithms for statistical optimization},
+  author={Zhang, Yuchen and Duchi, John C and Wainwright, Martin J},
+  journal={The Journal of Machine Learning Research},
+  volume={14},
+  number={1},
+  pages={3321--3363},
+  year={2013},
+  publisher={JMLR. org}
 }
-
-@digital{电子文献2,
-	author={Clerc, M},
-	title={Discrete particle swarm optimization: a fuzzy combinatorial box},
-	type={EB/OL},
-	modifydate={2010-07-16},
-	url={http://clere.maurice.free.fr/pso/Fuzzy_Discrere_PSO/Fuzzy_DPSO.html},
+@article{zhou2021tsengine,
+  title={TSEngine: Enable efficient communication overlay in distributed machine learning in WANs},
+  author={Zhou, Huaman and Cai, Weibo and Li, Zonghang and Yu, Hongfang and Liu, Ling and Luo, Long and Sun, Gang},
+  journal={IEEE Transactions on Network and Service Management},
+  volume={18},
+  number={4},
+  pages={4846--4859},
+  year={2021},
+  publisher={IEEE}
 }
-
-@mastersthesis{陈念永2001毫米波细胞生物效应及抗肿瘤研究,
-	author={陈念永},
-	title={毫米波细胞生物效应及抗肿瘤研究},
-	address={成都},
-	school={电子科技大学},
-	year={2001},
-	pages={50-60},
+@article{peng2022sancus,
+  title={Sancus: sta le n ess-aware c omm u nication-avoiding full-graph decentralized training in large-scale graph neural networks},
+  author={Peng, Jingshu and Chen, Zhao and Shao, Yingxia and Shen, Yanyan and Chen, Lei and Cao, Jiannong},
+  journal={Proceedings of the VLDB Endowment},
+  volume={15},
+  number={9},
+  pages={1937--1950},
+  year={2022},
+  publisher={VLDB Endowment}
 }
-
-@news{顾春20122,
-	author={顾春},
-	title={牢牢把握稳中求进的总基调},
-	publisher={人民日报},
-	year={2012},
-	month={03},
-	day={31},
-	number={3},
+@article{wu2024topology,
+  title={Topology-aware federated learning in edge computing: A comprehensive survey},
+  author={Wu, Jiajun and Dong, Fan and Leung, Henry and Zhu, Zhuangdi and Zhou, Jiayu and Drew, Steve},
+  journal={ACM Computing Surveys},
+  volume={56},
+  number={10},
+  pages={1--41},
+  year={2024},
+  publisher={ACM New York, NY}
 }
-
-@report{冯西桥1997,
-	author={冯西桥},
-	title={核反应堆压力容器的{LBB}分析},
-	address={北京},
-	publisher={清华大学核能技术设计研究院},
-	year={1997},
+@inproceedings{menegatti2024dynamic,
+  title={Dynamic Topology Optimization for Efficient and Decentralised Federated Learning},
+  author={Menegatti, Danilo and Giuseppi, Alessandro and Poli, Cecilia and Pietrabissa, Antonio},
+  booktitle={2024 IEEE International Conference on Big Data (BigData)},
+  pages={7939--7945},
+  year={2024},
+  organization={IEEE}
 }
-
-@patent{肖珍新2012,
-	author={肖珍新},
-	title={一种新型排渣阀调节降温装置},
-	number={ZL201120085830.0},
-	year={2012},
-	month={04},
-	day={25},
-	nation={中国},
-	type={发明专利},
+@inproceedings{ouyang2024two,
+  title={Two-Timescale Energy Optimization for Wireless Federated Learning},
+  author={Ouyang, Jinhao and Liu, Yuan and Liu, Hang},
+  booktitle={IEEE INFOCOM 2024-IEEE Conference on Computer Communications Workshops (INFOCOM WKSHPS)},
+  pages={1--6},
+  year={2024},
+  organization={IEEE}
 }
-
-
-@phdthesis{陈念永2001毫米波细胞生物效应及抗肿瘤研究无页码,
-	author={陈念永},
-	title={毫米波细胞生物效应及抗肿瘤研究（无页码测试）},
-	address={成都},
-	school={电子科技大学},
-	year={2001},
+@inproceedings{xu2023energy,
+  title={Energy-efficient dynamic asynchronous federated learning in mobile edge computing networks},
+  author={Xu, Guozeng and Li, Xiuhua and Li, Hui and Fan, Qilin and Wang, Xiaofei and Leung, Victor CM},
+  booktitle={ICC 2023-IEEE international conference on communications},
+  pages={160--165},
+  year={2023},
+  organization={IEEE}
 }
-
-
-
-@article{dai2022joint,
-	title={Joint decoupled multiple-association and resource allocation in full-duplex heterogeneous cellular networks: A four-sided matching game},
-	author={Dai, Chen and Zhu, Kun and Li, Zhenzhen and Hossain, Ekram},
-	journal={IEEE Transactions on Wireless Communications},
-	volume={21},
-	number={8},
-	pages={6464-6477},
-	year={2022},
-	publisher={IEEE}
+@article{kairouz2021advances,
+  title={Advances and open problems in federated learning},
+  author={Kairouz, Peter and McMahan, H Brendan and Avent, Brendan and Bellet, Aur{\'e}lien and Bennis, Mehdi and Bhagoji, Arjun Nitin and Bonawitz, Kallista and Charles, Zachary and Cormode, Graham and Cummings, Rachel and others},
+  journal={Foundations and trends{\textregistered} in machine learning},
+  volume={14},
+  number={1--2},
+  pages={1--210},
+  year={2021},
+  publisher={Now Publishers, Inc.}
 }
-
-@article{khawam2020coordinated,
-	title={Coordinated framework for spectrum allocation and user association in 5G HetNets with mmWave},
-	author={Khawam, Kinda and Lahoud, Samer and El Helou, Melhem and Martin, Steven and Gang, Feng},
-	journal={IEEE Transactions on Mobile Computing},
-	volume={21},
-	number={4},
-	pages={1226-1243},
-	year={2020},
-	publisher={IEEE}
+@article{yang2019federated,
+  title={Federated machine learning: Concept and applications},
+  author={Yang, Qiang and Liu, Yang and Chen, Tianjian and Tong, Yongxin},
+  journal={ACM Transactions on Intelligent Systems and Technology (TIST)},
+  volume={10},
+  number={2},
+  pages={1--19},
+  year={2019},
+  publisher={ACM New York, NY, USA}
 }
-
-@article{deng2023gnn,
-	title={GNN-Aided User Association and Beam Selection for mmWave Integrated Heterogeneous Networks},
-	author={Deng, Weicao and Liu, Yao and Li, Min and Lei, Ming},
-	journal={IEEE Wireless Communications Letters},
-	volume={12},
-	number={11},
-	pages={1836-1840},
-	year={2023},
-	publisher={IEEE}
+@inproceedings{mcdonald2010distributed,
+  title={Distributed training strategies for the structured perceptron},
+  author={McDonald, Ryan and Hall, Keith and Mann, Gideon},
+  booktitle={Human language technologies: The 2010 annual conference of the North American chapter of the association for computational linguistics},
+  pages={456--464},
+  year={2010}
 }
-
-@article{qiao2023joint,
-	title={Joint Optimization of Resource Allocation and User Association in Multi-Frequency Cellular Networks Assisted by RIS},
-	author={Qiao, Yuanyuan and Niu, Yong and Han, Zhu and Mao, Shiwen and He, Ruisi and Wang, Ning and Zhong, Zhangdui and Ai, Bo},
-	journal={IEEE Transactions on Vehicular Technology},
-	year={2024},
-	pages={826-842},
-	volume={73},
-	number={1},
-	publisher={IEEE}
+@article{zhang2015deep,
+  title={Deep learning with elastic averaging SGD},
+  author={Zhang, Sixin and Choromanska, Anna E and LeCun, Yann},
+  journal={Advances in neural information processing systems},
+  volume={28},
+  year={2015}
 }
-
-@article{agarwal2021reduced,
-	title={Reduced Complexity Optimal Resource Allocation for Enhanced Video Quality in a Heterogeneous Network Environment},
-	author={Agarwal, Bharat and Ruffini, Marco and Muntean, Gabriel-Miro},
-	journal={IEEE Transactions on Wireless Communications},
-	volume={21},
-	number={5},
-	pages={2892-2908},
-	year={2021},
-	publisher={IEEE}
+@article{zhang2013information,
+  title={Information-theoretic lower bounds for distributed statistical estimation with communication constraints},
+  author={Zhang, Yuchen and Duchi, John and Jordan, Michael I and Wainwright, Martin J},
+  journal={Advances in Neural Information Processing Systems},
+  volume={26},
+  year={2013}
 }
-
-@article{nwelih2022method,
-	title={A Method for Real-time Adaptive Propagation Loss Modeling and Estimation Over LOS and NLOS Microcellular Radio Communication Links},
-	author={Nwelih, Emmanuel},
-	journal={Journal of Science and Technology Research},
-	pages={133-140},
-	volume={4},
-	number={3},
-	year={2022}
+@article{saputra2021dynamic,
+  title={Dynamic federated learning-based economic framework for internet-of-vehicles},
+  author={Saputra, Yuris Mulya and Hoang, Dinh Thai and Nguyen, Diep N and Tran, Le-Nam and Gong, Shimin and Dutkiewicz, Eryk},
+  journal={IEEE Transactions on Mobile Computing},
+  volume={22},
+  number={4},
+  pages={2100--2115},
+  year={2021},
+  publisher={IEEE}
+}
+@article{huang2025fedrts,
+  title={Fedrts: Federated robust pruning via combinatorial thompson sampling},
+  author={Huang, Hong and Yang, Hai and Chen, Yuan and Ye, Jiaxun and Wu, Dapeng},
+  journal={arXiv preprint arXiv:2501.19122},
+  year={2025}
+}
+@article{wang2024computing,
+  title={Computing-aware network (CAN): a systematic design of computing and network convergence},
+  author={Wang, Xiaoyun and Duan, Xiaodong and Yao, Kehan and Sun, Tao and Liu, Peng and Yang, Hongwei and Li, Zhiqiang},
+  journal={Frontiers of Information Technology \& Electronic Engineering},
+  volume={25},
+  number={5},
+  pages={633--644},
+  year={2024},
+  publisher={Springer}
+}
+@article{zhang2025federated,
+  title={Federated Learning with Layer Skipping: Efficient Training of Large Language Models for Healthcare NLP},
+  author={Zhang, Lihong and Li, Yue},
+  journal={arXiv preprint arXiv:2504.10536},
+  year={2025}
+}
+@inproceedings{park2024federated,
+  title={Federated learning with flexible architectures},
+  author={Park, Jong-Ik and Joe-Wong, Carlee},
+  booktitle={Joint European Conference on Machine Learning and Knowledge Discovery in Databases},
+  pages={143--161},
+  year={2024},
+  organization={Springer}
+}
+@article{hu2022incentive,
+  title={Incentive-aware autonomous client participation in federated learning},
+  author={Hu, Miao and Wu, Di and Zhou, Yipeng and Chen, Xu and Chen, Min},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  volume={33},
+  number={10},
+  pages={2612--2627},
+  year={2022},
+  publisher={IEEE}
+}
+@article{li2019fedmd,
+  title={Fedmd: Heterogenous federated learning via model distillation},
+  author={Li, Daliang and Wang, Junpu},
+  journal={arXiv preprint arXiv:1910.03581},
+  year={2019}
+}
+@inproceedings{tao2018esgd,
+  title={$\{$eSGD$\}$: Communication efficient distributed deep learning on the edge},
+  author={Tao, Zeyi and Li, Qun},
+  booktitle={USENIX Workshop on Hot Topics in Edge Computing (HotEdge 18)},
+  year={2018}
 }
