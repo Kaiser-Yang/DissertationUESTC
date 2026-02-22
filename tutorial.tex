@@ -327,6 +327,185 @@
 
 	综上所述，传统TCP拥塞控制在应对DML和FL的同步通信模式时存在明显局限：它无法预知应用的同步边界，也不能适应节点完成时间的动态变化，其窗口调节机制反而可能加剧通信波动。因此，有必要在TCP上层设计一种能够感知训练迭代特性的拥塞控制机制，以平滑突发流量、稳定聚合时间，从而提升分布式训练的整体效率。
 
+	\section{算法设计}
+
+	本节详细介绍本文提出的TCP上层拥塞控制算法的设计与实现。该算法运行于参数服务器端，以模型聚合的端到端耗时为反馈信号，动态调整服务器允许同时接收数据的工作节点数量（即并发接收数，记为$R$），从而在避免网络拥塞的同时最小化聚合时间。
+
+	\subsection{设计思路}
+
+	在同步分布式训练中，每一轮通信的聚合时间$T$由最后一个工作节点更新的到达时间决定。当并发接收数$R$设置过小时，部分工作节点需等待服务器处理，导致传输延迟增加；当$R$设置过大时，瞬时大量数据涌入可能引发网络拥塞，同样延长聚合时间。因此，存在一个最优的$R$值使得聚合时间最小化，且该最优值随网络状态和节点计算速度的动态变化而改变。
+
+	本文算法的核心思想是：基于历史聚合时间的统计特性，自适应地调整$R$，使系统工作点逼近最优值。具体而言，算法维护聚合时间的指数移动平均（EMA）$\hat{T}$和标准差$\sigma$，并以$\hat{T}$作为期望聚合时间。若当前轮耗时$T_{\text{cur}}$显著大于$\hat{T}$，表明网络可能过载，需适当减小$R$以降低服务器负载；若$T_{\text{cur}}$显著小于$\hat{T}$，表明网络尚有潜力，可适当增大$R$以提高并发度。为增强鲁棒性，算法引入异常值过滤和动态阈值机制，避免瞬时波动导致误调节。
+
+	\subsection{核心变量定义}
+
+	为便于描述，首先定义算法中使用的关键变量，如表\ref{tab:variables}所示。
+
+	\begin{table}[htbp]
+		\centering
+		\caption{算法核心变量}
+		\label{tab:variables}
+		\begin{tabular}{|c|l|}
+		\hline
+		\textbf{符号} & \textbf{描述} \\
+		\hline
+		$c$ & 当前轮已收到的worker更新数量，初始为0。 \\
+		$t_{\text{start}}$ & 本轮聚合开始时间戳。 \\
+		$t_{\text{end}}$ & 本轮聚合结束时间戳。 \\
+		$T_{\text{cur}}$ & 本轮聚合耗时（毫秒）。 \\
+		$R$ & 当前允许的最大并发接收数。 \\
+		$\hat{T}$ & 聚合时间的指数移动平均值。 \\
+		$\sigma$ & 聚合时间的标准差估计。 \\
+		$T_{\text{init}}$ & 首次聚合耗时，用于动态阈值归一化。 \\
+		$h$ & 已参与统计的聚合轮次数。 \\
+		$H_{\min}$ & 进入自适应调整前所需的最小历史轮次（预热期）。 \\
+		$\delta$ & 基础灵敏度参数。 \\
+		$\alpha$ & EMA平滑因子。 \\
+		$W_s$ & 标准差计算的滑动窗口大小。 \\
+		$R_{\min}$ & 并发接收数下限。 \\
+		$R_{\max}$ & 并发接收数上限。 \\
+		\hline
+		\end{tabular}
+	\end{table}
+
+	\subsection{算法流程}
+
+	算法\ref{alg:congestion_control}描述了每轮聚合完成时触发的拥塞控制流程。参数服务器每收到一个工作节点的更新，计数器$c$自增1，当收齐全部$W$个更新后，执行该算法。
+
+	\begin{algorithm}[!htbp]
+	\caption{上层拥塞控制算法（在模型聚合完成时触发）}
+	\label{alg:congestion_control}
+	\Input{
+		1) 当前已收到的更新数 $c$；\\
+		2) 总worker数 $W$；\\
+		3) 当前并发接收数 $R$；\\
+		4) 历史统计量 $\hat{T}, \sigma, h, T_{\text{init}}$。
+	}
+	\Output{更新后的 $R$。}
+	\BlankLine
+	\If{$c == 0$}{
+		$t_{\text{start}} \leftarrow \text{当前时间}$
+	}
+	$c \leftarrow c + 1$ \\
+	\If{$c \neq W$}{
+		\Return \tcp*[f]{未收齐}
+	}
+	$c \leftarrow 0$ \\
+	$t_{\text{end}} \leftarrow \text{当前时间}$ \\
+	$T_{\text{cur}} \leftarrow t_{\text{end}} - t_{\text{start}}$ (毫秒) \\
+	调用 $\text{UpdateStats}(T_{\text{cur}})$ 更新统计量 \\
+	\If{$h < H_{\min}$}{
+		\Return \tcp*[f]{预热期}
+	}
+	$\text{err} \leftarrow T_{\text{cur}} - \hat{T}$ \\
+	\If{$\sigma > 0$ \textbf{and} $|\text{err}| > 3\sigma$}{
+		\Return \tcp*[f]{异常值忽略}
+	}
+	$\Delta \leftarrow \delta \times (\hat{T} / T_{\text{init}})$ \\
+	\If{$|\text{err}| <= \Delta \times \hat{T}$}{
+		\Return
+	}
+	\If{$\text{err} > 0$}{
+		$R \leftarrow R - 1$  \tcp*[f]{变慢，减小并发}
+	}
+	\Else{
+		$R \leftarrow R + 1$  \tcp*[f]{变快，增大并发}
+	}
+	$R \leftarrow \max(R_{\min}, \min(R, R_{\max}))$
+	\end{algorithm}
+
+	算法首先在首次收到更新时记录开始时间，然后累计计数。当收齐所有更新后，记录结束时间，计算耗时$T_{\text{cur}}$，并调用统计更新函数。在预热期（$h < H_{\min}$）内，仅记录耗时，不进行拥塞控制调整。预热期过后，算法判断当前耗时是否为异常值（$|T_{\text{cur}} - \hat{T}| > 3\sigma$），若是则忽略。否则计算动态阈值，检测是否发生显著变化，并据此对$R$进行加减1的线性调整。最后将$R$约束在预设范围内。
+
+	\subsection{统计信息维护}
+
+	统计信息由函数$\text{UpdateStats}$维护，其伪代码如算法\ref{alg:update_stats}所示。
+
+	\begin{algorithm}[!htbp]
+	\caption{统计信息更新算法}
+	\label{alg:update_stats}
+	\Input{当前轮耗时 $T_{\text{cur}}$}
+	\Output{更新后的 $\hat{T}, \sigma, T_{\text{init}}, h$}
+	\BlankLine
+	将 $T_{\text{cur}}$ 加入滑动窗口 $\mathcal{W}$ \\
+	\If{$|\mathcal{W}| > W_s$}{
+		移除最早元素
+	}
+	\If{$h == 0$}{
+		$\hat{T} \leftarrow T_{\text{cur}}$
+	}
+	\Else{
+		$\hat{T} \leftarrow \alpha T_{\text{cur}} + (1-\alpha) \hat{T}$  \tcp*[f]{EMA更新}
+	}
+	\If{$h < H_{\min}$}{
+		$T_{\text{init}} \leftarrow (T_{\text{init}} \cdot h + T_{\text{cur}}) / (h + 1)$  \tcp*[f]{初始均值}
+	}
+	$h \leftarrow h + 1$ \\
+	\If{$h \ge 2$}{
+		$\mu \leftarrow \frac{1}{|\mathcal{W}|}\sum_{t \in \mathcal{W}} t$ \\
+		$\sigma^2 \leftarrow \frac{1}{|\mathcal{W}|}\sum_{t \in \mathcal{W}} (t - \mu)^2$ \\
+		$\sigma \leftarrow \sqrt{\sigma^2}$
+	}
+	\end{algorithm}
+
+	算法采用指数移动平均（EMA）估计期望聚合时间：
+	\[
+	\hat{T} = \alpha T_{\text{cur}} + (1-\alpha)\hat{T},
+	\]
+	其中$\alpha$为平滑因子。标准差$\sigma$基于固定大小的滑动窗口计算。$T_{\text{init}}$在预热期内更新为前若干轮耗时的平均值，用于动态阈值归一化。
+
+	\subsection{异常值处理}
+
+	网络瞬时突发可能导致单轮聚合时间远偏离正常范围。若直接使用此类异常值调整$R$，可能引发错误的拥塞控制决策。为此，算法引入3-sigma原则：若
+	\[
+	|T_{\text{cur}} - \hat{T}| > 3\sigma,
+	\]
+	则将该轮视为异常值，仅记录耗时但不调整$R$。该机制保证了算法对短期扰动的鲁棒性。
+
+	\subsection{动态阈值设计}
+
+	传统固定阈值难以适应不同阶段的时间尺度。本文设计了一种动态阈值，其计算公式为：
+	\[
+	\text{threshold} = \delta \cdot \frac{\hat{T}}{T_{\text{init}}} \cdot \hat{T},
+	\]
+	其中$\delta$为基础灵敏度。该阈值与当前期望时间$\hat{T}$成正比，且比例系数随$\hat{T}/T_{\text{init}}$变化：当期望时间增大时，阈值等比例放大，避免在慢速网络中过度调节；反之亦然。
+
+	因此，显著变化的判定条件等价于：
+	\[
+	|T_{\text{cur}} - \hat{T}| > \delta \cdot \frac{\hat{T}^2}{T_{\text{init}}}.
+	\]
+
+	\subsection{并发接收数调整机制}
+
+	当检测到显著变化时，算法对$R$进行加性增减：
+	\[
+	R \leftarrow R + \begin{cases}
+	-1, & T_{\text{cur}} > \hat{T} \ (\text{聚合变慢}) \\
+	+1, & T_{\text{cur}} < \hat{T} \ (\text{聚合变快})
+	\end{cases}
+	\]
+	这种线性调整方式（AIAD）可避免$R$剧烈振荡，保持系统稳定。调整后的$R$限制在$[R_{\min}, R_{\max}]$内以预留缓冲。
+
+	\subsection{参数讨论}
+
+	该方法对超参数的变化并不是很敏感，我们在实验中统一使用以下数值：
+
+	\begin{itemize}
+		\item \textbf{基础灵敏度$\delta$}：TODO:。
+		\item \textbf{平滑因子$\alpha$}：控制EMA衰减速度，本文取0.2。
+		\item \textbf{滑动窗口大小$W_s$}：TODO:，可根据训练总轮数调整。
+		\item \textbf{最小历史轮次$H_{\min}$}：TODO:，可根据训练总轮数调整。
+		\item \textbf{并发数上下界}：TODO:$R_{\min}=$，$R_{\max}=$，实际可结合服务器能力调整。
+	\end{itemize}
+
+	\subsection{算法特性总结}
+
+	本文算法具有以下特性：
+	\begin{enumerate}
+		\item \textbf{自适应性}：无需预设网络参数，自动适应环境变化。
+		\item \textbf{轻量级}：计算开销极小。
+		\item \textbf{稳定性}：通过EMA、异常过滤和动态阈值，避免误调节。
+		\item \textbf{可扩展性}：并发数$R$与工作节点个数解耦，易于扩展。
+	\end{enumerate}
 	\chapter{前言}
 	\section{当前版本编译时间}
 	\noindent%
