@@ -352,7 +352,7 @@
 		$c$ & 当前轮已收到的worker更新数量，初始为0。 \\
 		$t_{\text{start}}$ & 本轮聚合开始时间戳。 \\
 		$t_{\text{end}}$ & 本轮聚合结束时间戳。 \\
-		$T_{\text{cur}}$ & 本轮聚合耗时（毫秒）。 \\
+		$T_{\text{cur}}$ & 本轮聚合耗时（ms）。 \\
 		$R$ & 当前允许的最大并发接收数。 \\
 		$\hat{T}$ & 聚合时间的指数移动平均值。 \\
 		$\sigma$ & 聚合时间的标准差估计。 \\
@@ -392,7 +392,7 @@
 	}
 	$c \leftarrow 0$ \\
 	$t_{\text{end}} \leftarrow \text{当前时间}$ \\
-	$T_{\text{cur}} \leftarrow t_{\text{end}} - t_{\text{start}}$ (毫秒) \\
+	$T_{\text{cur}} \leftarrow t_{\text{end}} - t_{\text{start}}$ (ms) \\
 	调用 $\text{UpdateStats}(T_{\text{cur}})$ 更新统计量 \\
 	\If{$h < H_{\min}$}{
 		\Return \tcp*[f]{预热期}
@@ -506,6 +506,105 @@
 		\item \textbf{稳定性}：通过EMA、异常过滤和动态阈值，避免误调节。
 		\item \textbf{可扩展性}：并发数$R$与工作节点个数解耦，易于扩展。
 	\end{enumerate}
+
+	\section{实验评估}
+
+	为验证本文提出的TCP上层拥塞控制算法的有效性，我们在分布式训练环境中设计了四组对比实验。本节首先介绍实验设置与评估指标，然后详细分析实验结果，从聚合时间、稳定性、收敛速度等方面评估算法性能。
+
+	\subsection{实验设置}
+
+	实验采用典型的参数服务器架构，包含1个参数服务器和50个工作节点。所有节点运行在同一网络环境中，操作系统为Ubuntu 20.04。模型大小为240MB，模拟常见模型的通信负载。每轮训练中，工作节点将模型更新发送至服务器，服务器聚合后广播全局模型。实验共进行100轮迭代。
+
+	四组实验配置如下：
+
+	\begin{itemize}
+		\item \textbf{实验A}：使用原始TCP传输，工作节点收到全局模型后立即开始上传更新。该设置模拟理想计算速度，旨在引发最大程度的网络拥塞。
+		\item \textbf{实验B}：工作节点在收到全局模型后，随机等待0～10s再开始上传，模拟实际训练中计算时间的不确定性，保证不同实验每轮等待时间相同。该设置使发送流量分散，减轻拥塞。
+		\item \textbf{实验C}：在实验A的基础上，服务器端启用本章提出的上层拥塞控制算法，动态调整并发接收数$R$。
+		\item \textbf{实验D}：在实验B的基础上启用本章算法，检验算法在计算时间随机波动场景下的适应性。
+	\end{itemize}
+
+	每轮实验中，记录每个工作节点开始发送的时间戳和服务器完成接收的时间戳。定义第$i$轮聚合时间为：
+	\[
+	T_i = \max_{j \in [1,W]} t_{\text{finish}}^{(j)} - \min_{j \in [1,W]} t_{\text{start}}^{(j)},
+	\]
+	即所有工作节点中最晚完成时间与最早开始时间之差。该指标直接反映同步通信的耗时。
+
+	定义第$i$轮（$i = 1, 2, \dots$）中，工作节点$j$开始发送模型更新的时刻为$s_{i,j}$，完成发送的时刻为$f_{i,j}$。则整个实验的总耗时定义为所有轮次中最晚完成时间与最早开始时间之差：
+	\[
+	T_{\text{total}} = \max_{i,j} f_{i,j} - \min_{i,j} s_{i,j}.
+	\]
+	该指标直接对应训练过程从第一个节点开始发送到最后一个节点完成接收的实际经过时间，即训练的最终耗时。在对比实验中，$T_{\text{total}}$越小，表示通信加速效果越显著，整体训练效率越高。
+
+	\section{实验结果与分析}
+
+	\subsection{聚合时间对比}
+
+	图\ref{fig:congestion}展示了四组实验在100轮中的聚合时间变化。表\ref{tab:stats}汇总了各实验的平均聚合时间、标准差、最小值、最大值和总耗时。
+
+	\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.98\linewidth]{congestion}
+	\caption{四组实验聚合时间对比}
+	\label{fig:congestion}
+	\end{figure}
+
+	\begin{table}[htbp]
+	\centering
+	\caption{聚合时间统计（单位：s）}
+	\label{tab:stats}
+	\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+	\textbf{实验} & \textbf{平均值} & \textbf{标准差} & \textbf{最小值} & \textbf{最大值} & \textbf{总耗时} \\
+	\hline
+	A & 140.107 & 32.925 & 86.190 & 240.899 & 14098.513 \\
+	B & 134.276 & 32.258 & 83.537 & 214.232 & 14085.684 \\
+	C & 109.938 & 22.744 & 52.597 & 174.538 & 11012.577 \\
+	D & 110.026 & 21.707 & 63.755 & 172.074 & 11545.293 \\
+	\hline
+	\end{tabular}
+	\end{table}
+
+	从图\ref{fig:congestion}和表\ref{tab:stats}可以得出以下观察：
+
+	\begin{itemize}
+		\item \textbf{突发拥塞的影响}：实验A表现出剧烈的聚合时间波动，最大值达240.899s，标准差高达32.925。这是由于50个节点同时发送240MB数据，引发TCP拥塞控制频繁触发，窗口震荡导致部分节点传输严重延迟。
+		\item \textbf{随机延迟的缓解作用}：实验B通过引入随机等待，分散了发送流量，平均聚合时间降至134.276，峰值也显著减小。这说明在原始方法中，延迟触发流量对通信效率有积极影响。
+		\item \textbf{本文算法的有效性}：实验C将平均聚合时间压缩至109.938s，降低为实验A的78.47\%，且标准差仅为22.744，稳定性大幅提升。算法通过动态调整并发接收数$R$，避免了瞬时过载，同时充分利用带宽。
+		\item \textbf{适应性验证}：实验D的平均聚合时间为110.026s，较实验B（134.276s）下降约18.06\%，且标准差仅为21.707，波动最小。实验D的总耗时（11545.293s）略高于实验C（11012.577s），这是由于实验D中引入了0～10s的随机等待延迟，这些等待时间累积导致总耗时的增加。但相较于实验B（14085.684s），实验D仍降低了约18.01\%，证明了算法在节点完成时间存在波动时，仍能有效缓解拥塞，显著提升通信效率。
+	\end{itemize}
+
+	\subsection{累积分布分析}
+	图\ref{fig:congestion_cdf}展示了四组实验聚合时间的累积分布函数（CDF）。从图中可见，实验C和D的曲线整体左移，且更为陡峭，表明其聚合时间稳定在较低区间。例如，实验C中90\%的轮次聚合时间低于150s，而实验A中仅不到70\%达到该水平。
+
+	\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.98\linewidth]{congestion_cdf}
+	\caption{四组实验耗时累积分布图}
+	\label{fig:congestion_cdf}
+	\end{figure}
+
+	\subsection{算法开销分析}
+
+	本文算法仅在每轮聚合完成后执行轻量级计算，包括EMA更新、方差计算和阈值判断，耗时不足0.1ms，可忽略不计。内存占用仅需维护滑动窗口和几个标量，对服务器资源无额外负担。
+
+	\subsection{收敛速度影响}
+
+	虽然本实验未包含模型准确度，但聚合时间的缩短直接加速了每轮迭代，从而缩短整体训练时间。以100轮为例，实验C总聚合时间约为11012.577s，实验A则需14098.513s，仅用原耗时的78.11\%。在实际训练中，若计算时间占比较大，收益可能略有下降，但通信加速仍能带来明显收益。
+
+	\section{本章小结}
+
+	本章针对分布式机器学习与联邦学习中的通信拥塞问题，提出了一种位于TCP上层的轻量级拥塞控制算法。该算法以模型聚合的端到端耗时为反馈信号，通过指数移动平均和动态阈值检测网络状态变化，自适应地调整服务器的并发接收数$R$，从而在避免拥塞的同时最小化聚合时间。算法设计考虑了异常值过滤和预热期，保证了调节的稳定性。
+
+	为验证算法有效性，设计了四组对比实验，涵盖有无计算延迟两种场景。实验结果表明：
+
+	\begin{itemize}
+	\item 在无计算延迟的极端突发流量下（实验A vs. 实验C），本文算法将平均聚合时间从140.107s降至109.938s（降低21.5\%），标准差从32.925降至22.744（降低30.9\%），总耗时减少21.9\%，显著缓解了TCP拥塞控制引发的性能抖动。
+	\item 在有计算延迟的实际场景中（实验B vs. 实验D），算法仍能将平均聚合时间降低18.1\%，总耗时降低18.0\%，且波动最小，展现了良好的适应性。
+	\item 算法本身计算开销极小（每轮不足0.1ms），内存占用低，具备实用性和可扩展性。
+	\end{itemize}
+
+	综上所述，本章提出的TCP上层拥塞控制算法能够有效平滑突发流量、稳定聚合时间，为同步分布式训练提供了一种高效、自适应的通信优化方案。
 	\chapter{前言}
 	\section{当前版本编译时间}
 	\noindent%
@@ -2024,7 +2123,7 @@
 	    \item \textbf{作者1}, 作者2*, 作者3, 作者4. Domain decomposition method based on integral equation for solution of scattering from very thin, conducting cavity. \emph{IEEE Transactions on Antennas and Propagation}, 2014, 62(10): 5344--5348. (\textbf{CCF评级}, \underline{中科院分区}, IF: 98.8)
 	    
 		\setcounter{enumi}{98}
-	    
+		
 		\item \textbf{作者1}, 作者2*, 作者3, 作者4. Domain decomposition method based on integral equation for solution of scattering from very thin, conducting cavity. \emph{IEEE Transactions on Antennas and Propagation}, 2014, 62(10): 5344--5348. (\textbf{CCF评级}, \underline{中科院分区}, IF: 98.8)
 	\end{enumerate}
 	
@@ -2066,7 +2165,7 @@
 			\toprule
 			\multirow{2}{*}{Column0} &  \multicolumn{2}{c}{Column1\tnote{1}} & \multicolumn{2}{c}{Column2\tnote{2}} \\
 			\cmidrule(lr){2-3}\cmidrule(l){4-5}
-			~     & subcolumn1 & subcolumn2 & subcolumn1 & subcolumn2 \\
+			~	 & subcolumn1 & subcolumn2 & subcolumn1 & subcolumn2 \\
 			\midrule
 			Row1  & element11 & element12 &element13 & element14 \\
 			Row2  & element21 & element22 &element23 & element24 \\
@@ -2319,7 +2418,7 @@
 			\toprule
 			\multirow{2}{*}{Column0} &  \multicolumn{2}{c}{Column1\tnote{1}} & \multicolumn{2}{c}{Column2\tnote{2}} \\
 			\cmidrule(lr){2-3}\cmidrule(l){4-5}
-			~     & subcolumn1 & subcolumn2 & subcolumn1 & subcolumn2 \\
+			~	 & subcolumn1 & subcolumn2 & subcolumn1 & subcolumn2 \\
 			\midrule
 			Row1  & element11 & element12 &element13 & element14 \\
 			Row2  & element21 & element22 &element23 & element24 \\
