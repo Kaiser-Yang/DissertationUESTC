@@ -794,6 +794,58 @@
 	\subsection{小结}
 
 	综上所述，扩展拓扑下的调度问题涉及聚合目标选择、分发优先次序、负载均衡和调度粒度等多个相互关联的维度。这些问题的有效解决，是实现拓扑扩展潜力、充分发挥节点间带宽优势的关键。下一节将详细阐述本文提出的动态调度算法，该算法以分布式方式运行，能够在实时感知节点状态的基础上，做出高效且均衡的调度决策。
+
+	\section{动态调度算法}
+
+	上一节分析了扩展拓扑下引入的调度问题，包括聚合目标选择、分发优先次序、负载均衡和调度粒度等。为解决这些问题，本节设计并实现了一套完整的动态调度算法。算法运行于参数服务器上的调度器（Scheduler）中，通过一系列控制消息与工作节点交互，实时感知节点状态并做出调度决策。调度算法分为两个阶段：模型聚合阶段的接收者分配和模型分发阶段的发送目标选择，分别采用不同的策略以适应各阶段的特点。
+
+	\subsection{整体架构}
+
+	为实现扩展拓扑下的动态调度，本文引入了独立的调度器（Scheduler）组件。调度器通常运行于参数服务器节点上，但其职责与模型数据的传输完全分离：调度器仅负责处理控制消息，维护全局调度状态，并做出接收者分配决策，而从不参与模型或梯度数据的实际传输。这种职责分离的设计使得调度器的计算开销与数据平面隔离，避免了因调度决策影响数据传输性能。
+
+	在本文的架构中，所有节点（包括工作节点和参数服务器）在进行模型数据发送前，必须首先通过控制消息向调度器查询接收者。具体而言，节点完成本地计算或收到新模型后，会向调度器发送请求（如\texttt{ASK\_LOCAL\_AGGREGATION}或\texttt{ASK\_MODEL\_RECEIVER}），调度器根据当前全局状态和调度算法确定接收者，并通过回复消息告知请求节点。随后，节点与接收者之间直接建立数据连接进行模型传输，传输完成后可能向调度器报告状态（如\texttt{FINISH\_RECEIVING\_LOCAL\_AGGREGATION}）。整个过程中，调度器仅作为决策中心，不成为数据路径的瓶颈。
+
+	本文精心设计了一套完整的控制消息协议，如表\ref{tab:messages}所示。该协议涵盖了模型聚合与模型分发两个阶段的所有必要交互，包括请求、询问、确认、通知等原语。这些消息的交互时序决定了调度逻辑的正确执行，图\ref{fig:sequence}以时序图形式展示了典型场景下的消息流。图\ref{fig:architecture}展示了整体架构。
+
+	\begin{table}[htbp]
+		\centering
+		\caption{调度算法控制消息}
+		\label{tab:messages}
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{消息类型} & \textbf{描述} \\
+			\hline
+			\texttt{ASK\_LOCAL\_AGGREGATION} & 工作节点完成本地计算后，向调度器请求聚合目标。 \\
+			\texttt{ASK\_AS\_RECEIVER} & 调度器询问候选接收节点是否愿意接受数据。 \\
+			\texttt{ASK\_AS\_RECEIVER\_REPLY} & 接收节点回复是否接受。 \\
+			\texttt{ASK\_LOCAL\_AGGREGATION\_REPLY} & 调度器将最终确定的接收者告知请求节点。 \\
+			\texttt{LOCAL\_AGGREGATION} & 节点向接收者发送本地数据。 \\
+			\texttt{FINISH\_RECEIVING\_LOCAL\_AGGREGATION} & 接收节点完成数据接收后通知调度器。 \\
+			\texttt{NOTIFY\_WORKER\_ONE\_ITERATION\_FINISH} & 服务器收齐所有数据后，通知工作节点更新元数据。 \\
+			\texttt{ASK\_MODEL\_RECEIVER} & 节点收到新模型后，向调度器请求下一分发目标。 \\
+			\texttt{ASK\_MODEL\_RECEIVER\_REPLY} & 调度器返回分发目标。 \\
+			\texttt{MODEL\_DISTRIBUTION} & 节点向目标发送模型数据。 \\
+			\texttt{MODEL\_DISTRIBUTION\_REPLY} & 目标确认接收。 \\
+			\hline
+		\end{tabular}
+	\end{table}
+
+	\begin{figure}[htbp]
+		\centering
+		% TODO: 这里可以插入一张图片来展示一下整体的架构
+		\caption{整体架构}
+		\label{fig:architecture}
+	\end{figure}
+
+	\begin{figure}[htbp]
+		\centering
+		% TODO: 插入时序图，展示ASK_LOCAL_AGGREGATION、ASK_AS_RECEIVER等消息的交互顺序
+		\caption{聚合阶段控制消息时序示例}
+		\label{fig:sequence}
+	\end{figure}
+
+	该协议设计使得本文提出的架构具有高度的灵活性。在调度器内部，具体的接收者分配算法可以独立替换或调整，例如采用基于KM算法的最大权匹配（用于聚合阶段）或贪心探测策略（用于分发阶段），而无需修改节点间的消息交互流程。同时，通过配置参数（如调度数量、贪心概率、带宽有效期等），可以在不改变协议的前提下衍生出适应不同网络环境的变种体系。这种控制平面与数据平面分离、协议与算法解耦的设计，为后续优化和扩展奠定了坚实基础。
+
 	\chapter{前言}
 	\section{当前版本编译时间}
 	\noindent%
