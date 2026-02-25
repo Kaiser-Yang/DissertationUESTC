@@ -846,6 +846,180 @@
 
 	该协议设计使得本文提出的架构具有高度的灵活性。在调度器内部，具体的接收者分配算法可以独立替换或调整，例如采用基于KM算法的最大权匹配（用于聚合阶段）或贪心探测策略（用于分发阶段），而无需修改节点间的消息交互流程。同时，通过配置参数（如调度数量、贪心概率、带宽有效期等），可以在不改变协议的前提下衍生出适应不同网络环境的变种体系。这种控制平面与数据平面分离、协议与算法解耦的设计，为后续优化和扩展奠定了坚实基础。
 
+	\subsection{模型聚合阶段的调度算法}
+
+	模型聚合阶段的目标是将所有工作节点的本地更新汇聚到服务器。每个节点完成计算后立即向调度器发送\texttt{ASK\_LOCAL\_AGGREGATION}请求。调度器采用基于二分图最大权匹配（KM算法）的调度策略，同时结合TCP上层拥塞控制限制并发接收数。
+
+	\subsubsection{调度触发时机}
+
+	调度器并非每收到一个请求就立即处理，而是等待足够的请求数量以达到调度效率与实时性的平衡。调度数量由配置参数$S$决定。当已请求调度的节点数达到$S$，或者全部节点已发送请求（最后一轮）时，调度器触发一次批量调度。这种批处理方式避免了频繁的调度开销。
+
+	\subsubsection{调度算法}
+
+	在模型聚合阶段，调度器的核心任务是为每个请求节点（已完成本地计算的节点）分配一个合适的接收节点，使得数据能够逐级汇聚至服务器，同时充分利用节点间的带宽并避免过载。调度算法基于二分图最大权匹配，并融合了优先选择计算中节点、拥塞控制和后备机制。
+
+	\paragraph{节点集合定义}
+	在一次调度中，调度器维护两个关键集合：
+	\begin{itemize}
+		\item \textbf{左节点集} $\mathcal{L}$：当前尚未被分配接收者、且当前并发接收数未达到上限 $R_{\max}$ 的节点。这些节点可以作为潜在的接收者。
+		\item \textbf{右节点集} $\mathcal{R}$：已经向调度器请求分配接收者、但尚未获得接收目标的节点。这些节点需要被分配一个接收者。
+	\end{itemize}
+	初始时，$\mathcal{L}$ 包含所有未完成本轮聚合且可接收数据的节点，$\mathcal{R}$ 包含本次调度的请求节点。两个集合的规模关系决定了后续的匹配策略。
+
+	\paragraph{优先选择计算中节点}
+	一个关键的设计思想是：\textbf{尚未完成本地计算的节点（即尚未发送调度请求的节点）更有可能处于带宽空闲状态}，因为它们尚未开始数据发送，网络资源可用。因此，在构造左节点集 $\mathcal{L}$ 时，我们优先包含这些计算中的节点（它们自然属于未请求调度的节点）。当接收者数量不足时，我们才考虑将部分已请求的节点转化为接收者，但需评估转化带来的收益损失。这一策略旨在让计算中的节点优先承担接收任务，避免干扰已经进入发送流程的节点。
+
+	\paragraph{边权计算}
+	每一条从右节点 $r$ 到左节点 $l$ 的边表示“将 $r$ 的数据发送给 $l$”的可能性，其权重 $w(r,l)$ 反映了该选择的预期收益。权重计算综合考虑以下因素：
+	\begin{itemize}
+		\item \textbf{链路带宽}：若链路 $(r,l)$ 有历史带宽记录 $B[r][l]$，则直接使用该值；若链路从未使用过（带宽未知），则使用全局平均带宽 $\bar{B}$ 作为估计。全局平均带宽通过当前已知带宽的平均值动态计算。
+		\item \textbf{链路方向}：注意调度器需区分聚合阶段的数据流向：数据从右节点（请求者）发向左节点（接收者）。因此边权计算时需确保方向正确。
+		\item \textbf{可达性}：若节点之间没有配置通信链路（由用户定义或全连接），则权重设为负无穷，表示不可选。
+		% TODO: 这里可以加在展望里面 \item \textbf{节点负载}：左节点当前的并发接收数，越接近上限$R_{\max}$权重越低。
+	\end{itemize}
+	具体边权计算如算法\ref{alg:edge_weight}所示。
+
+	\begin{algorithm}[!htbp]
+	\caption{边权计算规则（聚合阶段）}
+	\label{alg:edge_weight}
+	\Input{左节点集 $\mathcal{L}$，右节点集 $\mathcal{R}$，带宽矩阵 $B$，有效期信息，全局平均带宽 $\bar{B}$}
+	\Output{权重矩阵 $w[l][r]$}
+	\BlankLine
+	\For{每个左节点 $l \in \mathcal{L}$}{
+		\For{每个右节点 $r \in \mathcal{R}$}{
+			\If{$\neg \text{reachable}(r, l)$}{
+				$w[l][r] \leftarrow -\infty$
+			}
+			\Else{
+				\If{带宽信息有效（未过期）}{
+					$w[l][r] \leftarrow B[r][l]$
+				}
+				\Else{
+					$w[l][r] \leftarrow \bar{B}$
+				}
+			}
+		}
+	}
+	\end{algorithm}
+
+	\paragraph{最大权匹配与节点转化}
+	调度器的核心是求解二分图的最大权匹配，使得分配的总收益最大。由于每个接收者（左节点）可以同时接收多个发送者的数据，因此这是一个典型的\textbf{带权二部图匹配问题}，我们使用 KM 算法（Kuhn-Munkres）求解最大权匹配，得到映射 $\text{match}[l] = r$，表示左节点 $l$ 将作为右节点 $r$ 的接收者。
+
+	当右节点数 $|\mathcal{R}|$ 大于左节点数 $|\mathcal{L}|$ 时，接收者数量不足，需要将部分右节点转化为左节点（即让这些节点暂不作为接收者，而是先等待被分配）。转化策略基于“节点移出后对整体收益的影响”评分，每次选择评分最高的节点移入左集合，直至 $|\mathcal{R}| \le |\mathcal{L}|$。评分计算如下：
+
+	对于候选右节点 $r$，其移出评分 $S(r)$ 定义为：
+	\[
+	S(r) = \sum_{r' \in \mathcal{R}, r' \neq r} B[r'][r] \cdot \mathbf{1}_{\text{reachable}(r',r)} - \sum_{l \in \mathcal{L}} B[r][l] \cdot \mathbf{1}_{\text{reachable}(r,l)},
+	\]
+	其中第一项表示将 $r$ 移出右集合后，其他右节点无法再向 $r$ 发送数据所损失的潜在收益（即 $r$ 作为接收者能为其他请求者提供的带宽）；第二项表示 $r$ 移入左集合后，作为接收者能够从其他请求者接收数据的潜在收益。评分越高，说明将 $r$ 转化为接收者带来的净收益越大。若链路带宽未知，则用全局平均带宽 $\bar{B}$ 替代。算法\ref{alg:node_conversion}描述了这一过程。
+
+	\begin{algorithm}[!htbp]
+	\caption{节点转化评分与选择}
+	\label{alg:node_conversion}
+	\Input{当前左集 $\mathcal{L}$，右集 $\mathcal{R}$，带宽矩阵 $B$，平均带宽 $\bar{B}$}
+	\Output{更新后的 $\mathcal{L}$ 和 $\mathcal{R}$}
+	\BlankLine
+	\While{$|\mathcal{R}| > |\mathcal{L}|$}{
+		\For{每个 $r \in \mathcal{R}$}{
+			$S(r) \leftarrow 0$ \\
+			\For{每个 $r' \in \mathcal{R}$，$r' \neq r$}{
+				\If{$\text{reachable}(r',r)$}{
+					$S(r) \leftarrow S(r) + (B[r'][r] \text{ 或 } \bar{B} \text{ 若未知})$
+				}
+			}
+			\For{每个 $l \in \mathcal{L}$}{
+				\If{$\text{reachable}(r,l)$}{
+					$S(r) \leftarrow S(r) - (B[r][l] \text{ 或 } \bar{B} \text{ 若未知})$
+				}
+			}
+		}
+		选择评分最大的 $r^*$ \\
+		将 $r^*$ 从 $\mathcal{R}$ 移至 $\mathcal{L}$，并标记其接收者暂未分配（$\text{recv}[r^*] \leftarrow \text{UNMATCHED}$）
+	}
+	\end{algorithm}
+
+	\paragraph{接收确认与拒绝处理}
+	完成匹配后，调度器需向每个右节点 $r$ 对应的接收者 $\text{recv}[r]$ 发送 \texttt{ASK\_AS\_RECEIVER} 询问，确认其是否愿意接收数据。接收节点的响应规则如下：
+	\begin{itemize}
+		\item 若节点\textbf{尚未从调度器获得自己的接收者}（即它自己还未被分配发送目标），则它同意作为接收者。
+		\item 若节点\textbf{已经获得了自己的接收者}（即它自己即将发送数据），则它拒绝作为接收者，以避免同时承担收发任务导致负载过重。
+	\end{itemize}
+	这种设计保证了节点在单轮中最多扮演一种角色（发送者或接收者），简化了状态管理，避免了复杂的并发冲突。
+
+	当接收节点拒绝时，调度器优先尝试将接收者改为参数服务器（ID为0），因为服务器通常具有较高的处理能力，且作为最终汇聚点必须接收所有数据。若服务器当前并发接收数已达上限 $R_{\max}$，则无法使用；此时，调度器将请求节点 $r$ 重新加入未完成集合 $\mathcal{U}$，等待下一轮调度。若使用服务器成功，则更新服务器的并发计数。
+
+	\paragraph{工作节点与参数服务器的行为}
+	为完整描述系统，还需明确各节点的职责：
+	\begin{itemize}
+		\item \textbf{工作节点}：在每轮迭代中，首先进行本地训练；训练完成后，向调度器发送 \texttt{ASK\_LOCAL\_AGGREGATION} 请求获取接收者；在等待期间，它可能作为其他节点的接收者（若尚未获得自己的接收者）；一旦获得接收者，它会等待所有正在向自己发送数据的节点完成（即确保自己已收齐所有应接收的数据），然后将自身已聚合的数据发送给指定的接收者；发送完成后，其本轮任务结束。
+		\item \textbf{参数服务器}：在聚合阶段，服务器也是潜在的接收者。它始终愿意接收数据，但受并发接收数 $R_{\max}$ 限制。当服务器收到来自工作节点的数据后，它执行局部聚合；当所有工作节点的数据最终汇聚到服务器后，服务器完成全局聚合，并触发下一轮模型分发。
+	\end{itemize}
+
+	\paragraph{算法完整流程}
+	算法\ref{alg:aggregation_scheduling} 总结了上述所有步骤，包括集合构造、节点转化、边权计算、KM匹配以及询问确认过程；算法\ref{alg:worker_aggregation}展示了工作节点在聚合阶段的的行为；算法\ref{alg:server_aggregation}展示了参数服务器在聚合阶段的行为。
+
+	\begin{algorithm}[!htbp]
+	\caption{模型聚合阶段调度算法（调度器侧）}
+	\label{alg:aggregation_scheduling}
+	\Input{请求节点集 $\mathcal{R}_{\text{req}}$（本次调度请求），未完成节点集 $\mathcal{U}$，当前并发接收数 $C[\cdot]$，带宽矩阵 $B[\cdot][\cdot]$，接收上限 $R_{\max}$}
+	\Output{接收者映射 $\text{recv}[\cdot]$}
+	\BlankLine
+	构造左节点集 $\mathcal{L} = \{u \in \mathcal{U} \mid C[u] < R_{\max}\}$，右节点集 $\mathcal{R} = \mathcal{R}_{\text{req}}$ \\
+	\If{$|\mathcal{R}| > |\mathcal{L}|$}{
+		根据算法\ref{alg:node_conversion} 将部分右节点移入左集合，直至 $|\mathcal{R}| \le |\mathcal{L}|$ \\
+	}
+	根据算法\ref{alg:edge_weight} 计算边权矩阵 $w[l][r]$（$l \in \mathcal{L}, r \in \mathcal{R}$） \\
+	运行 KM 算法求解最大权匹配，得匹配 $M$，即 $\forall l \in \mathcal{L}$，若 $M[l] \neq \text{UNMATCHED}$，则 $\text{recv}[M[l]] = l$ \\
+	\For{每个 $r \in \mathcal{R}$}{
+		向 $\text{recv}[r]$ 发送 \texttt{ASK\_AS\_RECEIVER} 询问 \\
+		\If{收到拒绝}{
+			\If{服务器 ($\text{server}$) 未达 $R_{\max}$}{
+				$\text{recv}[r] \gets \text{server}$ \\
+				$C[\text{server}] \gets C[\text{server}] + 1$
+			}
+			\Else{
+				将 $r$ 重新加入 $\mathcal{U}$，待下轮调度 \\
+				$\text{recv}[r] \gets \text{UNKNOWN}$
+			}
+		}
+		\Else{
+			$C[\text{recv}[r]] \gets C[\text{recv}[r]] + 1$
+		}
+	}
+	\end{algorithm}
+
+	\begin{algorithm}[!htbp]
+	\caption{工作节点聚合阶段行为}
+	\label{alg:worker_aggregation}
+	\BlankLine
+	本地训练得到更新 $\Delta_i$ \\
+	向调度器发送 \texttt{ASK\_LOCAL\_AGGREGATION} 请求 \\
+	\While{未收到调度器的接收者分配}{
+		若收到 \texttt{ASK\_AS\_RECEIVER} 询问，则同意作为接收者，接收并聚合其他节点的数据 \\
+	}
+	获得接收者 $\text{recv}[i]$（来自调度器） \\
+	\While{仍有节点在向自己发送数据}{
+		等待并接收数据，更新局部聚合结果 $\Delta_i$ \\
+	}
+	将 $\Delta_i$ 发送给 $\text{recv}[i]$ \\
+	本轮任务结束
+	\end{algorithm}
+
+	\begin{algorithm}[!htbp]
+	\caption{参数服务器聚合阶段行为}
+	\label{alg:server_aggregation}
+	\BlankLine
+	初始化全局聚合结果 $\Delta_{\text{global}} \leftarrow 0$，已收节点集合 $\mathcal{D} \leftarrow \emptyset$ \\
+	\While{$\mathcal{D}$ 未包含所有工作节点}{
+		收到来自节点 $j$ 的数据 $\Delta_j$ \\
+		$\Delta_{\text{global}} \leftarrow \text{Aggregate}(\Delta_{\text{global}}, \Delta_j)$ \\
+		将 $j$ 加入 $\mathcal{D}$ \\
+	}
+	完成全局聚合，得到新模型 $M_{\text{new}}$ \\
+	触发模型分发阶段
+	\end{algorithm}
+
+	通过上述精心设计的调度算法，我们能够在扩展拓扑下高效地为每个请求节点分配接收者，优先利用空闲节点，动态适应网络带宽变化，并与TCP上层拥塞控制协同，避免过载。
 	\chapter{前言}
 	\section{当前版本编译时间}
 	\noindent%
