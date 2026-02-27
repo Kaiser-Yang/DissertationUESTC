@@ -334,25 +334,25 @@
 		\caption{算法核心变量}
 		\label{tab:variables}
 		\begin{tabular}{|c|l|}
-		\hline
-		\textbf{符号} & \textbf{描述} \\
-		\hline
-		$c$ & 当前轮已收到的worker更新数量，初始为0 \\
-		$t_{\text{start}}$ & 本轮聚合开始时间戳 \\
-		$t_{\text{end}}$ & 本轮聚合结束时间戳 \\
-		$T_{\text{cur}}$ & 本轮聚合耗时（ms） \\
-		$R$ & 当前允许的最大并发接收数 \\
-		$\hat{T}$ & 聚合时间的指数移动平均值 \\
-		$\sigma$ & 聚合时间的标准差估计 \\
-		$T_{\text{init}}$ & 首次聚合耗时，用于动态阈值归一化 \\
-		$h$ & 已参与统计的聚合轮次数 \\
-		$H_{\min}$ & 进入自适应调整前所需的最小历史轮次（预热期） \\
-		$\delta$ & 基础灵敏度参数 \\
-		$\alpha$ & EMA平滑因子 \\
-		$W_s$ & 标准差计算的滑动窗口大小 \\
-		$R_{\min}$ & 并发接收数下限 \\
-		$R_{\max}$ & 并发接收数上限 \\
-		\hline
+			\hline
+			\textbf{符号} & \textbf{描述} \\
+			\hline
+			$c$ & 当前轮已收到的worker更新数量，初始为0 \\
+			$t_{\text{start}}$ & 本轮聚合开始时间戳 \\
+			$t_{\text{end}}$ & 本轮聚合结束时间戳 \\
+			$T_{\text{cur}}$ & 本轮聚合耗时（ms） \\
+			$R$ & 当前允许的最大并发接收数 \\
+			$\hat{T}$ & 聚合时间的指数移动平均值 \\
+			$\sigma$ & 聚合时间的标准差估计 \\
+			$T_{\text{init}}$ & 首次聚合耗时，用于动态阈值归一化 \\
+			$h$ & 已参与统计的聚合轮次数 \\
+			$H_{\min}$ & 进入自适应调整前所需的最小历史轮次（预热期） \\
+			$\delta$ & 基础灵敏度参数 \\
+			$\alpha$ & EMA平滑因子 \\
+			$W_s$ & 标准差计算的滑动窗口大小 \\
+			$R_{\min}$ & 并发接收数下限 \\
+			$R_{\max}$ & 并发接收数上限 \\
+			\hline
 		\end{tabular}
 	\end{table}
 
@@ -361,45 +361,45 @@
 	算法\ref{alg:congestion_control}描述了每轮聚合完成时触发的拥塞控制流程。参数服务器每收到一个工作节点的更新，计数器$c$自增1，当收齐全部$W$个更新后，执行该算法。
 
 	\begin{algorithm}[!htbp]
-	\caption{上层拥塞控制算法（在模型聚合完成时触发）}
-	\label{alg:congestion_control}
-	\Input{
-		1) 当前已收到的更新数 $c$；\\
-		2) 总worker数 $W$；\\
-		3) 当前并发接收数 $R$；\\
-		4) 历史统计量 $\hat{T}, \sigma, h, T_{\text{init}}$。
-	}
-	\Output{更新后的 $R$。}
-	\BlankLine
-	\If{$c == 0$}{
-		$t_{\text{start}} \leftarrow \text{当前时间}$
-	}
-	$c \leftarrow c + 1$ \\
-	\If{$c \neq W$}{
-		\Return \tcp*[f]{未收齐}
-	}
-	$c \leftarrow 0$ \\
-	$t_{\text{end}} \leftarrow \text{当前时间}$ \\
-	$T_{\text{cur}} \leftarrow t_{\text{end}} - t_{\text{start}}$ (ms) \\
-	调用 $\text{UpdateStats}(T_{\text{cur}})$ 更新统计量 \\
-	\If{$h < H_{\min}$}{
-		\Return \tcp*[f]{预热期}
-	}
-	$\text{err} \leftarrow T_{\text{cur}} - \hat{T}$ \\
-	\If{$\sigma > 0$ \textbf{and} $|\text{err}| > 3\sigma$}{
-		\Return \tcp*[f]{异常值忽略}
-	}
-	$\Delta \leftarrow \delta \times (\hat{T} / T_{\text{init}})$ \\
-	\If{$|\text{err}| \leq \Delta \times \hat{T}$}{
-		\Return
-	}
-	\If{$\text{err} > 0$}{
-		$R \leftarrow R - 1$  \tcp*[f]{变慢，减小并发}
-	}
-	\Else{
-		$R \leftarrow R + 1$  \tcp*[f]{变快，增大并发}
-	}
-	$R \leftarrow \max(R_{\min}, \min(R, R_{\max}))$
+		\caption{上层拥塞控制算法（在模型聚合完成时触发）}
+		\label{alg:congestion_control}
+		\Input{
+			1) 当前已收到的更新数 $c$；\\
+			2) 总worker数 $W$；\\
+			3) 当前并发接收数 $R$；\\
+			4) 历史统计量 $\hat{T}, \sigma, h, T_{\text{init}}$。
+		}
+		\Output{更新后的 $R$。}
+		\BlankLine
+		\If{$c == 0$}{
+			$t_{\text{start}} \leftarrow \text{当前时间}$
+		}
+		$c \leftarrow c + 1$ \\
+		\If{$c \neq W$}{
+			\Return \tcp*[f]{未收齐}
+		}
+		$c \leftarrow 0$ \\
+		$t_{\text{end}} \leftarrow \text{当前时间}$ \\
+		$T_{\text{cur}} \leftarrow t_{\text{end}} - t_{\text{start}}$ (ms) \\
+		调用 $\text{UpdateStats}(T_{\text{cur}})$ 更新统计量 \\
+		\If{$h < H_{\min}$}{
+			\Return \tcp*[f]{预热期}
+		}
+		$\text{err} \leftarrow T_{\text{cur}} - \hat{T}$ \\
+		\If{$\sigma > 0$ \textbf{and} $|\text{err}| > 3\sigma$}{
+			\Return \tcp*[f]{异常值忽略}
+		}
+		$\Delta \leftarrow \delta \times (\hat{T} / T_{\text{init}})$ \\
+		\If{$|\text{err}| \leq \Delta \times \hat{T}$}{
+			\Return
+		}
+		\If{$\text{err} > 0$}{
+			$R \leftarrow R - 1$  \tcp*[f]{变慢，减小并发}
+		}
+		\Else{
+			$R \leftarrow R + 1$  \tcp*[f]{变快，增大并发}
+		}
+		$R \leftarrow \max(R_{\min}, \min(R, R_{\max}))$
 	\end{algorithm}
 
 	算法首先在首次收到更新时记录开始时间，然后累计计数。当收齐所有更新后，记录结束时间，计算耗时$T_{\text{cur}}$，并调用统计更新函数。在预热期（$h < H_{\min}$）内，仅记录耗时，不进行拥塞控制调整。预热期过后，算法判断当前耗时是否为异常值（$|T_{\text{cur}} - \hat{T}| > 3\sigma$），若是则忽略。否则计算动态阈值，检测是否发生显著变化，并据此对$R$进行加减1的线性调整。最后将$R$约束在预设范围内。
@@ -409,30 +409,30 @@
 	统计信息由函数 $\text{UpdateStats}$ 维护，其伪代码如算法 \ref{alg:update_stats} 所示。该函数基于固定大小的滑动窗口 $\mathcal{W}$ 计算标准差，并采用指数移动平均（EMA）更新期望聚合时间。
 
 	\begin{algorithm}[!htbp]
-	\caption{统计信息更新算法}
-	\label{alg:update_stats}
-	\Input{当前轮耗时 $T_{\text{cur}}$}
-	\Output{更新后的 $\hat{T}, \sigma, T_{\text{init}}, h$}
-	\BlankLine
-	将 $T_{\text{cur}}$ 加入滑动窗口 $\mathcal{W}$ \\
-	\If{$|\mathcal{W}| > W_s$}{
-		移除最早元素
-	}
-	\If{$h == 0$}{
-		$\hat{T} \leftarrow T_{\text{cur}}$
-	}
-	\Else{
-		$\hat{T} \leftarrow \alpha T_{\text{cur}} + (1-\alpha) \hat{T}$  \tcp*[f]{EMA更新}
-	}
-	\If{$h < H_{\min}$}{
-		$T_{\text{init}} \leftarrow \frac{T_{\text{init}} \cdot h + T_{\text{cur}}}{h + 1}$  \tcp*[f]{累积平均}
-	}
-	$h \leftarrow h + 1$ \\
-	\If{$h \ge 2$}{
-		$\mu \leftarrow \frac{1}{|\mathcal{W}|}\sum_{t \in \mathcal{W}} t$ \\
-		$\sigma^2 \leftarrow \frac{1}{|\mathcal{W}|}\sum_{t \in \mathcal{W}} (t - \mu)^2$ \\
-		$\sigma \leftarrow \sqrt{\sigma^2}$
-	}
+		\caption{统计信息更新算法}
+		\label{alg:update_stats}
+		\Input{当前轮耗时 $T_{\text{cur}}$}
+		\Output{更新后的 $\hat{T}, \sigma, T_{\text{init}}, h$}
+		\BlankLine
+		将 $T_{\text{cur}}$ 加入滑动窗口 $\mathcal{W}$ \\
+		\If{$|\mathcal{W}| > W_s$}{
+			移除最早元素
+		}
+		\If{$h == 0$}{
+			$\hat{T} \leftarrow T_{\text{cur}}$
+		}
+		\Else{
+			$\hat{T} \leftarrow \alpha T_{\text{cur}} + (1-\alpha) \hat{T}$  \tcp*[f]{EMA更新}
+		}
+		\If{$h < H_{\min}$}{
+			$T_{\text{init}} \leftarrow \frac{T_{\text{init}} \cdot h + T_{\text{cur}}}{h + 1}$  \tcp*[f]{累积平均}
+		}
+		$h \leftarrow h + 1$ \\
+		\If{$h \ge 2$}{
+			$\mu \leftarrow \frac{1}{|\mathcal{W}|}\sum_{t \in \mathcal{W}} t$ \\
+			$\sigma^2 \leftarrow \frac{1}{|\mathcal{W}|}\sum_{t \in \mathcal{W}} (t - \mu)^2$ \\
+			$\sigma \leftarrow \sqrt{\sigma^2}$
+		}
 	\end{algorithm}
 
 	其中，$\alpha$ 为平滑因子，$W_s$ 为滑动窗口大小。在预热期（$h < H_{\min}$）内，$T_{\text{init}}$ 通过累积平均更新，用于后续动态阈值的归一化。
@@ -541,15 +541,15 @@
 		\caption{聚合时间统计（单位：s）}
 		\label{tab:stats}
 		\begin{tabular}{|c|c|c|c|c|c|}
-		\hline
-		\textbf{实验} & \textbf{平均值} & \textbf{标准差} & \textbf{最小值} & \textbf{最大值} & \textbf{总耗时} \\
-		\hline
-		A & 140.107 & 32.925 & 86.190 & 240.899 & 14098.513 \\
-		B & 134.276 & 32.258 & 83.537 & 214.232 & 14085.684 \\
-		C & 109.938 & 22.744 & 52.597 & 174.538 & 11012.577 \\
-		D & 110.026 & 21.707 & 63.755 & 172.074 & 11545.293 \\
-	\hline
-	\end{tabular}
+			\hline
+			\textbf{实验} & \textbf{平均值} & \textbf{标准差} & \textbf{最小值} & \textbf{最大值} & \textbf{总耗时} \\
+			\hline
+			A & 140.107 & 32.925 & 86.190 & 240.899 & 14098.513 \\
+			B & 134.276 & 32.258 & 83.537 & 214.232 & 14085.684 \\
+			C & 109.938 & 22.744 & 52.597 & 174.538 & 11012.577 \\
+			D & 110.026 & 21.707 & 63.755 & 172.074 & 11545.293 \\
+			\hline
+		\end{tabular}
 	\end{table}
 
 	从图\ref{fig:congestion}和表\ref{tab:stats}可以得出以下观察：
@@ -669,10 +669,10 @@
 	在传统星型架构中，所有工作节点将本地更新直接发送给服务器，由服务器执行全局聚合。而在扩展拓扑下，允许节点先将更新发送给邻居节点，由接收节点进行局部聚合，再将聚合结果继续转发，最终汇聚到服务器。整个过程如图\ref{fig:aggregation_tree}所示，形成一个以服务器为根的反向树（或汇聚树）。
 
 	\begin{figure}[htbp]
-	\centering
-	% TODO:此处可插入局部聚合树示意图
-	\caption{局部聚合拓扑示例（节点间先聚合再发往服务器）}
-	\label{fig:aggregation_tree}
+		\centering
+		\includegraphics[width=0.98\linewidth]{aggregation_tree}
+		\caption{局部聚合拓扑示例（节点间先聚合再发往服务器）}
+		\label{fig:aggregation_tree}
 	\end{figure}
 
 	设工作节点$i$的本地更新为$\Delta_i$，全局聚合结果为$\Delta = \mathcal{F}(\Delta_1, \Delta_2, \dots, \Delta_W)$。在分布式机器学习中，常用的聚合操作是加权平均：
@@ -681,8 +681,8 @@
 	\]
 	其中$n_i$为节点$i$的本地数据量。该操作满足\textbf{结合律}与\textbf{交换律}：
 	\begin{itemize}
-	\item 结合律：$(\Delta_i \oplus \Delta_j) \oplus \Delta_k = \Delta_i \oplus (\Delta_j \oplus \Delta_k)$；
-	\item 交换律：$\Delta_i \oplus \Delta_j = \Delta_j \oplus \Delta_i$，
+		\item 结合律：$(\Delta_i \oplus \Delta_j) \oplus \Delta_k = \Delta_i \oplus (\Delta_j \oplus \Delta_k)$；
+		\item 交换律：$\Delta_i \oplus \Delta_j = \Delta_j \oplus \Delta_i$，
 	\end{itemize}
 	其中$\oplus$表示局部聚合操作（如加权平均的中间结果合并）。这意味着我们可以任意划分聚合顺序，而最终结果不变。
 
@@ -693,10 +693,10 @@
 	模型分发阶段的目标是让所有工作节点获得相同的全局模型。在星型架构中，服务器需要向每个节点单独发送完整模型，出向流量巨大。扩展拓扑下，我们采用树状广播策略：服务器先将模型发送给部分节点（称为第一层节点），这些节点收到后立即向下一层未接收的节点转发，依此类推，直至所有节点覆盖。图\ref{fig:broadcast_tree}展示了一个二叉树形式的分发拓扑。
 
 	\begin{figure}[htbp]
-	\centering
-	% TODO:此处可插入树状广播示意图
-	\caption{协作分发拓扑示例（节点收到模型后继续转发）}
-	\label{fig:broadcast_tree}
+		\centering
+		\includegraphics[width=0.98\linewidth]{broadcast_tree}
+		\caption{协作分发拓扑示例（节点收到模型后继续转发）}
+		\label{fig:broadcast_tree}
 	\end{figure}
 
 	协作分发的关键在于保证每个节点仅接收一次模型，避免重复传输浪费带宽。一种典型的方法是构建一棵覆盖所有节点的树，其中服务器为根，每个节点有确定的父节点（负责向其发送模型）和若干子节点（需向其转发）。树的构建可基于网络延迟、带宽或节点处理能力进行优化。此外，也可以采用动态调度策略：在发送过程中实时记录已接收节点的信息，收到模型后的节点主动向尚未覆盖的邻居节点转发，直至所有节点均被覆盖。无论采用静态树结构还是动态调度，最终所有节点都将获得完全相同的模型副本。
@@ -713,9 +713,9 @@
 
 	尽管拓扑扩展在原理上可行，实际实现中仍需解决以下挑战：
 	\begin{itemize}
-	\item 如何动态构建高效的局部聚合树与分发树，以适应节点计算速度的波动和网络状态的变化？
-	\item 如何避免节点间的通信拥塞，确保局部聚合和协作分发不会因节点过载而成为新的瓶颈？
-	\item 如何协调聚合与分发的顺序，避免死锁或资源冲突？
+		\item 如何动态构建高效的局部聚合树与分发树，以适应节点计算速度的波动和网络状态的变化？
+		\item 如何避免节点间的通信拥塞，确保局部聚合和协作分发不会因节点过载而成为新的瓶颈？
+		\item 如何协调聚合与分发的顺序，避免死锁或资源冲突？
 	\end{itemize}
 	这些问题的解决依赖于动态调度算法的设计，将在下一章详细阐述。
 
@@ -734,9 +734,9 @@
 	本章聚焦于在网络拓扑扩展的框架下，研究如何动态地决定每一轮通信的转发路径与顺序。调度算法的核心目标是在保证最终聚合结果与标准星型架构一致的前提下，最小化整体通信时间，同时避免节点或链路的过度拥塞。具体而言，调度算法需综合考虑以下因素：
 
 	\begin{itemize}
-	\item \textbf{网络拓扑与链路带宽}：不同节点之间的链路带宽可能存在差异
-	\item \textbf{实时负载状态}：节点的当前通信负载（如正在处理的收发任务）需动态感知，以平衡负载。
-	\item \textbf{拓扑扩展程度}：根据可用的节点间链路数量（稀疏或密集），调度策略应能自适应调整。
+		\item \textbf{网络拓扑与链路带宽}：不同节点之间的链路带宽可能存在差异
+		\item \textbf{实时负载状态}：节点的当前通信负载（如正在处理的收发任务）需动态感知，以平衡负载。
+		\item \textbf{拓扑扩展程度}：根据可用的节点间链路数量（稀疏或密集），调度策略应能自适应调整。
 	\end{itemize}
 
 	本章提出的动态调度算法以去中心化或半中心化的方式运行，每轮迭代根据当前网络状态和节点信息，动态构建一棵覆盖树，用于模型分发；同时为局部聚合阶段规划节点间的数据汇聚路径。
@@ -752,10 +752,10 @@
 	在模型聚合阶段，每个工作节点完成本地计算后，需要将其更新发送给其他节点进行局部聚合。此时，节点面临的首要决策是：应当将数据发送给哪一个（或哪些）邻居？这一选择直接影响局部聚合的效率与最终汇聚到服务器的路径长度。理想情况下，应优先选择能够快速完成局部聚合、且处于通向服务器较短路径上的节点。然而，由于各节点的计算完成时间存在随机波动（例如因资源竞争或数据异构导致的处理时间差异），一个节点在完成计算时，其邻居可能尚未就绪，或正在忙于处理其他收发任务。因此，调度算法需要动态评估每个候选目标节点的状态，包括：
 
 	\begin{itemize}
-	\item \textbf{计算状态}：目标节点是否已完成本地计算？若未完成，向其发送数据将导致该节点需暂存数据，增加内存开销并可能延迟转发。
-	\item \textbf{当前负载}：目标节点正在处理的收发任务数量，以及其可用带宽和CPU资源。过载的节点可能成为新的瓶颈。
-	\item \textbf{网络距离}：节点间的链路带宽与延迟，应优先选择高带宽、低延迟的链路。
-	\item \textbf{聚合路径深度}：将数据发送给某个节点后，该节点后续还需经过多少次转发才能到达服务器。关键路径越短，整体延迟越低。
+		\item \textbf{计算状态}：目标节点是否已完成本地计算？若未完成，向其发送数据将导致该节点需暂存数据，增加内存开销并可能延迟转发。
+		\item \textbf{当前负载}：目标节点正在处理的收发任务数量，以及其可用带宽和CPU资源。过载的节点可能成为新的瓶颈。
+		\item \textbf{网络距离}：节点间的链路带宽与延迟，应优先选择高带宽、低延迟的链路。
+		\item \textbf{聚合路径深度}：将数据发送给某个节点后，该节点后续还需经过多少次转发才能到达服务器。关键路径越短，整体延迟越低。
 	\end{itemize}
 
 	此外，还需考虑聚合树的拓扑结构：是构建深度优先的链式聚合，还是宽度优先的树状聚合？不同结构对节点负载和延迟分布有显著影响。
@@ -767,11 +767,11 @@
 	分发阶段的调度需考虑以下因素：
 
 	\begin{itemize}
-	\item \textbf{节点度与带宽}：具有较高出向带宽的节点可作为转发枢纽，承担更多子节点的分发任务。% TODO: 这个可以写在展望里面。
-	\item \textbf{节点等待时长}：工作节点只有在收到数据后才可以开始下一轮的训练，若计算偏慢的节点收到数据较晚极容易影响整体进程。
-	\item \textbf{网络拓扑}：节点间的物理连接关系，应避免将数据发送到距离较远的节点，造成不必要的跨跳延迟。
-	\item \textbf{覆盖进度}：优先向尚未被覆盖且能快速扩散的节点发送，以尽快扩大覆盖范围。
-	\item \textbf{负载均衡}：避免某些节点因承担过多转发任务而过载，导致其分发速度下降。
+		\item \textbf{节点度与带宽}：具有较高出向带宽的节点可作为转发枢纽，承担更多子节点的分发任务。% TODO: 这个可以写在展望里面。
+		\item \textbf{节点等待时长}：工作节点只有在收到数据后才可以开始下一轮的训练，若计算偏慢的节点收到数据较晚极容易影响整体进程。
+		\item \textbf{网络拓扑}：节点间的物理连接关系，应避免将数据发送到距离较远的节点，造成不必要的跨跳延迟。
+		\item \textbf{覆盖进度}：优先向尚未被覆盖且能快速扩散的节点发送，以尽快扩大覆盖范围。
+		\item \textbf{负载均衡}：避免某些节点因承担过多转发任务而过载，导致其分发速度下降。
 	\end{itemize}
 
 	与聚合阶段类似，分发调度也需要动态响应节点状态的实时变化。
@@ -788,9 +788,9 @@
 	调度决策的触发时机和频度是另一个关键设计维度。根据调度发生的粒度，可将调度算法分为三类：
 
 	\begin{itemize}
-	\item \textbf{静态预计算}：在训练开始前或每轮迭代开始前，根据固定的网络拓扑和节点性能预先计算好通信路径（如构建一棵固定的树）。这种方式的优点是零运行时开销，但无法适应节点计算速度的动态波动和网络状态的变化，容易导致路径阻塞或资源闲置。
-	\item \textbf{轮次同步调度}：等待本轮所有节点完成计算后，统一进行一次调度，确定聚合与分发的完整路径。这种方式可保证全局最优性，但引入了同步等待时间，且调度本身可能成为新的同步屏障。
-	\item \textbf{动态逐次调度}：节点完成计算后立即向调度器请求下一步操作指令，调度器根据当前全局状态实时决策。这种方式灵活性最高，能快速响应变化，但需要低延迟的协调机制（如集中式调度器或分布式协商），且调度器本身可能成为瓶颈。
+		\item \textbf{静态预计算}：在训练开始前或每轮迭代开始前，根据固定的网络拓扑和节点性能预先计算好通信路径（如构建一棵固定的树）。这种方式的优点是零运行时开销，但无法适应节点计算速度的动态波动和网络状态的变化，容易导致路径阻塞或资源闲置。
+		\item \textbf{轮次同步调度}：等待本轮所有节点完成计算后，统一进行一次调度，确定聚合与分发的完整路径。这种方式可保证全局最优性，但引入了同步等待时间，且调度本身可能成为新的同步屏障。
+		\item \textbf{动态逐次调度}：节点完成计算后立即向调度器请求下一步操作指令，调度器根据当前全局状态实时决策。这种方式灵活性最高，能快速响应变化，但需要低延迟的协调机制（如集中式调度器或分布式协商），且调度器本身可能成为瓶颈。
 	\end{itemize}
 
 	实际系统需在实时性与开销之间权衡。例如，可以采用混合策略：在节点计算阶段动态调整聚合目标，而在分发阶段采用基于树的静态结构辅以局部动态调整。本文后续将重点研究动态逐次调度方案，并设计轻量级的分布式协调机制。
@@ -884,26 +884,26 @@
 	具体边权计算如算法\ref{alg:edge_weight}所示。
 
 	\begin{algorithm}[!htbp]
-	\caption{边权计算规则（聚合阶段）}
-	\label{alg:edge_weight}
-	\Input{左节点集 $\mathcal{L}$，右节点集 $\mathcal{R}$，带宽矩阵 $B$，有效期信息，全局平均带宽 $\bar{B}$}
-	\Output{权重矩阵 $w[l][r]$}
-	\BlankLine
-	\For{每个左节点 $l \in \mathcal{L}$}{
-		\For{每个右节点 $r \in \mathcal{R}$}{
-			\If{$\neg \text{reachable}(r, l)$}{
-				$w[l][r] \leftarrow -\infty$
-			}
-			\Else{
-				\If{带宽信息有效（未过期）}{
-					$w[l][r] \leftarrow B[r][l]$
+		\caption{边权计算规则（聚合阶段）}
+		\label{alg:edge_weight}
+		\Input{左节点集 $\mathcal{L}$，右节点集 $\mathcal{R}$，带宽矩阵 $B$，有效期信息，全局平均带宽 $\bar{B}$}
+		\Output{权重矩阵 $w[l][r]$}
+		\BlankLine
+		\For{每个左节点 $l \in \mathcal{L}$}{
+			\For{每个右节点 $r \in \mathcal{R}$}{
+				\If{$\neg \text{reachable}(r, l)$}{
+					$w[l][r] \leftarrow -\infty$
 				}
 				\Else{
-					$w[l][r] \leftarrow \bar{B}$
+					\If{带宽信息有效（未过期）}{
+						$w[l][r] \leftarrow B[r][l]$
+					}
+					\Else{
+						$w[l][r] \leftarrow \bar{B}$
+					}
 				}
 			}
 		}
-	}
 	\end{algorithm}
 
 	\paragraph{最大权匹配与节点转化}
@@ -918,28 +918,28 @@
 	其中第一项表示将 $r$ 移出右集合后，其他右节点无法再向 $r$ 发送数据所损失的潜在收益（即 $r$ 作为接收者能为其他请求者提供的带宽）；第二项表示 $r$ 移入左集合后，作为接收者能够从其他请求者接收数据的潜在收益。评分越高，说明将 $r$ 转化为接收者带来的净收益越大。若链路带宽未知，则用全局平均带宽 $\bar{B}$ 替代。算法\ref{alg:node_conversion}描述了这一过程。
 
 	\begin{algorithm}[!htbp]
-	\caption{节点转化评分与选择}
-	\label{alg:node_conversion}
-	\Input{当前左集 $\mathcal{L}$，右集 $\mathcal{R}$，带宽矩阵 $B$，平均带宽 $\bar{B}$}
-	\Output{更新后的 $\mathcal{L}$ 和 $\mathcal{R}$}
-	\BlankLine
-	\While{$|\mathcal{R}| > |\mathcal{L}|$}{
-		\For{每个 $r \in \mathcal{R}$}{
-			$S(r) \leftarrow 0$ \\
-			\For{每个 $r' \in \mathcal{R}$，$r' \neq r$}{
-				\If{$\text{reachable}(r',r)$}{
-					$S(r) \leftarrow S(r) + (B[r'][r] \text{ 或 } \bar{B} \text{ 若未知})$
+		\caption{节点转化评分与选择}
+		\label{alg:node_conversion}
+		\Input{当前左集 $\mathcal{L}$，右集 $\mathcal{R}$，带宽矩阵 $B$，平均带宽 $\bar{B}$}
+		\Output{更新后的 $\mathcal{L}$ 和 $\mathcal{R}$}
+		\BlankLine
+		\While{$|\mathcal{R}| > |\mathcal{L}|$}{
+			\For{每个 $r \in \mathcal{R}$}{
+				$S(r) \leftarrow 0$ \\
+				\For{每个 $r' \in \mathcal{R}$，$r' \neq r$}{
+					\If{$\text{reachable}(r',r)$}{
+						$S(r) \leftarrow S(r) + (B[r'][r] \text{ 或 } \bar{B} \text{ 若未知})$
+					}
+				}
+				\For{每个 $l \in \mathcal{L}$}{
+					\If{$\text{reachable}(r,l)$}{
+						$S(r) \leftarrow S(r) - (B[r][l] \text{ 或 } \bar{B} \text{ 若未知})$
+					}
 				}
 			}
-			\For{每个 $l \in \mathcal{L}$}{
-				\If{$\text{reachable}(r,l)$}{
-					$S(r) \leftarrow S(r) - (B[r][l] \text{ 或 } \bar{B} \text{ 若未知})$
-				}
-			}
+			选择评分最大的 $r^*$ \\
+			将 $r^*$ 从 $\mathcal{R}$ 移至 $\mathcal{L}$，并标记其接收者暂未分配（$\text{recv}[r^*] \leftarrow \text{UNMATCHED}$）
 		}
-		选择评分最大的 $r^*$ \\
-		将 $r^*$ 从 $\mathcal{R}$ 移至 $\mathcal{L}$，并标记其接收者暂未分配（$\text{recv}[r^*] \leftarrow \text{UNMATCHED}$）
-	}
 	\end{algorithm}
 
 	\paragraph{接收确认与拒绝处理}
@@ -963,64 +963,64 @@
 	算法\ref{alg:aggregation_scheduling} 总结了上述所有步骤，包括集合构造、节点转化、边权计算、KM匹配以及询问确认过程；算法\ref{alg:worker_aggregation}展示了工作节点在聚合阶段的的行为；算法\ref{alg:server_aggregation}展示了参数服务器在聚合阶段的行为。
 
 	\begin{algorithm}[!htbp]
-	\caption{模型聚合阶段调度算法（调度器侧）}
-	\label{alg:aggregation_scheduling}
-	\Input{请求节点集 $\mathcal{R}_{\text{req}}$（本次调度请求），未完成节点集 $\mathcal{U}$，当前并发接收数 $C[\cdot]$，带宽矩阵 $B[\cdot][\cdot]$，接收上限 $R_{\max}$}
-	\Output{接收者映射 $\text{recv}[\cdot]$}
-	\BlankLine
-	构造左节点集 $\mathcal{L} = \{u \in \mathcal{U} \mid C[u] < R_{\max}\}$，右节点集 $\mathcal{R} = \mathcal{R}_{\text{req}}$ \\
-	\If{$|\mathcal{R}| > |\mathcal{L}|$}{
-		根据算法\ref{alg:node_conversion} 将部分右节点移入左集合，直至 $|\mathcal{R}| \le |\mathcal{L}|$ \\
-	}
-	根据算法\ref{alg:edge_weight} 计算边权矩阵 $w[l][r]$（$l \in \mathcal{L}, r \in \mathcal{R}$） \\
-	运行 KM 算法求解最大权匹配，得匹配 $M$，即 $\forall l \in \mathcal{L}$，若 $M[l] \neq \text{UNMATCHED}$，则 $\text{recv}[M[l]] = l$ \\
-	\For{每个 $r \in \mathcal{R}$}{
-		向 $\text{recv}[r]$ 发送 \texttt{ASK\_AS\_RECEIVER} 询问 \\
-		\If{收到拒绝}{
-			\If{服务器 ($\text{server}$) 未达 $R_{\max}$}{
-				$\text{recv}[r] \gets \text{server}$ \\
-				$C[\text{server}] \gets C[\text{server}] + 1$
+		\caption{模型聚合阶段调度算法（调度器侧）}
+		\label{alg:aggregation_scheduling}
+		\Input{请求节点集 $\mathcal{R}_{\text{req}}$（本次调度请求），未完成节点集 $\mathcal{U}$，当前并发接收数 $C[\cdot]$，带宽矩阵 $B[\cdot][\cdot]$，接收上限 $R_{\max}$}
+		\Output{接收者映射 $\text{recv}[\cdot]$}
+		\BlankLine
+		构造左节点集 $\mathcal{L} = \{u \in \mathcal{U} \mid C[u] < R_{\max}\}$，右节点集 $\mathcal{R} = \mathcal{R}_{\text{req}}$ \\
+		\If{$|\mathcal{R}| > |\mathcal{L}|$}{
+			根据算法\ref{alg:node_conversion} 将部分右节点移入左集合，直至 $|\mathcal{R}| \le |\mathcal{L}|$ \\
+		}
+		根据算法\ref{alg:edge_weight} 计算边权矩阵 $w[l][r]$（$l \in \mathcal{L}, r \in \mathcal{R}$） \\
+		运行 KM 算法求解最大权匹配，得匹配 $M$，即 $\forall l \in \mathcal{L}$，若 $M[l] \neq \text{UNMATCHED}$，则 $\text{recv}[M[l]] = l$ \\
+		\For{每个 $r \in \mathcal{R}$}{
+			向 $\text{recv}[r]$ 发送 \texttt{ASK\_AS\_RECEIVER} 询问 \\
+			\If{收到拒绝}{
+				\If{服务器 ($\text{server}$) 未达 $R_{\max}$}{
+					$\text{recv}[r] \gets \text{server}$ \\
+					$C[\text{server}] \gets C[\text{server}] + 1$
+				}
+				\Else{
+					将 $r$ 重新加入 $\mathcal{U}$，待下轮调度 \\
+					$\text{recv}[r] \gets \text{UNKNOWN}$
+				}
 			}
 			\Else{
-				将 $r$ 重新加入 $\mathcal{U}$，待下轮调度 \\
-				$\text{recv}[r] \gets \text{UNKNOWN}$
+				$C[\text{recv}[r]] \gets C[\text{recv}[r]] + 1$
 			}
 		}
-		\Else{
-			$C[\text{recv}[r]] \gets C[\text{recv}[r]] + 1$
+	\end{algorithm}
+
+	\begin{algorithm}[!htbp]
+		\caption{工作节点聚合阶段行为}
+		\label{alg:worker_aggregation}
+		\BlankLine
+		本地训练得到更新 $\Delta_i$ \\
+		向调度器发送 \texttt{ASK\_LOCAL\_AGGREGATION} 请求 \\
+		\While{未收到调度器的接收者分配}{
+			若收到 \texttt{ASK\_AS\_RECEIVER} 询问，则同意作为接收者，接收并聚合其他节点的数据 \\
 		}
-	}
+		获得接收者 $\text{recv}[i]$（来自调度器） \\
+		\While{仍有节点在向自己发送数据}{
+			等待并接收数据，更新局部聚合结果 $\Delta_i$ \\
+		}
+		将 $\Delta_i$ 发送给 $\text{recv}[i]$ \\
+		本轮任务结束
 	\end{algorithm}
 
 	\begin{algorithm}[!htbp]
-	\caption{工作节点聚合阶段行为}
-	\label{alg:worker_aggregation}
-	\BlankLine
-	本地训练得到更新 $\Delta_i$ \\
-	向调度器发送 \texttt{ASK\_LOCAL\_AGGREGATION} 请求 \\
-	\While{未收到调度器的接收者分配}{
-		若收到 \texttt{ASK\_AS\_RECEIVER} 询问，则同意作为接收者，接收并聚合其他节点的数据 \\
-	}
-	获得接收者 $\text{recv}[i]$（来自调度器） \\
-	\While{仍有节点在向自己发送数据}{
-		等待并接收数据，更新局部聚合结果 $\Delta_i$ \\
-	}
-	将 $\Delta_i$ 发送给 $\text{recv}[i]$ \\
-	本轮任务结束
-	\end{algorithm}
-
-	\begin{algorithm}[!htbp]
-	\caption{参数服务器聚合阶段行为}
-	\label{alg:server_aggregation}
-	\BlankLine
-	初始化全局聚合结果 $\Delta_{\text{global}} \leftarrow 0$，已收节点集合 $\mathcal{D} \leftarrow \emptyset$ \\
-	\While{$\mathcal{D}$ 未包含所有工作节点}{
-		收到来自节点 $j$ 的数据 $\Delta_j$ \\
-		$\Delta_{\text{global}} \leftarrow \text{Aggregate}(\Delta_{\text{global}}, \Delta_j)$ \\
-		将 $j$ 加入 $\mathcal{D}$ \\
-	}
-	完成全局聚合，得到新模型 $M_{\text{new}}$ \\
-	触发模型分发阶段
+		\caption{参数服务器聚合阶段行为}
+		\label{alg:server_aggregation}
+		\BlankLine
+		初始化全局聚合结果 $\Delta_{\text{global}} \leftarrow 0$，已收节点集合 $\mathcal{D} \leftarrow \emptyset$ \\
+		\While{$\mathcal{D}$ 未包含所有工作节点}{
+			收到来自节点 $j$ 的数据 $\Delta_j$ \\
+			$\Delta_{\text{global}} \leftarrow \text{Aggregate}(\Delta_{\text{global}}, \Delta_j)$ \\
+			将 $j$ 加入 $\mathcal{D}$ \\
+		}
+		完成全局聚合，得到新模型 $M_{\text{new}}$ \\
+		触发模型分发阶段
 	\end{algorithm}
 
 	通过上述精心设计的调度算法，我们能够在扩展拓扑下高效地为每个请求节点分配接收者，优先利用空闲节点，动态适应网络带宽变化，并与TCP上层拥塞控制协同，避免过载。
@@ -1045,44 +1045,44 @@
 	算法\ref{alg:server_distribution}描述了参数服务器在模型分发过程中的行为；算法\ref{alg:worker_distribution}描述了工作节点在模型分发过程中的行为。
 
 	\begin{algorithm}[!htbp]
-	\caption{参数服务器模型分发行为}
-	\label{alg:server_distribution}
-	\BlankLine
-	获得全局聚合后的新模型 $M$ \\
-	\While{true}{
-		向调度器发送 \texttt{ASK\_MODEL\_RECEIVER} 请求，附带上次传输的带宽信息（如有） \\
-		从调度器接收回复，得到目标节点 $t$ \\
-		\If{$t == \text{QUIT}$}{
-			\textbf{break} \tcp*[f]{所有节点已覆盖}
+		\caption{参数服务器模型分发行为}
+		\label{alg:server_distribution}
+		\BlankLine
+		获得全局聚合后的新模型 $M$ \\
+		\While{true}{
+			向调度器发送 \texttt{ASK\_MODEL\_RECEIVER} 请求，附带上次传输的带宽信息（如有） \\
+			从调度器接收回复，得到目标节点 $t$ \\
+			\If{$t == \text{QUIT}$}{
+				\textbf{break} \tcp*[f]{所有节点已覆盖}
+			}
+			记录开始时间 $t_{\text{start}}$ \\
+			向 $t$ 发送模型 $M$ \\
+			等待接收完成确认 \\
+			记录结束时间 $t_{\text{end}}$ \\
+			计算带宽 $b = \frac{\text{模型大小}}{t_{\text{end}} - t_{\text{start}}}$ \\
+			缓存带宽信息 $(t, b)$，待下次请求时附带
 		}
-		记录开始时间 $t_{\text{start}}$ \\
-		向 $t$ 发送模型 $M$ \\
-		等待接收完成确认 \\
-		记录结束时间 $t_{\text{end}}$ \\
-		计算带宽 $b = \frac{\text{模型大小}}{t_{\text{end}} - t_{\text{start}}}$ \\
-		缓存带宽信息 $(t, b)$，待下次请求时附带
-	}
 	\end{algorithm}
 
 	\begin{algorithm}[!htbp]
-	\caption{工作节点模型分发行为（后台转发线程）}
-	\label{alg:worker_distribution}
-	\BlankLine
-	收到完整模型 $M$（从其他节点） \\
-	立即启动本地训练（主线程） \\
-	\While{true}{
-		向调度器发送 \texttt{ASK\_MODEL\_RECEIVER} 请求，附带上次传输的带宽信息（如有） \\
-		从调度器接收回复，得到目标节点 $t$ \\
-		\If{$t == \text{QUIT}$}{
-			\textbf{break} \tcp*[f]{无可转发对象}
+		\caption{工作节点模型分发行为（后台转发线程）}
+		\label{alg:worker_distribution}
+		\BlankLine
+		收到完整模型 $M$（从其他节点） \\
+		立即启动本地训练（主线程） \\
+		\While{true}{
+			向调度器发送 \texttt{ASK\_MODEL\_RECEIVER} 请求，附带上次传输的带宽信息（如有） \\
+			从调度器接收回复，得到目标节点 $t$ \\
+			\If{$t == \text{QUIT}$}{
+				\textbf{break} \tcp*[f]{无可转发对象}
+			}
+			记录开始时间 $t_{\text{start}}$ \\
+			向 $t$ 发送模型 $M$ \\
+			等待接收完成确认 \\
+			记录结束时间 $t_{\text{end}}$ \\
+			计算带宽 $b = \frac{\text{模型大小}}{t_{\text{end}} - t_{\text{start}}}$ \\
+			缓存带宽信息 $(t, b)$，待下次请求时附带
 		}
-		记录开始时间 $t_{\text{start}}$ \\
-		向 $t$ 发送模型 $M$ \\
-		等待接收完成确认 \\
-		记录结束时间 $t_{\text{end}}$ \\
-		计算带宽 $b = \frac{\text{模型大小}}{t_{\text{end}} - t_{\text{start}}}$ \\
-		缓存带宽信息 $(t, b)$，待下次请求时附带
-	}
 	\end{algorithm}
 
 	\subsubsection{调度器算法：贪心选择与探测}
@@ -1106,33 +1106,33 @@
 	算法\ref{alg:distribution_scheduling} 给出了调度器的完整逻辑。
 
 	\begin{algorithm}[!htbp]
-	\caption{模型分发阶段调度器算法}
-	\label{alg:distribution_scheduling}
-	\Input{请求节点 $s$，未接收集合 $\mathcal{U}$，带宽矩阵 $B[\cdot][\cdot]$，有效期信息，贪心概率 $p$}
-	\Output{接收者 $t$ 或 $\text{QUIT}$}
-	\BlankLine
-	\If{请求中携带上次传输带宽 $\text{bw}$ 和接收者 $\text{last\_recv}$}{
-		更新 $B[s][\text{last\_recv}] \leftarrow \text{bw}$ \\
-		重置该链路有效期
-	}
-	计算可达节点集 $\mathcal{T} = \{t \in \mathcal{U} \mid \text{reachable}(s,t)\}$ \\
-	\If{$\mathcal{T} = \emptyset$}{
-		\Return $\text{QUIT}$
-	}
-	生成随机数 $r \sim U(0,1)$ \\
-	\uIf{$r < p$ \textbf{or} $\forall t \in \mathcal{T}$ 带宽均未知}{
-		\If{存在已知带宽的节点}{
-			$t^* \gets \arg\max_{t \in \mathcal{T}, \text{known}(s,t)} B[s][t]$
+		\caption{模型分发阶段调度器算法}
+		\label{alg:distribution_scheduling}
+		\Input{请求节点 $s$，未接收集合 $\mathcal{U}$，带宽矩阵 $B[\cdot][\cdot]$，有效期信息，贪心概率 $p$}
+		\Output{接收者 $t$ 或 $\text{QUIT}$}
+		\BlankLine
+		\If{请求中携带上次传输带宽 $\text{bw}$ 和接收者 $\text{last\_recv}$}{
+			更新 $B[s][\text{last\_recv}] \leftarrow \text{bw}$ \\
+			重置该链路有效期
+		}
+		计算可达节点集 $\mathcal{T} = \{t \in \mathcal{U} \mid \text{reachable}(s,t)\}$ \\
+		\If{$\mathcal{T} = \emptyset$}{
+			\Return $\text{QUIT}$
+		}
+		生成随机数 $r \sim U(0,1)$ \\
+		\uIf{$r < p$ \textbf{or} $\forall t \in \mathcal{T}$ 带宽均未知}{
+			\If{存在已知带宽的节点}{
+				$t^* \gets \arg\max_{t \in \mathcal{T}, \text{known}(s,t)} B[s][t]$
+			}
+			\Else{
+				$t^* \gets \text{random}(\mathcal{T})$ \tcp*[f]{全部未知，随机选}
+			}
 		}
 		\Else{
-			$t^* \gets \text{random}(\mathcal{T})$ \tcp*[f]{全部未知，随机选}
+			从 $\{t \in \mathcal{T} \mid \text{unknown}(s,t)\}$ 中随机选择 $t^*$
 		}
-	}
-	\Else{
-		从 $\{t \in \mathcal{T} \mid \text{unknown}(s,t)\}$ 中随机选择 $t^*$
-	}
-	从 $\mathcal{U}$ 中移除 $t^*$ \\
-	\Return $t^*$
+		从 $\mathcal{U}$ 中移除 $t^*$ \\
+		\Return $t^*$
 	\end{algorithm}
 
 	\subsubsection{与聚合阶段的协同}
@@ -1205,10 +1205,10 @@
 	图\ref{fig:param_s}展示了静态组与动态组在不同 $S$ 下的总耗时变化。可以看出，当 $S$ 过小时，调度批次过多，增加控制开销；当 $S$ 过大时，批内节点等待时间延长，均不利于性能。静态组和动态组的最优 $S$ 可能略有差异，我们分别记录。
 
 	\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.98\linewidth]{param_schedule}
-	\caption{调度数量 $S$ 对总耗时的影响（$W=32$, $p=1$）}
-	\label{fig:param_s}
+		\centering
+		\includegraphics[width=0.98\linewidth]{param_schedule}
+		\caption{调度数量 $S$ 对总耗时的影响（$W=32$, $p=1$）}
+		\label{fig:param_s}
 	\end{figure}
 
 	\subsection{贪心概率 $p$ 的确定}
@@ -1218,10 +1218,10 @@
 	图\ref{fig:param_p}显示，$p$ 过小会导致过多随机探测，浪费带宽；$p$ 过大则可能陷入局部最优，错过潜在高带宽链路；但是实验表明整体的波动并不明显，实验对该超参数并不敏感。我们将静态组与动态组的最优 $p$ 分别记为 $p_{\text{static}}$ 和 $p_{\text{dynamic}}$。
 
 	\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.98\linewidth]{param_greedy}
-	\caption{贪心概率 $p$ 对总耗时的影响（$W=32$, $S=1$）}
-	\label{fig:param_p}
+		\centering
+		\includegraphics[width=0.98\linewidth]{param_greedy}
+		\caption{贪心概率 $p$ 对总耗时的影响（$W=32$, $S=1$）}
+		\label{fig:param_p}
 	\end{figure}
 
 	根据预实验结果，后续实验中静态组采用 $p_{\text{static}}$ 和 $S_{\text{static}}$，动态组采用 $p_{\text{dynamic}}$ 和 $S_{\text{dynamic}}$。
@@ -1244,10 +1244,10 @@
 	表\ref{tab:scale_nodes}列出了部分节点数下的总耗时数值，本文方法在表格中静态组中平均降低耗时约67.4\%、动态组中平均降低约65.2\%。
 
 	\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=0.98\linewidth]{scale_nodes}
-	\caption{不同工作节点数下的总耗时对比}
-	\label{fig:scale_nodes}
+		\centering
+		\includegraphics[width=0.98\linewidth]{scale_nodes}
+		\caption{不同工作节点数下的总耗时对比}
+		\label{fig:scale_nodes}
 	\end{figure}
 
 	\begin{table}[htbp]
