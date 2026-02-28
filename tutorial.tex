@@ -1242,6 +1242,8 @@
 		\item 动态组中本文方法的收益略低于静态组，但仍有明显提升，说明算法能适应计算时间的随机波动。
 	\end{itemize}
 
+	图\ref{fig:cdf_combined_nodes}展示了部分节点数下四组实验聚合时间的累积分布函数（CDF）。从图中可以看出LeMethod的曲线明显左移，且随着节点个数的增加越来越陡峭，表明其聚合时间稳定在较低区间。
+
 	表\ref{tab:scale_nodes}列出了部分节点数下的总耗时数值，本文方法在表格中静态组中平均降低耗时约67.4\%、动态组中平均降低约65.2\%。
 
 	\begin{figure}[htbp]
@@ -1267,7 +1269,30 @@
 		\end{tabular}
 	\end{table}
 
-	% TODO: 是不是应该画cdg图
+	\begin{figure}[!htb]
+		\centering
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{10_cdf}
+			\label{fig:10_cdf}
+		}
+		\hfill
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{20_cdf}
+			\label{fig:20_cdf}
+		}
+		\\
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{50_cdf}
+			\label{fig:50_cdf}
+		}
+		\hfill
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{100_cdf}
+			\label{fig:100_cdf}
+		}
+		\caption{不同节点规模下的CDF图：\subref{fig:10_cdf}10个节点；\subref{fig:20_cdf}20个节点；\subref{fig:50_cdf}50个节点；\subref{fig:100_cdf}100个节点。}
+		\label{fig:cdf_combined_nodes}
+	\end{figure}
 
 	\subsection{模型大小的影响}
 
@@ -1279,6 +1304,8 @@
 		\item 本文方法在所有模型尺寸下均显著降低总耗时，且随模型增大，优势愈发明显。例如在1000MB时，本文静态组耗时仅13778秒，较原始静态组降低了77.4\%，体现了对大规模模型传输的良好适应性。
 		\item 静态组与动态组的降低幅度相近，说明算法对计算时间的随机波动不敏感，能在不同负载模式下保持高效。
 	\end{itemize}
+
+	图\ref{fig:cdf_combined_size}展示了部分模型大小下四组实验聚合时间的累积分布函数（CDF）。从图中可以看出LeMethod的曲线明显左移，表明其聚合时间稳定在较低区间。
 
 	表\ref{tab:scale_model}给出了部分数据点的总耗时，本文方法在静态组中平均降低耗时约76.8\%，动态组中平均降低约77.3\%。
 
@@ -1304,6 +1331,32 @@
 			\hline
 		\end{tabular}
 	\end{table}
+
+	
+	\begin{figure}[!htb]
+		\centering
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{240M_cdf}
+			\label{fig:240M_cdf}
+		}
+		\hfill
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{500M_cdf}
+			\label{fig:500M_cdf}
+		}
+		\\
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{800M_cdf}
+			\label{fig:800M_cdf}
+		}
+		\hfill
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{1000M_cdf}
+			\label{fig:1000M_cdf}
+		}
+		\caption{不同模型规模下的CDF图：\subref{fig:240M_cdf}240MB；\subref{fig:500M_cdf}500MB；\subref{fig:800M_cdf}800MB；\subref{fig:1000M_cdf}1000MB。}
+		\label{fig:cdf_combined_size}
+	\end{figure}
 
 	\section{拓扑稀疏性实验}
 
