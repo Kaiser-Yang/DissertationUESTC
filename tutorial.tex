@@ -18,51 +18,47 @@
 	% \setconfidential{密级}{保密期限}  % 非涉密论文一定要注释掉该命令
 
 	% 封面示例————“双学位学士”以外的学位论文
-	\uestccover[par]{分布式机器学习与联邦学习的自适应通信调度策略研究}
-				{信息与通信工程}
-				{} % TODO: 学号
-				{} % TODO: 作者姓名
-				{} % TODO: 指导教师
-				{} % TODO: 教师职称
-				{信息与通信工程学院} % par参数将过长学院名称换行排版，此参数必影响封面布局，无可避免
+	\uestccover[par]
+	{联邦学习的自适应通信调度策略研究}
+	{信息与通信工程}
+	{}
+	{}
+	{}
+	{}
+	{信息与通信工程学院} % par参数将过长学院名称换行排版，此参数必影响封面布局，无可避免
 
 	% 中文扉页，仅研究生用
 	
 	\ClsNum{TP393.2}
 	\ClsLv{公开}
 	\UDC{004.72}
-	\DissertationTitle{分布式机器学习与联邦学习的自适应通信调度策略研究}
-	\Author{} % TODO:
-	\Supervisor{}{}{}{}  % TODO: {<指导教师>}{<职称>}{<单位名称>}{<单位地址>}
+	\DissertationTitle{联邦学习的自适应通信调度策略研究}
+	\Author{}
+	\Supervisor{}{}{}{}
 	\Major{信息与通信工程}
-	\Date{}{}  % TODO: {<论文提交日期>}{<论文答辩日期>}
-	\Grant{}{}  % TODO: {<学位授予单位>}{<学位授予日期>}
+	\Date{2026年3月24日}{} % TODO: 更新答辩日期
+	\Grant{电子科技大学}{2026年6月}
 	\Reviewer{}{}  % TODO: {<答辩委员为主席>}{<评阅人>}
 	\uestczhtitlepage
 
 	% 英文扉页，仅研究生用
 	\uestcentitlepage
-		{Research on Adaptive Communication Scheduling Strategies for Distributed Machine Learning and Federated Learning}
-		{Information and Communication Engineering}
-		{} % TODO: <学号>
-		{} % TODO: Author
-		{} {} % TODO: <导师> <副导师>
-		{School of Information and Communication Engineering}
+	{Research on Adaptive Communication Scheduling Strategies for Federated Learning}
+	{Information and Communication Engineering}
+	{}
+	{}
+	{} {}
+	{School of Information and Communication Engineering}
 	
 	% 独创性声明：[<签名宽度>]{<日期>}{<作者签名图片1>}[<作者签名图片2 默认值为作者签名图片1>]{<导师签名图片>}，仅研究生用
-	% TODO: Substitute with actual signature images and date
-	\declaration[3cm]{2026年3月30日}{authsign}{spvrsign}
+	\declaration[3cm]{2026年3月24日}{}{}
 	
 	% 开启中文摘要
 	\zhabstract
-	\nomchn{FL}{Federated Learning}{联邦学习}
-	\nomchn{DML}{Distributed Machine Learning}{分布式机器学习}
-	\nomchn{IoT}{Internet of Things}{物联网}
-	\nomchn{TCP}{Transmission Control Protocol}{传输控制协议}
-	\nomchn{LeMethod}{Lax Engine Method}{松驰引擎方法}
-	通信瓶颈是联邦学习（FL）和分布式机器学习（DML）面临的众多挑战中备受关注的一个。在跨设备联邦学习场景中，海量终端设备（如手机、传感器）需频繁与中央服务器交换模型参数（如梯度、权重），而此类通信通常耗时较长。尤其在带宽受限的边缘网络（如蜂窝网络、Wi-Fi 6）或资源受限的IoT终端（如低功耗传感器）中，高频次的模型参数传输不仅会导致训练效率低下，还可能因网络丢包、延迟等问题引发训练不稳定。因此，设计面向FL和DML的高效通信策略，在保障模型收敛性与精度的同时显著降低通信开销，成为推动二者大规模落地的关键问题。
 
-	本文围绕“可扩展网络拓扑”、“TCP上层拥塞控制”、“流量负载均衡”三方面，提出了一套新型的联邦学习和分布式机器学习体系——LeMethod。LeMethod在不影响原模型收敛速度的前提下，通过扩展网络拓扑分担中央服务器的通信压力，利用调度算法实现高效通信，并借助上层拥塞控制减少网络丢包概率。本文的主要贡献与创新可概括为四个方面：
+	通信瓶颈是联邦学习（FL）面临的众多挑战中备受关注的一个。在跨设备联邦学习场景中，海量终端设备（如手机、传感器）需频繁与中央服务器交换模型参数（如梯度、权重），而此类通信通常耗时较长。尤其在带宽受限的边缘网络（如蜂窝网络、Wi-Fi 6）或资源受限的IoT终端（如低功耗传感器）中，高频次的模型参数传输不仅会导致训练效率低下，还可能因网络丢包、延迟等问题引发训练不稳定。因此，设计面向FL的高效通信策略，在保障模型收敛性与精度的同时显著降低通信开销，成为推动二者大规模落地的关键问题。
+
+	本文围绕“可扩展网络拓扑”、“TCP上层拥塞控制”、“流量负载均衡”三方面，提出了一套新型的联邦学习学习体系——LeMethod。LeMethod在不影响原模型收敛速度的前提下，通过扩展网络拓扑分担中央服务器的通信压力，利用调度算法实现高效通信，并借助上层拥塞控制减少网络丢包概率。本文的主要贡献与创新可概括为四个方面：
 
 	\begin{enumerate}[leftmargin=*]
 		\item 提出一种可在传统网络拓扑基础上灵活扩展的拓扑结构。该结构不要求扩展为全连接网络，可根据实际条件进行扩展，从而提高了拓扑扩展的成本可控性与灵活性。
@@ -79,15 +75,15 @@
 	% 开启英文摘要
 	\enabstract
 
-	Communication bottlenecks stand out as one of the most prominent challenges in Federated Learning (FL) and Distributed Machine Learning (DML). In cross-device FL scenarios, a vast number of terminal devices such as smartphones and sensors must frequently exchange model parameters (e.g., gradients and weights) with a central server. This process often leads to prolonged communication times, particularly in bandwidth-constrained edge networks (e.g., cellular, Wi-Fi 6) or resource-constrained IoT devices like low-power sensors. Frequent transmission of model parameters not only results in inefficient training but also risks training instability due to network issues such as packet loss and latency. Consequently, designing efficient communication strategies for FL and DML that significantly reduce communication overhead while maintaining model convergence and accuracy is critical for enabling large-scale deployment.
+	Communication bottlenecks stand out as one of the most prominent challenges in Federated Learning (FL). In cross-device FL scenarios, a vast number of terminal devices such as smartphones and sensors must frequently exchange model parameters (e.g., gradients and weights) with a central server. This process often leads to prolonged communication times, particularly in bandwidth-constrained edge networks (e.g., cellular, Wi-Fi 6) or resource-constrained IoT devices like low-power sensors. Frequent transmission of model parameters not only results in inefficient training but also risks training instability due to network issues such as packet loss and latency. Consequently, designing efficient communication strategies for FL that significantly reduce communication overhead while maintaining model convergence and accuracy is critical for enabling large-scale deployment.
 
-	To address this challenge, this paper introduces LeMethod, a novel framework for FL and DML centered on three key principles: scalable network topology, congestion control above TCP, and traffic load balancing. LeMethod achieves efficient communication without compromising model convergence rates or accuracy, while ensuring complete data transmission throughout the communication process. It alleviates the central server's communication burden through network topology extensions, enhances communication efficiency via an adaptive scheduling algorithm, and reduces packet loss probability with congestion control mechanisms at the upper layers of TCP. The main contributions of this work are fourfold:
+	To address this challenge, this thesis introduces LeMethod, a novel framework for FL centered on three key principles: scalable network topology, congestion control above TCP, and traffic load balancing. LeMethod achieves efficient communication without compromising model convergence rates or accuracy, while ensuring complete data transmission throughout the communication process. It alleviates the central server's communication burden through network topology extensions, enhances communication efficiency via an adaptive scheduling algorithm, and reduces packet loss probability with congestion control mechanisms at the upper layers of TCP. The main contributions of this work are fourfold:
 
 	\begin{enumerate}[leftmargin=*]
-		\item \textbf{Scalable network topology:} We propose a topology structure that can be extended beyond traditional FL and DML paradigms without requiring conversion to a fully connected network. This design emphasizes practicality by ensuring greater flexibility and controllability of extension costs based on real-world requirements.
-		\item \textbf{Congestion control above TCP:} By proactively managing congestion at layers above TCP, we reduce the triggering of TCP congestion control mechanisms and mitigate the impact of network jitter on communication efficiency.
-		\item \textbf{Traffic load balancing in adaptive topologies:} Unlike traditional architectures, which rely solely on upgrading bandwidth between the central server and worker nodes, our framework enables additional improvements by redistributing traffic loads across worker nodes and scaling bandwidth within those links. This not only alleviates the bottleneck at the central server but also provides link-level scalability options to optimize communication efficiency.
-		\item \textbf{Dynamic scheduling algorithm:} We design a dynamic scheduling algorithm that records and analyzes bandwidth usage in real time during transmission. It dynamically adjusts resource scheduling based on historical bandwidth patterns to enhance overall efficiency.
+		\item We propose a topology structure that can be extended beyond traditional FL paradigms without requiring conversion to a fully connected network. This design emphasizes practicality by ensuring greater flexibility and controllability of extension costs based on real-world requirements.
+		\item By proactively managing congestion at layers above TCP, we reduce the triggering of TCP congestion control mechanisms and mitigate the impact of network jitter on communication efficiency.
+		\item Unlike traditional architectures, which rely solely on upgrading bandwidth between the central server and worker nodes, our framework enables additional improvements by redistributing traffic loads across worker nodes and scaling bandwidth within those links. This not only alleviates the bottleneck at the central server but also provides link-level scalability options to optimize communication efficiency.
+		\item We design a dynamic scheduling algorithm that records and analyzes bandwidth usage in real time during transmission. It dynamically adjusts resource scheduling based on historical bandwidth patterns to enhance overall efficiency.
 	\end{enumerate}
 
 	Experimental results demonstrate that even without extending additional communication links, LeMethod reduces training time to only 78.47\% of that required by traditional architectures under identical experimental conditions. Furthermore, incremental extensions to the network topology further reduce training time, ultimately achieving a reduction to 23.51\% of the traditional architecture's training time. These findings validate the effectiveness of LeMethod in balancing communication efficiency and model performance.
@@ -107,12 +103,12 @@
 	\chapter{绪论}
 
 	\section{研究背景及意义}
-	\nomchn{GDPR}{General Data Protection Regulation}{通用数据保护条例}
-	\nomchn{CCPA}{California Consumer Privacy Act}{加州消费者隐私法案}
+	\nomchn{FL}{Federated Learning}{联邦学习}
+	\nomchn{DML}{Distributed Machine Learning}{分布式机器学习}
 
-	随着人工智能与大数据技术的快速发展，机器学习在医疗、金融与工业互联网等领域得到广泛应用。近年来的研究与工程实践表明，模型性能的持续提升通常依赖于更大的模型与更丰富的训练数据，这使得模型训练在计算、存储与时间成本方面的需求显著增长。面对参数量与数据规模持续扩张的趋势，单机训练逐渐难以满足算力、显存与训练时长等方面的要求。在此背景下，分布式机器学习通过在多计算节点之间进行并行计算与资源协同，以提升训练吞吐并缩短迭代周期，已成为训练大规模模型的重要技术路径。然而，传统分布式训练在很多场景下仍需在节点间传输原始数据、特征或中间表示，在跨域协作时难以避免数据隐私泄露与合规风险。
+	随着人工智能与大数据技术的快速发展，机器学习在医疗、金融与工业互联网等领域得到广泛应用。近年来的研究与工程实践表明，模型性能的持续提升通常依赖于更大的模型与更丰富的训练数据，这使得模型训练在计算、存储与时间成本方面的需求显著增长。面对参数量与数据规模持续扩张的趋势，单机训练逐渐难以满足算力、显存与训练时长等方面的要求。在此背景下，分布式机器学习（DML）通过在多计算节点之间进行并行计算与资源协同，以提升训练吞吐并缩短迭代周期，已成为训练大规模模型的重要技术路径。然而，传统分布式训练在很多场景下仍需在节点间传输原始数据、特征或中间表示，在跨域协作时难以避免数据隐私泄露与合规风险。
 
-	为应对日益严格的数据隐私保护与数据合规要求，联邦学习（FL）应运而生。FL是一种面向隐私保护的分布式学习范式，其核心思想是“数据不出本地”：各参与方在本地设备或机构内完成模型训练，仅与服务器（或其他参与方）交换模型更新（如梯度、权重或权重更新），并通过聚合机制实现全局模型迭代\cite{fedavg-fedsgd}。该范式在不直接共享原始数据的前提下支持跨机构、跨设备的协同学习，能够更好地满足数据合规约束，例如欧盟GDPR与CCPA等法规要求\cite{GDPR,CCPA}，并促进多方数据价值的安全释放。
+	为应对日益严格的数据隐私保护与数据合规要求，联邦学习（Federated Learning, FL）应运而生。FL是一种面向隐私保护的分布式学习范式，其核心思想是“数据不出本地”：各参与方在本地设备或机构内完成模型训练，仅与服务器（或其他参与方）交换模型更新（如梯度、权重或权重更新），并通过聚合机制实现全局模型迭代\citess{fedavg-fedsgd}。该范式在不直接共享原始数据的前提下支持跨机构、跨设备的协同学习，能够更好地满足数据合规约束，例如《欧盟通用数据保护条例》与《加州消费者隐私法案》等法规要求\citess{GDPR,CCPA}，并促进多方数据价值的安全释放。
 
 	尽管联邦学习在隐私保护方面具有优势，但其系统效率在很大程度上受限于通信效率。典型的联邦学习训练通常包含“本地训练——模型聚合/同步”的迭代流程；在跨设备联邦学习场景中，终端数量庞大且网络条件高度异构，模型更新需要通过蜂窝网络或Wi-Fi等无线网络进行传输。随着模型体量增大以及同步频率提升，通信带宽受限、网络时延、丢包与抖动等问题会显著增加每轮训练的同步开销，并进一步引发尾部时延放大、聚合等待时间增长、有效吞吐下降等问题，从而降低整体训练效率并影响收敛耗时的稳定性。因此，在保证模型精度与收敛性的前提下，如何有效降低通信开销、提升通信阶段的鲁棒性与可扩展性，已成为联邦学习与分布式机器学习落地应用中的关键挑战之一。
 
@@ -120,54 +116,186 @@
 
 	此外，随着联邦学习应用场景的不断扩展，参与节点的异构性与网络条件的多样性对通信与调度策略提出了更高要求。在面向大规模真实部署时，系统不仅需要具备对网络波动的适应能力以及对节点故障的容错能力，还应在效率提升的同时兼顾安全性与隐私保护要求。因此，研究能够同时兼顾通信效率、收敛稳定性与系统可扩展性的自适应通信调度方法，对于推动联邦学习在数据敏感行业的规模化落地具有重要价值。
 
-	综上所述，围绕分布式机器学习与联邦学习中的通信优化与自适应调度开展深入研究，不仅有助于降低训练的总通信量与端到端训练时延，提升系统资源利用率与训练稳定性，而且能够在隐私合规约束下促进跨机构数据协同与模型能力提升，对推动人工智能的可持续发展与数据安全共享具有重要的理论意义与应用价值。
+	综上所述，围绕联邦学习中的通信优化与自适应调度开展深入研究，不仅有助于降低训练的总通信量与端到端训练时延，提升系统资源利用率与训练稳定性，而且能够在隐私合规约束下促进跨机构数据协同与模型能力提升，对推动人工智能的可持续发展与数据安全共享具有重要的理论意义与应用价值。
 
-	\section{DML研究概述}
-	\nomchn{PS}{Parameter Server}{参数服务器}
+	\section{联邦学习通信效率研究概述}
+
+	\subsection{联邦学习基本概念}
+	\nomchn{SGD}{Stochastic Gradient Descent}{随机梯度下降}
+	\nomchn{FedSGD}{Federated Stochastic Gradient Descent}{联邦随机梯度下降}
+	\nomchn{FedAvg}{Federated Averaging}{联邦平均}
 	\nomchn{IID}{Independent and Identically Distributed}{独立同分布}
 	\nomchn{Non-IID}{Non-Independent and Identically Distributed}{非独立同分布}
+	\nomchn{PS}{Parameter Server}{参数服务器}
 
-	DML是指在多个计算节点上协同训练同一全局模型，通过并行计算与跨节点通信来提升训练吞吐、缩短训练时间并支持更大规模的数据与模型。根据并行方式的不同，分布式训练可采用数据并行、模型并行与流水并行等范式；从系统架构角度看，常见实现包括参数服务器（PS）架构以及基于集体通信的同步训练架构。尽管具体实现存在差异，分布式训练过程通常可抽象为以下共性步骤：
+	 FL由Google在2016年系统提出，其代表性工作联邦随机梯度下降（Federated Stochastic Gradient Descent, FedSGD）与联邦平均（Federated Averaging, FedAvg）构建了“本地训练—全局聚合”的基础范式\citess{fedavg-fedsgd}。在该范式中，参数服务器（Parameter Server, PS）负责下发全局模型并聚合各工作节点上传的更新；工作节点仅在本地数据上执行若干步优化，再将参数增量、梯度或模型权重发送回服务器。FL的核心约束是“数据不出域”，即原始样本始终留在设备或机构本地，从机制上降低跨主体数据直接共享带来的隐私与合规风险。从数学形式上看，FL通常最小化如下目标函数：
+	\[
+	\min_{\mathbf{w}} \left\{ F(\mathbf{w}) = \sum_{k=1}^{K} p_k F_k(\mathbf{w}) \right\},
+	\]
+	其中 $K$ 为工作节点总数，$p_k \ge 0$ 且 $\sum p_k = 1$，$F_k(\mathbf{w}) = \mathbb{E}_{\mathbf{x} \sim \mathcal{D}_k}[ \ell(\mathbf{w}; \mathbf{x}) ]$ 为第 $k$ 个工作节点在其本地数据分布 $\mathcal{D}_k$ 上的期望损失。这一形式凸显了FL的分布式本质，同时也暴露了其与传统DML的关键差异：各工作节点的 $\mathcal{D}_k$ 不仅可能不同（统计异构性），而且不能直接汇聚。
+
+	从学习范式角度看，FL仍属于DML的大类，但它不是“把传统分布式训练简单搬到边缘端”。传统DML通常默认数据可以被预先收集、清洗并汇聚到统一训练环境，或至少允许节点间进行一定程度的数据交换，因此常部署在同一机房、同一集群或同一局域网内，通信多采用All-Reduce或PS架构中的高速互连（如RDMA、NVLink）。FL则以“数据不可集中、不可直接交换”为前提，参与方常来自不同机构与地域，节点在线状态、硬件能力与网络质量均高度异构，训练过程天然呈现跨域协作特征。
+
+	这种差异带来两个直接后果。其一，DML优化重点通常是算力并行与集群吞吐，而FL除了模型精度外，还必须同时满足隐私约束（如差分隐私）、参与公平性与系统可用性。其二，DML中的通信多发生高带宽、低时延、较稳定的内网环境；FL通信更多发生于蜂窝网、Wi-Fi或跨机构专线等广域网场景，链路波动与传输不确定性显著更强。此外，DML中的数据具有独立同分布（Independent and Identically Distributed, IID）的特点，而FL中普遍存在的非独立同分布（Non-Independent and Identically Distributed, Non-IID）数据分布会加剧模型更新方向的差异，使得全局聚合需要更多轮次才能收敛，这进一步放大了通信开销的重要性。因此，FL虽然是分布式机器学习的重要分支，但其系统设计目标、约束条件与工程实现路径均与传统DML存在本质区别。
+
+	\subsection{联邦学习通信基本问题}
+
+	承接上一节所述的“跨网络协同”特征，FL首先面临的是带宽受限问题。典型联邦训练每一轮都包含“工作节点接收模型—本地训练—上传更新—服务器聚合—再下发”的闭环，当模型参数规模较大、参与工作节点数量较多或通信轮次较高时，累计传输量会迅速增长。相比数据中心内部高速互联（通常大于10Gbps），广域网环境中的上行带宽往往更紧张（例如4G/5G移动网络上行仅为几Mbps到几十Mbps），且工作节点可用带宽还会随时间波动。实测研究表明，在跨广域网的FL场景中，通信阶段可占据训练总耗时的90\%\citess{luo2020plink}。
+
+	其次是时延与可靠性问题。广域网中存在更明显的排队时延、链路抖动与丢包重传，单轮同步时间并不稳定。一次完整的FL通信时延可分解为：传输时延（数据量/带宽）、传播时延（物理距离）、排队时延（网络拥塞）和处理时延（序列化/反序列化）。在同步聚合机制下，服务器通常需要等待足够数量的工作节点更新后才能继续下一轮，结果就是“快节点等慢节点”，尾部时延被放大。随着参与规模增加，这种等待效应会进一步累积，直接拉长达到目标精度所需的时间，并降低系统资源利用率。
+
+	第三是异构性耦合问题。FL工作节点在硬件算力（CPU/GPU/TPU）、电量约束、网络接入方式（Wi-Fi、蜂窝、卫星）和在线时段上差异显著，计算慢节点与弱网节点往往重叠，形成持续性的系统瓶颈。此外，统计异构性（Non-IID数据）会使得不同工作节点上的本地损失曲面形状差异较大，导致各自计算出的更新方向不一致，从而需要更多轮的全局通信来弥合分歧。通信受限不仅会降低吞吐，还可能影响优化过程：例如有效参与工作节点数下降、每轮可用更新不稳定，进而增大训练方差并拖慢收敛。更严重的是，通信约束与统计异构性之间存在负向协同——当每轮只能接收少量工作节点的更新时，Non-IID带来的偏差更难被平均消除，模型可能陷入次优解。由此可见，FL通信问题并非单一“传输慢”，而是带宽、时延、可靠性与异构性（包括系统异构与统计异构）共同作用下的系统性挑战。
+
+	\subsection{联邦学习通信效率研究方向}
+
+	为缓解上述瓶颈，FL通信优化通常沿三条主线展开。第一类是裁剪（Sparsification/Selection），核心思想是“少传”：在每轮本地更新后，仅选择一部分更重要的参数或梯度坐标进行上传，忽略贡献较小的分量，从而显著缩减消息体大小。常见做法包括Top-$k$选择（保留绝对值最大的$k$个更新）、随机阈值过滤以及分层重要性筛选（如在张量维度上分别进行稀疏化）\citess{kerkouche2021constrained}。近年来，梯度稀疏化与误差补偿机制的结合（如DGC、Deep Gradient Compression）能在保持收敛精度的同时将通信量减少两个数量级以上\citess{lin2017deep}。其关键在于平衡“信息保真度”与“传输开销”，避免过度裁剪导致模型收敛变慢或精度下降，通常需要配合动量掩码或梯度积累来补偿被丢弃的信息。
+
+	第二类是压缩（Compression/Quantization/Coding），核心思想是“把同样的信息用更少比特表示后再传”。与裁剪主要减少“传输维度”不同，压缩主要减少“每个维度的编码开销”，例如低比特量化（1-bit 随机梯度下降（Stochastic Gradient Descent, SGD）将梯度映射为低精度整型）、差分编码（仅传输与前一时刻的差值）、熵编码（霍夫曼编码、算术编码）与结构化编码（如基于高斯过程的编码）\citess{1-bit-sgd}。压缩通常能在不改变参数维度的前提下显著降低带宽占用，适合与裁剪联合使用：先筛选要传的关键信息，再对其进行低开销编码，以获得更高总体压缩率。
+
+	第三类是异步联邦学习（Asynchronous Federated Learning），核心思想是“减少等待”。传统同步FL要求服务器按轮次等待一批工作节点更新后统一聚合，慢节点会拖累全局节奏；异步机制允许服务器在收到更新后即时或半即时聚合，降低同步屏障带来的阻塞。典型工作包括FedAsync（引入陈旧性感知权重）\citess{xie2019asynchronous}、ASO-Fed（基于模型年龄的动态学习率）\citess{chen2020asynchronous}等。该方向能够有效提升系统吞吐和设备利用率，尤其适用于节点在线状态频繁变化的场景，但也会引入更新陈旧性与稳定性控制问题，通常需要配合权重衰减、延迟感知聚合或学习率调节策略。更进一步的混合方案（如部分同步、弹性同步）试图在同步的收敛稳定性与异步的高效率之间取得折中，例如将工作节点分组，组内同步、组间异步\citess{9912266}。
+
+	综上，裁剪、压缩与异步分别对应“传多少、怎么传、何时传”三个维度，是当前解决FL通信问题最常用也最具工程可行性的路径。实际系统往往采用组合式设计：在广域网和异构终端条件下，将裁剪与压缩叠加以减少通信负担，再通过异步机制降低等待开销，从而在训练效率、收敛质量与部署复杂度之间取得可接受的折中。需要强调的是，没有任何单一方法能完美适配所有FL场景——带宽极度受限时裁剪优先，节点高度不稳定时异步优先，而对收敛精度要求严苛的任务则需谨慎使用有损压缩。未来研究的一个重要方向是设计自适应策略，使FL系统能够根据实时网络状态、设备负载和数据分布动态调整通信优化方案。
+	\section{联邦学习研究现状}
+
+	本节系统梳理FL的研究现状。因为FL是DML一个子类，DML相关研究为FL的通信优化提供了重要的方法学基础与理论参照。因此，本节首先回顾DML在通信优化的核心技术脉络，随后聚焦于FL在隐私约束下的四大核心挑战——统计异构性、通信效率、隐私安全与系统架构，并逐一展开相关研究的深入分析。
+
+	\subsection{分布式机器学习中的通信优化：技术基础}
+
+	DML旨在通过多节点协同训练加速大规模模型。其通信优化的研究历程为FL提供了可直接借鉴的算法与系统经验。
+
+	\cite{parallelized-sgd}最早提出了并行化SGD的框架：将数据分片到多个工作节点，各节点独立计算梯度后求平均。该方法在理想情况下实现了接近线性的加速比，但要求所有节点同步等待，且未考虑网络通信开销。随后，Google的DistBelief系统首次在大规模集群上成功训练深度网络。它引入了PS架构，将模型参数集中存储于一组服务器，工作节点异步拉取参数、推送梯度。其Downpour SGD变体通过异步更新大幅提升了吞吐量，但也暴露了陈旧梯度导致收敛不稳定的问题。这两项工作分别奠定了同步与异步数据并行的基础范式\citess{distbelief}。
+
+	为降低梯度传输的带宽占用，\cite{1-bit-sgd}提出了1-bit SGD：将梯度量化为仅1比特（即只保留符号），并在每次迭代中通过误差反馈技术累积量化误差并反馈到下一次量化。在语音DNN训练中，该方法将通信量压缩32或64倍，而识别准确率几乎无损。\cite{compression-error-feedback}进一步将稀疏化、残差累积与极致量化有机结合，构建了一套完整的梯度压缩流水线。首先，\cite{compression-error-feedback}采用阈值稀疏化：仅传输绝对值超过预设阈值$\tau$的梯度元素，其余“微小”更新被延迟处理。为编码稀疏梯度，使用“键值对”映射（索引+梯度值），大幅减少传输量。其次，\cite{compression-error-feedback}引入梯度残差与误差反馈机制：未被传输的小梯度值并非被丢弃，而是累加在一个本地“梯度残差”变量中。这确保了具有微小但持续偏向的梯度最终能被更新（只是频率更低），从而维持了算法的长期收敛性，本质上为不同量级的梯度元素实现了可变长度的智能延迟。进一步地，\cite{compression-error-feedback}对传输梯度进行极致量化：将梯度值量化为$+\tau$或$-\tau$（1比特），并将量化误差加回梯度残差。在GPU集群上的实验表明，该方法将通信量减少两个数量级，且不损失模型精度。这些工作为FL的研究提供的思路与方向。
+
+	在理论层面，\cite{smith2018cocoa}提出了CoCoA，一个用于分布式凸优化的通用框架。该框架的核心在于利用对偶分解：根据数据是按特征划分还是按样本划分，借助原问题-对偶问题的数学结构，将全局目标自然分解为多个子问题。这种对偶分解不仅使得方法高效，还能带来原-对偶收敛保证，并允许计算对偶间隙作为精度证明和停止准则。\cite{ma2015adding}提出的CoCoA+改进了聚合方式，将收敛性分析从光滑损失函数扩展到非光滑损失函数（如支持向量机、非光滑回归），扩大了适用范围；同时还为CoCoA和COCOA+都提供了更强的原-对偶收敛率分析，这能用于构建高效的优化质量证明。此外，\cite{zhang2013communication}首次严格证明，只要机器数量$m$小于每台机器的样本数$n$，将数据平均分配给各个工作节点进行训练可以达到与使用全部样本的集中式算法相匹配的最优收敛速率，从而回答了“分布式平均是否真的比单机使用部分数据更好”这一基本问题。这些理论为后续压缩方法的设计提供了基准。
+
+	为消除PS的单点瓶颈，\cite{ako}提出了Ako系统，其核心创新在于部分梯度交换：每个工作节点定期计算梯度更新，但不发送整个梯度，而是根据可用网络带宽将梯度分割成多个部分，在每一轮同步中只与其他节点交换一部分。虽然每个节点每次仅收到梯度的一部分，但经过多轮交换，所有节点最终能在有限延迟内获得完整的梯度信息，从而保证收敛。这种设计使得单次通信量小，网络带宽被充分利用。面向微云环境，\cite{dlion}提出了去中心化分布式深度学习系统DLion，旨在缩短训练时间、提高模型精度并处理系统可扩展性。其核心技术包括三个方面：计算能力感知的批处理、网络感知的数据交换、选择性数据传播；\cite{dlion}根据每个节点的实时计算能力动态调整批处理大小，避免算力弱的节点成为瓶颈，同时根据当前网络带宽和延迟状况，智能调整梯度或模型参数的交换策略（如选择不同的拓扑或压缩率），最大化利用异构网络资源，\cite{dlion}还根据更新的重要性或与当前模型的相关性进行选择性传播，进一步减少冗余通信。异步训练方面，\cite{staleness-aware-async-sgd}提出了陈旧性感知的学习率调整：根据梯度的延迟情况动态调整其学习率。\cite{async-ADMM}提出了异步ADMM\citess{ADMM}算法，其采用部分同步策略：主节点无需等待所有工作节点，只需收到一定数量（例如$K$个）的更新即可推进；\cite{async-ADMM}同时引入延迟有界机制：允许较快节点更新更频繁，但强制规定来自慢节点的更新不能“过期”太久（设置一个最大延迟界限），从而既保证了训练效率，又确保了算法的公平性与收敛性。理论分析表明，在适度陈旧性条件下异步ADMM仍能保持与同步版本相当的收敛速率。
+
+	\cite{zhou2021tsengine}提出了TSEngine，其核心思想是摒弃静态、固定的通信逻辑，转而采用实时感知网络、动态调度传输的智能覆盖网络。TSEngine作为独立的通信层实现，无需修改训练算法、操作系统或网络硬件，具有非侵入性。实验表明，在128个节点的广域网集群中，相比星型模式，TSEngine能将模型分发和聚合的通信时间分别降低95\%和90\%，整体训练时间显著缩短。\cite{revisiting-distributed-sync-sgd}重新审视了分布式同步SGD与异步SGD的性能差异，该工作通过大量实验表明，实际中同步屏障的开销往往被高估，而异步带来的收敛不确定性可能更值得关注，为后续FL同步机制设计提供了重要参照。\cite{zhang2015deep}提出了弹性平均SGD（Elastic Averaging SGD），其核心思想是在主从架构中引入弹性力：每个工作节点维护自己的本地参数，主节点维护一个中心变量。弹性力将每个工作节点的本地参数向中心变量“拉拽”，同时中心变量也受到所有工作节点参数的影响——中心变量的更新是在时间和空间上的移动平均（既随时间平滑，又是对所有工作节点参数的空间平均）。这允许工作节点有一定程度的局部探索自由（本地参数可以更远地偏离中心变量），但又被弹性力约束在全局中心附近，从而减少通信量、允许更多本地探索。相比当时主流的异步方法，EASGD提供了更快的收敛速度，减少了通信开销，在测试误差上保持了高质量的性能。
+
+	针对图神经网络（GNN）在分布式训练中的通信瓶颈，\cite{peng2022sancus}提出了Sancus框架。Sancus从两个层面进行了重构。计算重构：将GNN视为纯矩阵运算序列，不再基于图语义的邻域访问，而是将邻接矩阵和嵌入矩阵切片后分发到各GPU，每个GPU仅处理本地子矩阵块。通信避免：引入有界过时的历史嵌入——允许GPU在计算时使用缓存的历史嵌入值而非总是获取最新嵌入，从而避免每轮迭代中昂贵的跨GPU传输。系统引入新颖的度量标准来管理和控制历史嵌入的最大过时程度（即“有界过时”），确保其不会损害模型收敛。Scancus还证明了在使用有界过时历史嵌入的情况下，嵌入和梯度的近似误差有界，且系统整体具备收敛性保证。在大型基准数据集上的实验表明，Sancus能显著降低通信开销，同时保持模型精度几乎没有损失。
+
+	\cite{a-taxonomic-perspective}提供了一个分类学视角，旨在通过分析深度学习模型训练的通用特性以及如何在集群中分配此类工作负载以实现协同模型训练，揭示在独立机器集群中训练深度神经网络时起作用的基本原理。该文概述了当代分布式深度学习系统采用的各类技术，并探讨其对训练过程的影响与意义。为系统化理解和比较这些技术，作者将不同方法归类整理，从而构建了分布式深度学习系统的分类体系，按数据并行、模型并行和混合并行进行分类，并讨论了每种方法的通信特征、同步策略和容错机制，为FL通信研究提供了重要的背景知识。
+
+	上述DML研究为FL提供了压缩算法、异步机制和理论工具。然而，FL特有的“数据不出域”、工作节点高度异构与统计分布不一致等约束，使得简单套用DML技术往往失效，需要针对性地进行再设计。
+
+	\subsection{联邦学习的核心挑战与研究现状}
+
+	FL在DML基础上增加了数据隐私保护与工作节点不可靠等强约束。经典算法FedAvg\citess{fedavg-fedsgd}通过本地多轮迭代后平均的方式显著减少了通信轮次，但其在真实场景中面临四大核心挑战：统计异构性（Non-IID数据）、通信效率瓶颈、隐私安全威胁以及系统与架构异构性。以下逐层展开各方向的研究现状。
+
+	\subsubsection{统计异构性挑战}
+
+	\cite{non-iid}率先系统性地揭示了Non-IID数据对联邦学习的严重危害。该文指出，FL依赖SGD，而SGD的理论保证基于训练数据的独立同分布假设；但在现实中，每个边缘设备上的本地数据天然是Non-IID的（例如不同用户的手机图片主题完全不同）。作者通过实验证明，在高度偏斜的Non-IID数据下，FedAvg\citess{fedavg-fedsgd}的准确率急剧下降：CIFAR-10上下降51\%，关键词识别任务上下降55\%。理论分析将这一现象归因于权重发散——即相同初始化下不同训练过程产生的权重差异，并证明权重发散的上界与每个工作节点的数据分布和全局数据分布之间的EMD（Earth Mover's Distance）有关，受学习率、同步步数等因素影响。作为实践方案，该文提出了一种数据共享策略：用极少量（如5\%）的全局共享数据来校准Non-IID训练，实验表明仅共享5\%的数据就能将CIFAR-10的准确率提升30\%。这引入了一个关键权衡：在模型准确率与数据集中化程度之间的折衷。
+
+	针对FedAvg\citess{fedavg-fedsgd}在处理现实异质性时的根本缺陷，\cite{fed-prox}提出了FedProx。论文开篇指出两大问题：一是系统异质性，FedAvg\citess{fedavg-fedsgd}要求所有参与设备完成固定轮数的本地训练，能力较弱的设备常被直接丢弃其更新，浪费数据和计算资源；二是统计异质性，FedAvg\citess{fedavg-fedsgd}在Non-IID数据下已被证明会发散或表现不佳，且缺乏收敛性理论保证。基于系统异质性与统计异质性相互交织的深刻洞察，FedProx的核心机制是在本地目标函数中引入一个近似项，将本地更新锚定在上一次全局模型附近，从而稳定训练过程。这一近端项为服务器提供了一种原则性的方法，来“信任”并融合来自不同设备、可能因系统限制而计算程度不同的局部更新，显式地建模和缓解异质性。FedProx允许设备根据自身系统能力执行可变量的本地工作（而非固定E轮）；首次为联邦优化算法在同时考虑系统和统计异质性的真实场景下提供收敛性保证；FedProxy通过实验表明，在高度异构网络中FedProx显著提升了稳定性和最终精度，平均绝对测试精度提升了22\%。在FedProx基础上，\cite{fed-dm}提出了FedDM，针对移动边缘计算环境中资源受限、数据异构的特点，进一步解决了FedProx的两个局限：近似项系数固定、本地训练轮数固定。FedDM引入两大动态机制；第一，自适应近端项系数：不再使用固定系数，而是根据参数差异性和损失差异性两种度量动态更新近端项的权重，让本地模型的更新能够更智能地权衡“向全局模型靠拢”与“拟合本地数据”之间的关系。第二，动态本地训练轮数：在整个联邦学习过程中，根据资源状况和模型状态动态调整每个设备的本地训练轮数，允许能力强的设备多算、能力弱的设备少算，避免“一刀切”造成的资源浪费或掉队。FedDM在多个真实数据集、不同异构数据设置和网络配置下，有效提升了有限通信资源下的收敛效率与模型精度。
+
+	针对移动用户在层次化无线网络中的联邦学习，\cite{mac-fl}提出了移动感知集群联邦学习（MAC-FL）算法。该文系统指出现有方案的不足：缺乏对用户移动性影响收敛速度与精度的量化分析；传统静态分簇策略既不高效也不实用（忽略用户因移动导致的物理可接入性变化）；传统等权重平均聚合在数据分布动态变化下已成为瓶颈。MAC-FL的主要创新包括：第一，建立含移动性的理论分析框架，首次在分析层次化联邦学习的收敛速率时同时纳入用户移动性、数据异构性和网络架构异构性；第二，设计移动用户的高效参与机制，重新设计接入机制使移动用户即使在本地理训练期间可能离开当前接入点覆盖范围也能有效参与，并引入个性化联邦学习使模型适应每个用户；第三，引入注意力加权平均改进传统聚合方案，根据工作节点数据的重要性或相似性进行加权聚合。在车辆网络仿真中，MAC-FL将通信开销降低了40\%。
+
+	针对传统FL要求所有工作节点使用相同模型架构的局限，\cite{li2019fedmd}提出了FedMD，一个通过知识蒸馏实现异构模型联邦学习的框架。该工作指出，在商业场景（如医疗、金融、AI服务）中，参与者有能力和需求设计自己的专属模型，这些模型为不同任务定制且涉及知识产权，不能公开架构细节。FedMD的核心思想是利用迁移学习和知识蒸馏构建通用通信协议，使不同架构的模型能够相互“理解”和传递知识。关键设计包括：以一个公共数据集（如ImageNet）作为“交流媒介”，所有模型在该数据集上预训练并进行后续知识交换；每个模型在本地用私有数据训练后，在公共数据集上计算并上传其输出类别概率分布（软标签）；服务器聚合这些软标签生成“共识知识”并下发给所有模型，各模型通过知识蒸馏将共识知识融入自身。整个过程是黑盒操作，无需知晓其他模型的内部架构。实验表明，在10个不同参与者的设置下，每个本地模型的最终测试准确率平均提升了20\%（相比于不协作的孤立训练），性能仅比将所有私有数据集中训练的“理想上限”低几个百分点。
+
+	\cite{park2024federated}提出了具有灵活架构的联邦学习（FedFA），允许工作节点训练不同宽度和深度的模型。与现有方法不同，FedFA在模型聚合过程中引入层嫁接（Layer Grafting）技术，使工作节点的本地架构与联邦学习系统中最大的网络架构保持一致，确保所有工作节点贡献均匀融入全局模型，从而最大限度降低单个工作节点数据导致模型参数失衡的风险，并带来安全效益。此外，FedFA引入可扩展聚合方法以管理不同网络架构间权重比例的差异。该文指出现有异构架构FL方法存在两大缺陷：安全方面，不同架构的模型在聚合时会产生“弱点”（某些权重仅由少数工作节点更新），易受后门攻击；公平方面，权重尺度差异导致全局模型偏向某些工作节点。FedFA的解决方案是：构建一个深度和宽度最大的全局模型，确保每个工作节点都能参与所有权重的更新；利用神经网络中跳跃连接的相似性对齐不同工作节点的层进行聚合；提出公平可伸缩的聚合方法消除权重尺度偏差；结合神经架构搜索（NAS）为每个工作节点设计最优架构。实验表明，在Pre-ResNet、MobileNetV2等模型上，FedFA在IID和Non-IID设置中均优于现有方法（全局精度提升最高达1.20倍），显著提升了对抗后门攻击的鲁棒性，并在Transformer语言模型上将困惑度改善达1.07–4.50倍。
+
+	这些工作在统计异构性下的收敛性保证、动态适应性以及模型灵活性方面取得了显著进展，但大多以增加通信轮次或计算开销为代价，与通信效率之间存在内在张力。
+
+	\subsubsection{通信效率挑战}
+
+	通信瓶颈是FL走向大规模应用的关键障碍。除借鉴DML中的量化、稀疏化技术外，FL研究更注重工作节点侧的动态适应性与系统异构感知。
+
+	针对每轮参与工作节点数量的动态决策问题，\cite{isp}提出了ISP（智能参与者选择）方法。该文精准指出：现有主流方法（如FedAvg\citess{fedavg-fedsgd}、FedProx\citess{fed-prox}）通常固定每轮的参与工作节点数量，未能将这一关键参数动态化以优化全局效率。参与过多会利用丰富的梯度多样性加速收敛，但导致单轮通信成本激增；参与过少虽降低单轮开销，却减慢学习速度、损害泛化能力。ISP的核心思想是动态决策每轮的参与工作节点数量，在当前轮次中选择足以产生有效训练影响的最合适数量，从而在通信开销和收敛速度之间达成最优平衡。在模拟的5G动态信道场景中，ISP将训练完成时间缩短了35\%。
+	更全面的自适应框架是\cite{adaptive-fl}，称为AdaptiveFL。该文指出现有通信优化方案隐含假设网络带宽在每轮训练中稳定不变，但现实中的地理分布设备处于动态带宽环境，固定大小的压缩模型无法适应实时变化的带宽。AdaptiveFL提出两阶段解决方案：首先，采用随机Frank-Wolfe方法进行本地训练，使模型能够被剪枝至任意稀疏度而无需重新训练，且剪枝后的子模型仍保持有竞争力；其次，在每个通信轮次中，根据工作节点当前实时的可用带宽动态选择最合适的子模型（特定稀疏度）上传至服务器，实现带宽的实时最佳利用。实验表明，在动态带宽环境下，AdaptiveFL相比固定剪枝方案将通信开销降低32\%以上，精度损失小于1\%。
+
+	在量化方面，\cite{aqg}提出了自适应量化梯度（AQG）方法。该文指出，现有梯度量化方法多为固定量化位数，且在NON-IID数据下效率不足；边缘设备的随机掉线进一步为训练引入噪声。AQG的核心思想是根据梯度更新的“信息量”动态分配量化资源：更新幅度大的梯度用更多比特精细量化，更新幅度小的用更少比特粗糙量化甚至跳过，实现通信比特的“按需分配”。同时，AQG结合方差缩减技术，对传输的梯度进行适当放大校正，以保持梯度估计的无偏性，提升掉线情况下的鲁棒性。在ResNet-50上，AQG以8倍的压缩率达到了与全精度相当的收敛精度。\cite{clipped-uniform-quantization}研究了裁剪均匀量化方法。该方法通过采用最优截断阈值和工作节点自适应量化方案，在保持竞争性准确率的同时显著降低带宽和内存需求。其核心在于基于均方量化误差倒数的权重平均机制，有效平衡了通信效率与模型精度。与联邦平均不同，该设计无需向服务器披露工作节点特定数据量，从而增强了工作节点隐私保护。在CIFAR-10上实现了4-bit量化下精度损失小于0.5\%。\cite{fed-qcs}将量化与压缩感知结合，提出了FedQCS框架。该文系统梳理了梯度量化与梯度稀疏化的不足，指出量化压缩感知结合两者但现有方案要么需要额外传输抖动信号，要么仅限于1比特量化。FedQCS设计了三步压缩策略：块稀疏化（将梯度向量分块，每块仅保留最大幅值部分）、降维（使用感知矩阵进行随机投影）、量化（最优非均匀标量多比特量化）。在PS端，提供两种重建策略：先估计后聚合（最小化估计误差，但计算复杂度随设备数量线性增长）和先聚合后估计。在信道资源受限的无线场景中，该方法将所需上行带宽减少了70\%。
+
+	针对通信频率的自适应调整，\cite{a-fed-avg}提出了AFedAvg。该文首先通过实验分析了通信频率对联邦学习收敛性的影响，发现在模型训练的不同阶段调整通信频率可实现更快的收敛速度和近乎最高精度。基于此，AFedAvg融合了自适应通信频率与梯度稀疏化：并非所有工作节点每轮都上传更新，而是根据动态准则决定上传频次；同时只上传重要的梯度坐标或压缩更新量，通过合理聚合与误差补偿保持收敛性。实验表明，AFedAvg在典型图像数据集的多数据分布下显著优于FedAvg及其变体。
+
+	\cite{comm-conv-trade-off}从理论上分析了本地SGD（即FedAvg的每轮多步更新）的收敛速率，给出了收敛速率上界并得出关键结论：本地SGD具有完美的线性计算加速能力，可以用远低于传统同步SGD的通信开销获得相同的计算加速收益。该文对比了两种提升“计算/通信比”的策略：增大批量大小与增大通信间隔。两者在批量大小和通信间隔较小时都能带来近似的线性加速效果，但通信间隔不能无限增大否则影响收敛，论文在第4节给出了实际选择指南。这一指南为实践中选择本地更新次数提供了依据，也是FedAvg能够高效工作的核心原因之一。虽然该分析针对凸问题，但这一积极结果为在更重要的非凸场景（如深度学习）中研究本地SGD提供了动力和信心。
+
+	针对大语言模型在联邦学习中的通信瓶颈，\cite{zhang2025federated}提出了分层跳跃式联邦学习方案。该文精准切中医疗健康领域应用联邦学习与大语言模型的核心矛盾：医疗数据包含敏感隐私信息，受法规保护形成“数据孤岛”；而LLM参数量巨大（十亿级），传输完整模型更新带宽成本极高。其核心思想是“冻结大部分，只微调关键部分”：在联邦微调预训练LLM（如LLaMA 3.2-1B）时，仅选择其中一部分层进行更新和通信，其余大部分层保持冻结。内在逻辑在于，预训练模型已学习强大通用语言表示，下游医疗专业任务可能只需调整高层与特定任务相关的表示，无需改动底层通用特征。在临床NER和分类任务上（使用i2b2和MIMIC-III数据集），该方法将通信成本降低约70\%，性能保持在集中式训练的98-99\%以内，同时提升了在Non-IID临床数据下的收敛速度和鲁棒性，并且在与差分隐私结合时表现出更好的隐私-效用权衡。
+
+	总体而言，FL通信效率研究已从“单一压缩”走向“自适应、理论有界、系统协同”的综合优化，但现有方法往往针对特定场景设计，缺乏统一的理论框架来刻画压缩率、收敛速度与异构性之间的最优权衡。
+
+	\subsubsection{隐私安全挑战}
+
+	早期隐私保护工作提出了分布式选择性SGD（DSSGD）\citess{dssgd}：各节点仅共享一小部分参数，在MNIST上将准确率从个体训练的93.16\%提升至98.71\%，接近集中式训练水平，同时大幅降低隐私泄露风险。安全聚合协议\citess{safe-protocol}专为移动联邦学习设计，基于秘密共享和双掩码技术，确保服务器只能获得所有工作节点更新的总和而无法反推单个更新，且完全容忍用户掉线，通信开销不超过明文传输的两倍。针对同态加密的高昂开销，\cite{pfmlp}将其与稀疏化结合：工作节点仅加密绝对值最大的10\%梯度，在MNIST上将同态加密计算开销降低80\%。\cite{10602929}进一步将稀疏化、压缩感知与同态加密联合设计，实验表明加密时间降低90\%，传输数据量降低93.4\%，同时模型精度几乎无损。\cite{cepam}提出了一种通信效率与隐私保护统一的机制，利用随机缩放均匀量化（RSUQ）将量化噪声本身塑造为满足差分隐私要求的高斯或拉普拉斯分布，从而无需额外添加噪声。在同等隐私预算下，CEPAM的通信量仅为传统“先加噪后量化”方法的10\%。
+
+	隐私保护与通信效率之间存在内在权衡：更强的隐私保护往往需要注入更多噪声，可能干扰模型收敛，进而增加通信轮次。如何在隐私预算、通信成本和模型精度三者之间实现帕累托最优，仍是开放问题。
+
+	\subsubsection{系统与架构挑战}
+
+	\cite{fault-tolerant-async-fl}提出了自适应终止检测机制。每个工作节点自主监测本地训练稳定性（自信收敛），当判断达到局部收敛时发出终止信号，该信号通过“涟漪”式广播在网络中可靠扩散，最终实现所有工作节点协同停止，避免了无限期训练。\cite{menegatti2024dynamic}将能量感知的拓扑设计形式化为优化问题，在设备能量与通信约束下求解最优拉普拉斯矩阵，使系统能主动适应设备故障和电量变化。在移动医疗场景中，该方法将网络寿命延长了40\%，同时收敛精度损失小于2\%。\cite{ouyang2024two}使用李雅普诺夫框架将原问题拆解为大尺度稳定参数更新与小尺度快速参数更新两个并行的子问题；从两时间尺度（长时设备选择与短时带宽分配）优化了无线联邦学习的能量效率。\cite{xu2023energy}提出了DAFL模型与DDAFL智能调度算法，利用深度强化学习根据网络实时状态（设备可用性、数据分布、信道条件）智能决策每轮参与聚合的设备数量。该方法动态平衡收敛稳定性与通信能耗，在10个移动设备的实验中将总能耗降低约35\%。激励机制方面，\cite{hu2022incentive}指出传统FL假设服务器能完全决定工作节点参与，但实际中工作节点需激励才愿参与。针对服务器固定预算下参与数量过多则个体奖励不足、过少则影响训练效率的矛盾，该文将工作节点自主参与建模为少数派游戏（Minority Game）。在此基础上提出标准、随机和联盟三种MG算法，通过协调工作节点决策显著降低每轮参与数量的波动性，将高价值工作节点的参与率从50\%提升到85\%。\cite{saputra2021dynamic}提出了动态车辆选择与合约激励机制。基于位置重要性和信息质量历史筛选最优车辆集，并采用多委托方-单代理方合约模型在信息不对称下实现服务商与车辆利润最大化。\cite{wu2024topology}对拓扑感知联邦学习进行了全面综述，将联邦学习划分为星型、网状、混合及较少见的网络拓扑四大结构，为不同应用场景下的拓扑选择提供了清晰的分类框架和研究方向指南。
+
+	最后，\cite{kairouz2021advances}和\cite{yang2019federated}的两篇权威综述，从算法、系统、隐私、应用等维度全面总结了FL的进展与开放问题，标志着该领域研究体系的逐渐成熟。
+
+	综上所述，FL通信优化并非孤立的技术问题，而是与统计异构性、隐私安全、系统架构深度耦合的系统性挑战。
+
+	\section{论文研究内容}
+
+	本文围绕FL中的通信瓶颈问题开展研究。在跨设备FL场景中，海量终端设备需要与中央服务器频繁交换模型参数（如梯度、权重），而带宽受限的边缘网络（如蜂窝网络、Wi-Fi 6）与资源受限的IoT终端环境，使得这类高频通信往往耗时较长；同时，网络传输过程中的丢包、时延等因素可能进一步导致训练效率低下甚至训练过程不稳定。因此，如何在保障模型收敛性与精度的前提下显著降低通信开销、提升训练稳定性，已成为推动联邦学习与分布式机器学习大规模落地的关键问题。
+
+	针对上述问题，本文提出一套新型联邦学习体系——LeMethod。LeMethod以“可扩展网络拓扑”“TCP上层拥塞控制”与“流量负载均衡”为核心设计思路，在不影响原模型收敛速度的前提下对通信过程进行优化：一方面通过扩展网络拓扑分担中央服务器的通信压力；另一方面通过调度算法实现更高效的通信组织；同时在TCP上层引入拥塞控制机制，以减少网络丢包概率并降低拥塞抖动对通信效率的影响。基于上述研究，本文的主要工作与创新归纳如下：
 
 	\begin{enumerate}
-		\item \textbf{数据准备与划分：}从分布式存储或数据源读取训练数据，并根据并行策略将数据（或模型参数）进行分片与分配；
-		\item \textbf{局部计算：}各计算节点在本地对分配到的数据分片执行前向与反向传播，得到梯度或参数更新量；
-		\item \textbf{跨节点通信与聚合：}节点之间交换梯度/参数更新量，并通过中心化聚合或去中心化归约形成全局一致的更新结果；
-		\item \textbf{模型更新与迭代：}将聚合后的结果应用于全局模型参数，并进入下一轮训练迭代。
+		\item 可扩展的网络拓扑结构：针对传统联邦学习网络拓扑在设备规模扩大时中央服务器通信压力过大的问题，本文提出一种可在传统拓扑基础上按需扩展的网络拓扑结构。该结构允许根据实际情况灵活扩展，从而提升拓扑扩展的成本可控性与灵活性，并通过拓扑扩展有效分担中央服务器的通信压力。
+		\item TCP上层拥塞控制机制：针对带宽受限网络中网络拥塞与抖动导致TCP拥塞控制频繁触发、进而降低整体通信效率的问题，本文在TCP上层引入拥塞控制机制，通过减少TCP拥塞控制的触发频率来降低网络拥塞抖动对通信效率的影响，并减少网络丢包的发生概率，从而提升训练过程的稳定性与效率。
+		\item 自适应的流量负载均衡方法：针对传统架构只能通过升级中央服务器与各节点间带宽来提升通信效率的限制，本文提出基于当前网络拓扑自适应的流量负载均衡方法，将流量从中央服务器负载均衡到工作节点。引入负载均衡后，系统的通信效率提升不仅依赖于中心链路带宽升级，还可通过增加拓扑链路数量以及升级工作节点间带宽来实现，从而为通信效率提升提供更灵活的扩展路径。
+		\item 动态调度算法：针对通信链路带宽随时间变化、静态调度难以持续取得较优通信效率的问题，本文设计动态调度算法。该算法在传输过程中对网络带宽进行记录与分析，并基于历史带宽信息进行动态调度，使LeMethod能够在不同网络状态下自适应地组织通信过程，进一步提升端到端训练效率。
+	\end{enumerate}
+
+	\section{论文结构}
+
+	本文共分为五章，各章内容安排如下：
+
+	第一章绪论。首先阐述分FL的研究背景及意义，明确优化聚合通信对提升训练效率的重要性。随后概述FL通信效率研究，重点介绍FL通信相关基本问题和研究方向。接着综述FL的研究现状。最后简要介绍本文的主要研究内容与创新点。
+
+	第二章首先介绍分布式机器学习与联邦学习的基础框架和经典算法，聚焦FL，详细分析 FedSGD 与 FedAvg 的算法流程；然后阐述随机梯度下降的优化原理；最后引入TCP拥塞控制的自适应机制及其在联邦学习中的适用性问题，为后续章节奠定理论基础。
+
+	第三章TCP上层拥塞控制。针对DML和FL中TCP拥塞控制面临的挑战，分析现有拥塞控制算法在聚合通信场景下的局限性。在此基础上，提出一种面向聚合通信的TCP上层拥塞控制算法。详细阐述算法的设计思路、核心变量定义、算法流程、统计信息维护机制以及异常值与动态阈值处理方法，并讨论关键参数的选择。通过实验评估所提算法在聚合时间、累积分布、算法开销以及对收敛速度影响等方面的性能，验证其有效性。
+
+
+	第五章全文总结与展望。总结本文的主要研究工作与贡献，分析现有方法在拓扑扩展与动态调度方面的局限性，并对未来研究方向进行展望，包括更细粒度的调度策略、与底层网络协议的深度协同等。
+
+	\chapter{相关基础}
+
+	\section{分布式机器学习基础}
+
+	DML是指在多个计算节点上协同训练同一全局模型，通过并行计算与跨节点通信来提升训练吞吐、缩短训练时间并支持更大规模的数据与模型。根据并行方式的不同，分布式训练可采用数据并行、模型并行与流水并行等范式；从系统架构角度看，常见实现包括PS架构以及基于集体通信的同步训练架构。尽管具体实现存在差异，分布式训练过程通常可抽象为以下共性步骤：
+
+	\begin{enumerate}
+		\item 数据准备与划分：从分布式存储或数据源读取训练数据，并根据并行策略将数据（或模型参数）进行分片与分配；
+		\item 局部计算：各计算节点在本地对分配到的数据分片执行前向与反向传播，得到梯度或参数更新量；
+		\item 跨节点通信与聚合：节点之间交换梯度/参数更新量，并通过中心化聚合或去中心化归约形成全局一致的更新结果；
+		\item 模型更新与迭代：将聚合后的结果应用于全局模型参数，并进入下一轮训练迭代。
 	\end{enumerate}
 
 	图\ref{fig:distributed-training}展示了上述训练过程。
 
 	\begin{figure}[htbp]
 		\centering
-		\includegraphics[width=0.98\linewidth]{distributed_training}
 		\caption{分布式训练过程}
 		\label{fig:distributed-training}
 	\end{figure}
 
-	在上述过程中，分布式机器学习面临多方面挑战\cite{a-survay-on-dml}。首先，在\textbf{数据划分与资源异构}方面：不同的数据划分方式（如IID与Non-IID划分）会影响梯度估计偏差与收敛速度\cite{fedavg-fedsgd, non-iid}；同时，节点算力、负载与可用资源可能随时间动态变化，若静态分配任务与批大小，易导致负载不均衡与资源利用率下降。其次，在\textbf{同步机制与收敛效率}方面：需权衡通信频率与优化收敛，过于频繁的同步会引入显著通信开销与等待时间，而过长的本地更新间隔可能导致梯度陈旧或收敛震荡，从而增加达到目标精度所需的迭代轮数\cite{comm-conv-trade-off}。再次，在\textbf{通信效率与稳定性}方面：带宽受限、时延与网络抖动会显著放大训练的端到端耗时，因此常需结合量化、稀疏化、Top-$k$梯度裁剪与误差反馈机制\cite{1-bit-sgd, compression-error-feedback}等通信压缩技术，但压缩带来的额外计算开销、信息损失与收敛稳定性之间需精细权衡。最后，在\textbf{慢节点与系统鲁棒性}方面：同步训练易受慢节点与故障节点影响，导致尾部时延放大与同步屏障等待，进而拖慢整体训练进程，故需引入部分参与、异步更新、备份任务以及容错恢复机制以提升系统可用性\cite{fault-tolerant-async-fl}。
+	在上述过程中，DML需要协调多节点完成数据划分、局部计算、通信聚合与模型更新等步骤。其中，跨节点通信开销往往是制约训练效率的主要瓶颈，这也为后续联邦学习的通信优化研究提供了问题来源。
 
-	针对上述挑战，分布式机器学习领域持续涌现出多种算法与系统优化方法，包括高效的通信压缩技术、同步与异步更新策略、慢节点缓解与资源调度机制、分布式容错与恢复方法等。特别地，在真实网络与异构集群环境中，带宽与节点性能具有显著动态性与不确定性，亟需进一步研究面向运行状态的\textbf{自适应通信与调度策略}，以在保证模型收敛与精度的前提下，降低总通信开销并缩短达到目标精度的训练时间。随着云计算、网络基础设施与边缘计算平台的发展，分布式机器学习在金融、医疗、智能制造与互联网等领域展现出广阔的应用前景，并将持续推动智能化转型与数据价值挖掘。
+	DML在金融、医疗、智能制造等领域展现出广阔的应用前景。其中，通信效率问题在跨广域网的异构环境中尤为突出，本节介绍的基本架构与流程为理解联邦学习中的通信调度问题奠定了基础。
 
-	\section{FL研究概述}
-	\nomchn{FedSGD}{Federated Stochastic Gradient Descent}{联邦随机梯度下降}
-	\nomchn{FedAvg}{Federated Averaging}{联邦平均}
+	\section{联邦学习基础}
 
-	随着数据隐私保护法规的日益完善和分布式数据场景的普及，联邦学习（FL）作为一种新兴的分布式机器学习框架，受到学术界和工业界的广泛关注。联邦学习的核心思想是在保障数据不出本地的前提下，各参与节点通过本地模型训练，仅共享模型参数或梯度，在中央服务器进行模型聚合，从而实现跨机构、跨设备的联合建模。这一机制能够有效保护用户隐私，降低数据泄露风险，并促进多方数据价值的协同释放。
+	随着数据隐私保护法规的日益完善和分布式数据场景的普及，FL作为一种新兴的分布式机器学习框架，受到学术界和工业界的广泛关注。FL的核心思想是在保障数据不出本地的前提下，各参与节点通过本地模型训练，仅共享模型参数或梯度，在PS进行模型聚合，从而实现跨机构、跨设备的联合建模。这一机制能够有效保护用户隐私，降低数据泄露风险，并促进多方数据价值的协同释放。
 
-	联邦学习本质上是分布式机器学习的一种特化形式，其训练过程与分布式机器学习具有相似性。带有中央服务器的联邦学习通常采用FedSGD\cite{fedavg-fedsgd}或FedAvg\cite{fedavg-fedsgd}进行训练。
+	FL本质上是DML的一种特化形式，其训练过程与DML具有相似性。PS架构的FL通常采用FedSGD或FedAvg进行训练。
 
-	\subsection{FedSGD}
+	\subsection{联邦随机梯度下降}
 
-	FedSGD是联邦学习早期的典型优化形式之一，其基本思想是：在每一轮全局迭代中，工作节点在本地计算梯度（或等价的参数更新量），并将其上传至服务器进行聚合更新\cite{fedavg-fedsgd}。与集中式随机梯度下降类似，FedSGD通常对应“本地更新步数较少（可视为一次小批量梯度计算）+高频通信”的训练模式。
+	FedSGD是联邦学习早期的典型优化形式之一，其基本思想是：在每一轮全局迭代中，工作节点在本地计算梯度（或等价的参数更新量），并将其上传至服务器进行聚合更新。与集中式随机梯度下降类似，FedSGD通常对应“本地更新步数较少（可视为一次小批量梯度计算）+高频通信”的训练模式。
 
-	设系统包含$N$个工作节点与一个参数服务器，第$t$轮的全局模型参数为$W_t$，工作节点$k$的本地数据量为$n_k$，总数据量为$n=\sum_{k=1}^{N}n_k$。FedSGD的训练过程可概括为：
+	设系统包含$N$个工作节点与一个PS，第$t$轮的全局模型参数为$W_t$，工作节点$k$的本地数据量为$n_k$，总数据量为$n=\sum_{k=1}^{N}n_k$。FedSGD的训练过程可概括为：
 
 	\begin{enumerate}
-		\item 参数服务器向所有工作节点广播当前全局模型参数$W_t$以及训练超参数配置，如学习率等；
+		\item PS向所有工作节点广播当前全局模型参数$W_t$以及训练超参数配置，如学习率等；
 		\item 工作节点$k$在本地基于数据集$\mathcal{D}_k$计算梯度$g_t^{(k)}=\nabla \ell_k(W_t)$（或其随机估计）；
-		\item 工作节点将梯度$g_t^{(k)}$上传至参数服务器；
-		\item 参数服务器对收到的梯度进行加权聚合，例如
+		\item 工作节点将梯度$g_t^{(k)}$上传至PS；
+		\item PS对收到的梯度进行加权聚合，例如
 		\begin{equation}
 			g_t = \sum_{k=1}^{N} \frac{n_k}{n} g_t^{(k)},
 		\end{equation}
@@ -179,23 +307,22 @@
 
 	\begin{figure}[htbp]
 		\centering
-		\includegraphics[width=0.98\linewidth]{fed_sgd_training}
 		\caption{FedSGD训练过程}
 		\label{fig:fed-sgd-training}
 	\end{figure}
 
-	由于FedSGD在每轮梯度计算后即进行一次全局同步，其通信频率较高、对带宽与时延敏感，在跨设备联邦学习的广域网环境中往往带来较大的通信开销\cite{fedavg-fedsgd}。然而，该方法的更新形式与集中式SGD更为接近，在一些设置下具有较好的优化稳定性。由此可见，如何在保证收敛性的同时降低高频通信所带来的开销，是联邦学习系统优化的重要问题之一。
+	由于FedSGD在每轮梯度计算后即进行一次全局同步，其通信频率较高、对带宽与时延敏感，在跨设备联邦学习的广域网环境中往往带来较大的通信开销。然而，该方法的更新形式与集中式SGD更为接近，在一些设置下具有较好的优化稳定性。由此可见，如何在保证收敛性的同时降低高频通信所带来的开销，是联邦学习系统优化的重要问题之一。
 
-	\subsection{FedAvg}
+	\subsection{联邦平均}
 
-	FedAvg是联邦学习中最具代表性的算法之一，其核心思想是通过增加本地训练步数来降低全局同步频率：工作节点在本地执行多步SGD更新后，再将本地模型参数（或参数差分）上传至参数服务器进行聚合\cite{fedavg-fedsgd}。相较于FedSGD，FedAvg以“更多本地计算换取更少通信”的方式显著减少通信开销。
+	FedAvg是联邦学习中最具代表性的算法之一，其核心思想是通过增加本地训练步数来降低全局同步频率：工作节点在本地执行多步SGD更新后，再将本地模型参数（或参数差分）上传至PS进行聚合。相较于FedSGD，FedAvg以“更多本地计算换取更少通信”的方式显著减少通信开销。
 
 	沿用与FedSGD相同的符号体系：设第$t$轮全局模型为$W_t$，工作节点$k$的本地数据量为$n_k$，总数据量$n=\sum_{k=1}^{N}n_k$。节点$k$基于本地数据集$\mathcal{D}_k$从$W_t$出发执行$K$步随机梯度下降，得到更新后的本地模型参数$w_{t+1}^{(k)}$。FedAvg的训练流程可概括为：
 
 	\begin{enumerate}
-		\item 参数服务器向所有工作节点广播当前全局模型参数$W_t$以及本地训练轮数$K$等配置；
+		\item PS向所有工作节点广播当前全局模型参数$W_t$以及本地训练轮数$K$等配置；
 		\item 每个工作节点$k$从$W_t$出发，在本地执行多步优化，得到$w_{t+1}^{(k)}$；
-		\item 工作节点将本地模型参数$w_{t+1}^{(k)}$（或更新量$\Delta w_t^{(k)} = w_{t+1}^{(k)} - W_t$）上传至参数服务器；
+		\item 工作节点将本地模型参数$w_{t+1}^{(k)}$（或更新量$\Delta w_t^{(k)} = w_{t+1}^{(k)} - W_t$）上传至PS；
 		\item 服务器按数据量对工作节点模型进行加权聚合，例如
 		\begin{equation}
 			W_{t+1} = \sum_{k=1}^{N} \frac{n_k}{n} w_{t+1}^{(k)},
@@ -208,82 +335,43 @@
 
 	\begin{figure}[htbp]
 		\centering
-		\includegraphics[width=0.98\linewidth]{fed_avg_training.png}
 		\caption{FedAvg训练过程}
 		\label{fig:fed-avg-training}
 	\end{figure}
 
-	由于FedAvg允许工作节点进行多步本地训练后再同步，相较于FedSGD，其产生大量网络流量的周期更长，因而在带宽受限或高时延的网络环境中更具实用性。然而，当工作节点数据分布呈现非独立同分布（Non-IID）时，过多的本地更新可能导致本地模型偏离全局最优方向，进而影响收敛速度甚至造成训练不稳定\cite{fedavg-fedsgd}。因此，如何根据网络状态与节点异构性自适应地选择本地训练步数、参与工作节点集合与同步频率，从而在通信开销与收敛性能之间取得更优权衡，已成为当前联邦学习研究与系统优化的关键方向之一。
+	由于FedAvg允许工作节点进行多步本地训练后再同步，相较于FedSGD，其产生大量网络流量的周期更长，因而在带宽受限或高时延的网络环境中更具实用性。FedAvg以“更多本地计算换取更少通信”的方式显著降低了通信频率，在带宽受限或高时延的网络环境中更具实用性。
 
-	\section{DML与FL研究现状}
-	\nomchn{SGD}{Stochastic Gradient Descent}{随机梯度下降}
+	\subsection{随机梯度下降与优化基础}
 
-	本节将分别对分布式机器学习与联邦学习两个领域的研究现状进行系统性梳理。首先，回顾分布式机器学习的通用框架与核心技术，阐明其如何通过并行化加速模型训练。随后，聚焦于联邦学习这一在隐私约束下的特殊分布式学习范式，深入分析其面临的核心挑战与相应的解决方案，为本论文后续研究工作奠定基础。
+	SGD是深度学习和联邦学习中最核心的优化算法之一。考虑经验风险最小化问题：
+	\begin{equation}
+	\min_{\mathbf{w} \in \mathbb{R}^d} F(\mathbf{w}) = \frac{1}{n}\sum_{i=1}^{n} f_i(\mathbf{w}),
+	\end{equation}
+	其中 $f_i(\mathbf{w})$ 为第 $i$ 个样本的损失函数，$n$ 为总样本数。标准梯度下降（GD）每轮使用全批量梯度 $\nabla F(\mathbf{w})$ 更新参数，计算开销与 $n$ 成正比。SGD 则每轮随机选取一个样本（或一个小批量），用其梯度 $\nabla f_i(\mathbf{w})$ 作为全梯度的无偏估计进行更新：
+	\begin{equation}
+	\mathbf{w}_{t+1} = \mathbf{w}_t - \eta_t \nabla f_{i_t}(\mathbf{w}_t),
+	\end{equation}
+	其中 $\eta_t$ 为学习率。SGD 每轮计算量不随 $n$ 增长，且梯度估计的随机性有助于逃离局部极小值，因此成为大规模训练的事实标准。
 
-	\subsection{DML研究现状}
+	在分布式环境中，SGD 可自然扩展为并行SGD：多个工作节点并行计算梯度后聚合更新。根据同步方式的不同，可分为：
+	\begin{itemize}
+		\item 同步SGD：服务器等待所有节点完成梯度计算后统一更新，保证梯度无偏但受限于慢节点；
+		\item 异步SGD：服务器收到任一节点梯度后立即更新，吞吐量高但引入梯度陈旧性问题。
+	\end{itemize}
 
-	分布式机器学习旨在通过协调多个计算节点协同工作，以应对大规模数据和模型带来的训练挑战。其早期代表性工作，如并行化随机梯度下降\cite{parallelized-sgd}，奠定了数据并行的基本思想。DistBelief框架\cite{distbelief}首次系统展示了如何结合数据并行与模型并行，并引入参数服务器架构，在大规模集群上成功训练深度神经网络。该框架下的Downpour SGD采用异步更新策略以提升吞吐量，但也暴露了异步梯度带来的陈旧性问题。
+	联邦学习中的 FedSGD 本质上是同步并行SGD的一种特化形式，而 FedAvg 则通过在本地执行多步SGD进一步降低通信频率。理解SGD及其变体的收敛性质，是分析联邦学习通信-收敛权衡的理论基础。
 
-	围绕同步与通信效率两大核心矛盾，后续研究主要沿两个方向深入：
+	\section{TCP拥塞控制基础}
 
-	\begin{enumerate}
-		\item \textbf{通信压缩与高效聚合}：为降低节点间梯度/参数传输开销，研究者提出了多种压缩技术。\cite{1-bit-sgd}开创性地提出将梯度量化为1比特并结合误差反馈，保证收敛性。\cite{compression-error-feedback}进一步将稀疏化、残差累积与量化相结合，实现了极高的通信压缩率。在理论框架方面，\cite{smith2018cocoa}提出的CoCoA及其改进版本CoCoA+\cite{ma2015adding}为通信高效的分布式凸优化提供了通用框架，允许灵活的本地计算与通信权衡。\cite{zhang2013communication}则从信息论角度给出了分布式统计估计的通信复杂度下界。
-		\item \textbf{去中心化与异步训练}：为消除参数服务器的单点瓶颈和同步等待开销，去中心化架构受到关注。\cite{ako}提出了部分梯度交换策略，实现带宽饱和的高效去中心化同步。\cite{dlion}则面向微云环境，设计了计算与网络感知的动态批处理与数据交换策略。在异步训练方面，\cite{staleness-aware-async-sgd}提出陈旧性感知的学习率调整以稳定异步SGD训练；\cite{async-ADMM}将异步机制引入ADMM\cite{ADMM}算法用于共识优化。针对大规模图神经网络训练，\cite{peng2022sancus}提出了基于有界历史嵌入的陈旧性感知通信避免方法。
-	\end{enumerate}
+	TCP拥塞控制是互联网中保障网络稳定与公平性的核心机制，其基本思想是：发送方根据网络拥塞状态动态调整发送速率，在避免网络崩溃的同时最大化链路利用率。TCP发送方维护一个拥塞窗口（cwnd），限制已发送但未确认的数据量。窗口大小根据网络反馈动态调整：无拥塞时增大窗口以利用带宽，检测到丢包时减小窗口以缓解拥塞。
 
-	此外，系统层面的优化也至关重要。\cite{zhou2021tsengine}设计了面向广域网的动态通信覆盖网络，以缓解中心服务器的网络洪泛。\cite{revisiting-distributed-sync-sgd}和\cite{zhang2015deep}分别从重新审视同步SGD和提出弹性平均SGD的角度，深入探讨了同步策略对训练的影响。\cite{a-survay-on-dml}和\cite{a-taxonomic-perspective}则从综述和分类学视角，对分布式深度学习技术进行了系统性归纳与梳理，为我们理解该领域提供了清晰的图谱。
+	经典的TCP Reno采用加性增乘性减（AIMD）原则：拥塞避免阶段每个RTT线性增加窗口（加性增），发生丢包时将窗口减半（乘性减）。此外，TCP启动阶段采用慢启动：窗口从1个MSS开始，每收到一个ACK指数增长，直至达到慢启动阈值后转入拥塞避免阶段。
 
-	\subsection{FL研究现状}
+	然而，传统TCP拥塞控制是为点对点、端到端的可靠传输设计的，直接应用于联邦学习场景时存在若干问题：首先，FL中服务器与多客户端之间的“一对多”通信模式与TCP的端到端模型不匹配；其次，TCP的丢包判断机制在无线网络和高动态环境下容易误判，导致窗口频繁振荡；最后，TCP的AIMD调整策略未考虑FL训练特有的收敛需求（如训练初期需要快速传输大量模型参数）。上述问题制约了FL在广域网中的通信效率。针对这些不足，本文后续章节将设计面向FL的TCP上层拥塞控制算法。
 
-	联邦学习在分布式机器学习的基础上，增加了数据隐私保护和客户端不可靠等约束。其经典算法FedAvg通过本地多轮迭代后平均的方式，显著减少了通信轮次。然而，真实场景中的联邦学习面临非独立同分布数据、有限通信带宽、隐私安全威胁以及异构动态系统四大核心挑战，相关研究也围绕这些挑战展开。
+	\section{本章小结}
 
-	\subsubsection{统计异构性挑战}
-
-	数据非独立同分布是联邦学习面临的首要统计挑战。\cite{non-iid}率先通过理论分析和实验揭示了非IID数据会导致FedAvg性能严重下降，并提出了通过少量数据共享进行缓和的方案。为从根本上提升异质性下的鲁棒性，\cite{fed-prox}提出了FedProx算法，通过在本地目标中引入近端项约束本地更新，并为异质场景提供了收敛性保证。\cite{fed-dm}进一步动态调整近端项系数和本地训练轮数，以更好地适应移动边缘计算环境。\cite{mac-fl}则考虑了用户移动性，提出了移动感知的集群联邦学习算法。模型层面的异构性也得到关注，\cite{li2019fedmd}通过知识蒸馏实现黑盒模型间的联邦学习，\cite{park2024federated}则允许客户端训练不同架构的模型并通过层嫁接进行聚合。
-
-	\subsubsection{通信效率挑战}
-
-	通信瓶颈是联邦学习走向大规模应用的关键障碍。除借鉴DML中的梯度压缩技术（如量化、稀疏化）外，FL研究更注重客户端侧的动态适应。\cite{isp}和\cite{adaptive-fl}分别通过自适应选择参与客户端数量和动态选择压缩模型来适应网络条件。在量化方面，\cite{aqg}提出了基于梯度重要性的自适应位数量化，\cite{clipped-uniform-quantization}和\cite{fed-qcs}则分别研究了裁剪均匀量化和量化压缩感知方法。\cite{fed-ada}和\cite{comm-conv-trade-off}从理论上分析了通信频率与收敛速度的关系，并设计了自适应调整策略。客户端本地训练策略也是提升通信效率的重要方面，如\cite{zhang2025federated}提出了分层跳跃式训练来减少大语言模型的通信量。
-
-	\subsubsection{隐私安全挑战}
-
-	隐私保护是联邦学习设立的初衷。早期工作如\cite{dssgd}通过选择性共享参数提供初步隐私保护。安全聚合协议\cite{safe-protocol}为客户端更新提供了密码学级别的保护，确保服务器只能获得聚合结果。同态加密被用于提供强隐私保证，但面临计算与通信开销大的问题，\cite{pfmlp}、\cite{10602929}尝试将其与稀疏化、压缩感知结合以提升效率。差分隐私是另一主流技术，\cite{cepam}创新性地将量化噪声塑造为满足差分隐私要求的噪声，实现了通信效率与隐私保护的统一。此外，激励机制对于保障客户端持续参与至关重要，\cite{hu2022incentive}将客户端参与建模为少数派游戏以设计激励策略。
-
-	\subsubsection{系统与架构挑战}
-
-	联邦学习的系统异构性和动态性要求更灵活的架构。容错性方面，\cite{fault-tolerant-async-fl}设计了去中心化异步联邦学习的自适应终止检测机制。拓扑结构对去中心化联邦学习影响显著，\cite{menegatti2024dynamic}研究了能量感知的动态拓扑优化，\cite{wu2024topology}则对此进行了全面综述。针对车联网等动态场景，\cite{saputra2021dynamic}提出了结合经济激励的动态联邦学习框架。资源优化也是系统层面的重要议题，\cite{ouyang2024two}和\cite{xu2023energy}分别从两时间尺度优化和深度强化学习调度的角度优化了联邦学习的能量效率。
-
-	最后，\cite{kairouz2021advances}和\cite{yang2019federated}的两篇权威综述，从不同维度全面总结了联邦学习的进展、开放问题与应用范式，标志着该领域研究体系的逐渐成熟。
-
-	\section{论文研究内容}
-
-	本文围绕FL与DML中的通信瓶颈问题开展研究。在跨设备联邦学习场景中，海量终端设备需要与中央服务器频繁交换模型参数（如梯度、权重），而带宽受限的边缘网络（如蜂窝网络、Wi-Fi 6）与资源受限的IoT终端环境，使得这类高频通信往往耗时较长；同时，网络传输过程中的丢包、时延等因素可能进一步导致训练效率低下甚至训练过程不稳定。因此，如何在保障模型收敛性与精度的前提下显著降低通信开销、提升训练稳定性，已成为推动联邦学习与分布式机器学习大规模落地的关键问题。
-
-	针对上述问题，本文提出一套新型联邦学习体系——LeMethod。LeMethod以“可扩展网络拓扑”“TCP上层拥塞控制”与“流量负载均衡”为核心设计思路，在不影响原模型收敛速度的前提下对通信过程进行优化：一方面通过扩展网络拓扑分担中央服务器的通信压力；另一方面通过调度算法实现更高效的通信组织；同时在TCP上层引入拥塞控制机制，以减少网络丢包概率并降低拥塞抖动对通信效率的影响。实验结果表明，使用LeMethod后，即使不进行任何链路扩展，在相同实验环境下其训练耗时仅为传统架构的78.47\%；在逐步扩展网络拓扑的过程中，LeMethod的训练耗时可进一步下降，最终达到传统架构的23.51\%，验证了LeMethod在平衡通信效率与模型性能方面的有效性。基于上述研究，本文的主要工作与创新归纳如下：
-
-	\begin{enumerate}
-		\item \textbf{可扩展的网络拓扑结构}：针对传统联邦学习网络拓扑在设备规模扩大时中央服务器通信压力过大的问题，本文提出一种可在传统拓扑基础上按需扩展的网络拓扑结构。该结构允许根据实际情况灵活扩展，从而提升拓扑扩展的成本可控性与灵活性，并通过拓扑扩展有效分担中央服务器的通信压力。
-		\item \textbf{TCP上层拥塞控制机制}：针对带宽受限网络中网络拥塞与抖动导致TCP拥塞控制频繁触发、进而降低整体通信效率的问题，本文在TCP上层引入拥塞控制机制，通过减少TCP拥塞控制的触发频率来降低网络拥塞抖动对通信效率的影响，并减少网络丢包的发生概率，从而提升训练过程的稳定性与效率。
-		\item \textbf{自适应的流量负载均衡方法}：针对传统架构只能通过升级中央服务器与各节点间带宽来提升通信效率的限制，本文提出基于当前网络拓扑自适应的流量负载均衡方法，将流量从中央服务器负载均衡到工作节点。引入负载均衡后，系统的通信效率提升不仅依赖于中心链路带宽升级，还可通过增加拓扑链路数量以及升级工作节点间带宽来实现，从而为通信效率提升提供更灵活的扩展路径。
-		\item \textbf{动态调度算法}：针对通信链路带宽随时间变化、静态调度难以持续取得较优通信效率的问题，本文设计动态调度算法。该算法在传输过程中对网络带宽进行记录与分析，并基于历史带宽信息进行动态调度，使LeMethod能够在不同网络状态下自适应地组织通信过程，进一步提升端到端训练效率。
-	\end{enumerate}
-
-	\section{论文结构}
-
-	本文共分为六章，各章内容安排如下：
-
-	第一章绪论。首先阐述分布式机器学习（DML）与联邦学习（FL）的研究背景及意义，明确优化聚合通信对提升训练效率的重要性。随后概述DML和FL的基本概念，重点介绍FedSGD与FedAvg两种典型算法。接着综述国内外关于DML和FL的研究现状，指出现有工作在通信效率方面的不足。最后简要介绍本文的主要研究内容与创新点。
-
-	第二章TCP上层拥塞控制。针对DML和FL中TCP拥塞控制面临的挑战，分析现有拥塞控制算法在聚合通信场景下的局限性。在此基础上，提出一种面向聚合通信的TCP上层拥塞控制算法。详细阐述算法的设计思路、核心变量定义、算法流程、统计信息维护机制以及异常值与动态阈值处理方法，并讨论关键参数的选择。通过实验评估所提算法在聚合时间、累积分布、算法开销以及对收敛速度影响等方面的性能，验证其有效性。
-
-	第三章网络拓扑扩展。分析星形架构下参数服务器模式存在的服务器端瓶颈、节点间带宽浪费以及TCP拥塞控制加剧性能波动等问题。为解决上述问题，提出一种网络拓扑扩展方案，该方案在模型聚合阶段引入局部聚合，在模型分发阶段采用协作分发。阐述扩展方案的实现原理，分析其灵活性与数学等价性，并讨论实际部署中面临的设计挑战。
-
-	第四章动态调度算法。在拓扑扩展的基础上，针对聚合与分发阶段的调度问题，设计动态调度算法。分别阐述模型聚合阶段的发送目标选择策略和模型分发阶段的发送优先次序规则，并探讨负载均衡与调度粒度的权衡。介绍调度算法的整体架构、核心机制及其与TCP上层拥塞控制的协同工作方式，确保通信过程的高效与稳定。
-
-	第五章实验与分析。说明实验环境、数据集及参数设置，重点介绍超参数调度数量$S$和贪心概率$p$的确定方法。通过对比实验，分析工作节点数和模型大小对算法性能的影响，并在拓扑稀疏性下评估算法的表现。最后讨论算法的有效性、鲁棒性与适应性，验证其在实际场景中的优越性。
-
-	第六章全文总结与展望。总结本文的主要研究工作与贡献，分析现有方法在拓扑扩展与动态调度方面的局限性，并对未来研究方向进行展望，包括更细粒度的调度策略、与底层网络协议的深度协同等。
-
+	本章系统梳理了分布式机器学习、联邦学习、随机梯度下降优化以及TCP拥塞控制的基础理论与关键技术。首先，介绍了分布式机器学习的基本流程与核心架构；其次，详细阐述了联邦学习的经典算法 FedSGD 与 FedAvg，分析了二者在通信频率与收敛性能上的权衡；再次，补充了随机梯度下降的数学原理及其分布式变体；最后，介绍了TCP拥塞控制的自适应窗口调整机制，并指出其在联邦学习场景中存在的不足。本章内容为后续章节中自适应通信调度策略的设计与分析提供了必要的理论基础。
 	\chapter{TCP上层拥塞控制}
 
 	分布式机器学习（DML）与联邦学习（FL）因其通信过程需要保证数据的完整性和正确性，通常采用可靠传输协议，例如TCP。TCP通过重传机制确保可靠性，其拥塞控制与流量控制机制则能够显著降低重传发生的概率。然而，在DML和FL场景中，通信开销往往是系统性能的主要瓶颈。以参数服务器架构为例，每一轮迭代中，工作节点需将本地计算的梯度或模型更新发送至服务器，服务器完成聚合后再将全局模型分发给所有工作节点。当集群规模扩大时，大量节点同时发起通信极易引发网络拥塞，导致TCP层出现丢包、重传和窗口缩减，进而造成聚合时间剧烈波动，拖慢整体训练进度。
@@ -616,14 +704,14 @@
 	\section{星形架构下的DML和FL}
 	\label{sec:star-dml-fl}
 
-	在传统的分布式机器学习与联邦学习系统中，通信拓扑几乎无一例外地采用星型架构：所有工作节点直接与中央参数服务器建立连接，形成一对多的通信模式。如图\ref{fig:star_topology}所示，每一轮迭代中，工作节点将本地更新的模型或梯度发送至服务器，服务器完成全局聚合后，再将新模型广播给所有节点。这种架构以其实现简单、逻辑清晰而广泛部署，但随着集群规模扩大和模型尺寸增长，其固有缺陷日益凸显。
-
 	\begin{figure}[htbp]
 		\centering
 		\includegraphics[width=0.98\linewidth]{star_topology}
 		\caption{星型通信拓扑示意图}
 		\label{fig:star_topology}
 	\end{figure}
+
+	在传统的分布式机器学习与联邦学习系统中，通信拓扑几乎无一例外地采用星型架构：所有工作节点直接与中央参数服务器建立连接，形成一对多的通信模式。如图\ref{fig:star_topology}所示，每一轮迭代中，工作节点将本地更新的模型或梯度发送至服务器，服务器完成全局聚合后，再将新模型广播给所有节点。这种架构以其实现简单、逻辑清晰而广泛部署，但随着集群规模扩大和模型尺寸增长，其固有缺陷日益凸显。
 
 	\subsection{服务器端瓶颈}
 
@@ -1303,7 +1391,7 @@
 			\includegraphics[width=0.48\linewidth]{100_cdf}
 			\label{fig:100_cdf}
 		}
-		\caption{不同节点规模下的聚合时间累积分布：\subref{fig:10_cdf}10个节点；\subref{fig:20_cdf}20个节点；\subref{fig:50_cdf}50个节点；\subref{fig:100_cdf}100个节点。}
+		\caption{不同节点规模下的聚合时间累积分布：\subref{fig:10_cdf}10个节点；\subref{fig:20_cdf}20个节点；\subref{fig:50_cdf}50个节点；\subref{fig:100_cdf}100个节点}
 		\label{fig:cdf_combined_nodes}
 	\end{figure}
 
@@ -1365,7 +1453,7 @@
 			\includegraphics[width=0.48\linewidth]{1000M_cdf}
 			\label{fig:1000M_cdf}
 		}
-		\caption{不同模型规模下的聚合时间累积分布：\subref{fig:240M_cdf}240 MB；\subref{fig:500M_cdf}500 MB；\subref{fig:800M_cdf}800 MB；\subref{fig:1000M_cdf}1000 MB。}
+		\caption{不同模型规模下的聚合时间累积分布：\subref{fig:240M_cdf}240 MB；\subref{fig:500M_cdf}500 MB；\subref{fig:800M_cdf}800 MB；\subref{fig:1000M_cdf}1000 MB}
 		\label{fig:cdf_combined_size}
 	\end{figure}
 
