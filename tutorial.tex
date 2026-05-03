@@ -396,14 +396,14 @@
 		\item 节点完成时间动态波动：由于各工作节点的计算资源、数据分布可能存在差异，每一轮中节点的完成时间并不固定。某些轮次可能大部分节点同时完成计算并开始发送，形成突发拥塞；而另一些轮次节点可能交错完成，发送流量相对平缓。这种时间上的不确定性使得网络负载模式难以预测。
 	\end{itemize}
 
-图\ref{fig:tcp-problems}直观展示了传统TCP拥塞控制在同步通信模式下产生的问题。
+	图\ref{fig:tcp-problems}直观展示了传统TCP拥塞控制在同步通信模式下产生的问题。
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.98\linewidth]{tcp_problems.pdf}
-    \caption{TCP拥塞控制在FL同步通信中的问题示意图}
-    \label{fig:tcp-problems}
-\end{figure}
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.98\linewidth]{tcp_problems.pdf}
+		\caption{TCP拥塞控制在FL同步通信中的问题示意图}
+		\label{fig:tcp-problems}
+	\end{figure}
 
 	TCP拥塞控制旨在通过调整发送窗口避免网络过载，其核心机制包括慢启动、拥塞避免、快速重传和快速恢复。在长期连接中，TCP会维护一个拥塞窗口，根据丢包或延迟信号动态调整窗口大小。在FL中，为了减少握手开销，通常在整个训练过程中复用同一个TCP连接（即长连接），因此拥塞窗口会保留上一轮通信结束时的状态，并在下一轮发送时直接使用。然而，这种基于历史信息的窗口调整在动态变化的通信模式下会产生以下问题：
 
