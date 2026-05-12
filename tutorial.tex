@@ -1284,6 +1284,8 @@
 
 	实验分为同步计算场景和随机延迟场景两种设定。同步计算场景中，工作节点收到模型后立即上传本地更新，模拟理想计算速度，使全部节点的通信负载在同一时刻集中爆发，构成最极端的同步压力场景；随机延迟场景中，工作节点收到模型后随机等待0～10秒再开始上传，模拟实际训练中计算时间的不确定性。
 
+	下文各表中，平均值、标准差、最小值和最大值是针对各轮 $T_i$ 单独统计的结果，而总耗时 $T_{\text{total}}$ 则是从实验启动到全部训练轮次结束所经历的真实时间。由于不同轮次的计算与通信可部分重叠，总耗时并非平均每轮耗时与轮次数的乘积，而是显著低于该串行累加值。
+
 	\subsection{超参数选择与分析}
 
 	本章算法主要涉及两个超参数：调度数量 $S$（每批调度的节点数）和贪心概率 $p$（模型分发阶段选择已知最大带宽路径的概率，$1-p$ 为随机探测概率）。为确定最优参数组合并印证建模阶段的分析，首先进行预实验。预实验固定工作节点数为32，采用全连接拓扑（任意节点间可直接通信），并分别针对同步计算和随机延迟两种场景进行独立的参数调优。
@@ -1590,91 +1592,102 @@
 		\end{tabular}
 	\end{table}
 
-	% TODO: 这个标题没有和之前对齐，这个标题也取得不太好
-	\subsection{与TSEngine的对比实验}
+	\subsection{与TSEngine的对比实验与分析}
 
-	为验证LeMethod相较于现有方法的优势，本节选择TSEngine进行对比实验。实验固定工作节点数为50，模型大小为240 MB。TSEngine采用全连接拓扑。LeMethod采用本文提出的动态调度算法，同样在全连接拓扑下运行。定义四种配置如下：
+	为进一步评估LeMethod相对于现有方法的优势，本节选取TSEngine作为对比方法。本组实验聚焦典型配置（固定工作节点数50、模型大小240 MB），在全连接拓扑下分别对同步计算场景和随机延迟场景进行充分对比。
 
-	\begin{itemize}
-		\item 实验A：LeMethod + 静态组
-		\item 实验B：LeMethod + 动态组
-		\item 实验C：TSEngine + 静态组
-		\item 实验D：TSEngine + 动态组
-	\end{itemize}
+	图\ref{fig:compare_tsengine_time_split}展示了两种场景下每轮训练耗时的变化趋势，图\ref{fig:compare_tsengine_cdf_split}为相应的累积分布函数。同步计算场景的统计结果见表\ref{tab:compare_tsengine_sync}，随机延迟场景见表\ref{tab:compare_tsengine_random}。
 
-	图\ref{fig:compare_tsengine_time}展示了四种配置下每轮训练耗时的变化趋势。图\ref{fig:compare_tsengine_cdf}展示了聚合时间的累积分布函数（CDF）。表\ref{tab:compare_tsengine}列出了实验A、B、C、D的平均值、标准差、最小值、最大值及总耗时。从图表中可以观察到以下现象并进行分析：
-
-	\textbf{（1）全连接拓扑下TSEngine在静态组中显著优于LeMethod。}从图\ref{fig:compare_tsengine_time}可以看出，实验C（TSEngine+静态）的每轮耗时曲线整体位于实验A（LeMethod+静态）的下方，且波动较小；图\ref{fig:compare_tsengine_cdf}中实验C的CDF曲线明显左移且更为陡峭。结合表\ref{tab:compare_tsengine}可知，静态组中TSEngine（实验C）的总耗时为2884.011秒，平均值28.789秒，标准差2.945秒；而LeMethod（实验A）的总耗时为3290.089秒，平均值32.885秒，标准差6.286秒。TSEngine在各项指标上均明显更优，总耗时降低约12.3\%。原因在于TSEngine每次在收到调度请求后会立即执行调度，而LeMethod会在有一定数量的请求后才会进行一次调度，这在静态模式下这样的等待会更容易引起拥塞。
-
-	\textbf{（2）动态组中两者总耗时接近，LeMethod平均值略优但稳定性略差。}从图\ref{fig:compare_tsengine_time}可见，实验B（LeMethod+动态）与实验D（TSEngine+动态）的每轮耗时曲线交织在一起，不存在明显的一方绝对优势；图\ref{fig:compare_tsengine_cdf}中实验B（LeMethod+动态）在50分位下更有优势，而实验D（TSEngine+动态）在50分位上更有优势。表\ref{tab:compare_tsengine}显示，动态组下，LeMethod（实验B）的总耗时为3495.003秒，TSEngine（实验D）为3508.528秒，两者几乎持平（LeMethod略低0.4\%）。平均值方面，LeMethod为27.072秒，低于TSEngine的27.161秒；但标准差上，LeMethod为4.720秒，高于TSEngine的2.859秒，说明LeMethod的每轮耗时波动更大。最大值方面，LeMethod为40.110秒，TSEngine为35.153秒。这表明在动态组中，LeMethod的平均性能略优于TSEngine，但稳定性不及。原因在于动态组的随机等待使LeMethod的动态调度有机会找到更优路径（平均耗时降低），但部分轮次可能因调度决策不佳而产生较大抖动。
-
-	\textbf{（3）动态组更接近真实训练场景，LeMethod具备实用性。}实际分布式训练中节点计算时间必然存在随机波动，因此动态组的实验结果更具参考价值。虽然LeMethod在全连接动态组中并未显著优于TSEngine，但两者性能基本相当，说明LeMethod在实际环境中至少不逊于TSEngine。
-
-	\textbf{（4）LeMethod的核心优势在于稀疏拓扑下的灵活性。}\ref{sec:20_dynamic_exp}中的实验表明：LeMethod在仅使用20\%链路（约245条）的动态组中，总耗时为3498.226秒，与TSEngine在全连接动态组的总耗时3508.528秒基本持平（差异仅约10秒）。而TSEngine的设计依赖于全连接拓扑，无法在稀疏拓扑下运行。这意味着TSEngine在实际部署中必须配置全连接网络，当节点数较多时链路数量呈平方级增长（50节点全连接需1225条链路），部署成本极高。相比之下，LeMethod通过动态调度能有效利用有限链路，仅需约20\%的链路（245条）即可达到与TSEngine全连接相当的性能，大幅降低了网络配置成本。这一灵活性是LeMethod相对于TSEngine的核心优势，尤其适用于节点间带宽有限或链路部署成本高的场景。
-
-	综上所述，虽然在全连接理想场景下TSEngine在静态组中性能优于LeMethod，但在更真实的动态场景中两者性能相当，且LeMethod能以稀疏拓扑达到TSEngine全连接的性能水平，兼具高效性与部署灵活性，更适合实际生产环境。
-
-	\begin{figure}[htbp]
+	\begin{figure}[!htb]
 		\centering
-		\includegraphics[width=0.98\linewidth]{compare_tsengine_time}
-		\caption{LeMethod与TSEngine每轮训练耗时对比（$W=50$，模型大小240 MB）}
-		\label{fig:compare_tsengine_time}
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{compare_tsengine_time_sync}
+			\label{fig:compare_tsengine_time_sync}
+		}
+		\hfill
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{compare_tsengine_time_random}
+			\label{fig:compare_tsengine_time_random}
+		}
+		\caption{LeMethod与TSEngine每轮训练耗时对比：\subref{fig:compare_tsengine_time_sync}同步计算场景；\subref{fig:compare_tsengine_time_random}随机延迟场景（$W=50$，240 MB）}
+		\label{fig:compare_tsengine_time_split}
 	\end{figure}
 
-	\begin{figure}[htbp]
+	\begin{figure}[!htb]
 		\centering
-		\includegraphics[width=0.98\linewidth]{compare_tsengine_cdf}
-		\caption{LeMethod与TSEngine聚合时间累积分布函数}
-		\label{fig:compare_tsengine_cdf}
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{compare_tsengine_cdf_sync}
+			\label{fig:compare_tsengine_cdf_sync}
+		}
+		\hfill
+		\subfloat[]{
+			\includegraphics[width=0.48\linewidth]{compare_tsengine_cdf_random}
+			\label{fig:compare_tsengine_cdf_random}
+		}
+		\caption{LeMethod与TSEngine每轮耗时累积分布函数：\subref{fig:compare_tsengine_cdf_sync}同步计算场景；\subref{fig:compare_tsengine_cdf_random}随机延迟场景（$W=50$，240 MB）}
+		\label{fig:compare_tsengine_cdf_split}
 	\end{figure}
 
-	\begin{table}[htbp]
+	在同步计算场景中，从表\ref{tab:compare_tsengine_sync}可以看出，TSEngine的总耗时为2884.011秒，LeMethod为3290.089秒，TSEngine在总耗时上降低约12.3\%。同时，TSEngine的标准差仅为3.918秒，最小值27.625秒，最大值45.003秒；而LeMethod的标准差为7.144秒，最小值30.106秒，最大值61.175秒。TSEngine在各项指标上均优于LeMethod，尤其极值差距更为突出，表明其每轮耗时不仅整体更低，且波动范围更小。原因在于同步计算场景下所有工作节点几乎同时完成计算并集中发送请求，TSEngine的即时调度能够立即响应每个请求并快速分配；而LeMethod需要累积一定数量的请求后才进行批量调度，请求集中到达使得匹配压力增大，部分轮次因等待凑批而产生较长的延迟。
+
+	\begin{table}[!htb]
 		\centering
-		\caption{LeMethod与TSEngine对比实验统计结果（单位：秒）}
-		\label{tab:compare_tsengine}
+		\caption{LeMethod与TSEngine每轮耗时统计（同步计算场景，单位：秒）}
+		\label{tab:compare_tsengine_sync}
 		\begin{tabular}{|c|c|c|c|c|c|}
 			\hline
-			\textbf{实验} & \textbf{平均值} & \textbf{标准差} & \textbf{最小值} & \textbf{最大值} & \textbf{总耗时} \\
+			\textbf{方案} & \textbf{平均值} & \textbf{标准差} & \textbf{最小值} & \textbf{最大值} & \textbf{总耗时} \\
 			\hline
-				A & 32.885 & 6.286 & 20.946 & 48.890 & 3290.089 \\
-				B & 27.072 & 4.720 & 17.277 & 40.110 & 3495.003 \\
-				C & 28.789 & 2.945 & 22.519 & 35.871 & 2884.011 \\
-				D & 27.161 & 2.859 & 19.956 & 35.153 & 3508.528 \\
+			TSEngine & 37.478 & 3.918 & 27.625 & 45.003 & 2884.011 \\
+			LeMethod & 43.189 & 7.144 & 30.106 & 61.175 & 3290.089 \\
 			\hline
 		\end{tabular}
 	\end{table}
 
-	\subsection{小结}
+	从图\ref{fig:compare_tsengine_time_sync}的逐轮变化来看，LeMethod的耗时曲线存在若干明显的尖峰，而TSEngine的曲线在低位窄幅波动。图\ref{fig:compare_tsengine_cdf_sync}的累积分布进一步印证了这一差异：TSEngine的CDF曲线整体位于LeMethod左侧，且更为陡峭，说明其耗时分布高度集中。因此，在同步计算这种所有节点计算节奏一致的场景下，TSEngine凭借即时调度策略取得了更优的性能与稳定性。
 
-	本节通过一系列对比实验，全面评估了LeMethod的性能。首先通过预实验确定了调度数量$S$与贪心概率$p$的最优取值，发现算法对$p$不敏感，易于调参。随后在不同工作节点数、不同模型大小以及不同链路比例下，将LeMethod与FedAvg星型架构进行对比，得出以下结论：
+	在随机延迟场景中，从表\ref{tab:compare_tsengine_random}可以看出，LeMethod的总耗时为3495.003秒，TSEngine为3508.528秒，两者几乎持平，LeMethod仅略低约0.4\%。平均每轮耗时方面，LeMethod为39.845秒，TSEngine为40.117秒，LeMethod同样略有优势。在波动性方面，TSEngine的标准差为3.913秒，最小值31.251秒，最大值50.996秒；而LeMethod的标准差为5.510秒，最小值27.906秒，最大值54.995秒。TSEngine的标准差仍然更小，但LeMethod在最小值上稍有优势。此时随机等待天然错开了节点的发送时间，缓解了同步突发带来的请求集中现象。LeMethod的批量调度在匹配时有更充裕的候选节点可供选择，部分轮次能够找到更优路径，从而在耗时下限上取得轻微优势；但部分轮次的匹配结果不够理想，导致极值和标准差偏高。
 
-	\begin{itemize}
-		\item 在工作节点数实验中，LeMethod在静态和动态场景下分别平均降低总耗时67.38\%和65.23\%，且增长曲线平缓，展现出优异的可扩展性。
-		\item 在模型大小实验中，LeMethod在所有尺寸下均显著优于FedAvg方法，静态组平均降低76.83\%，动态组平均降低77.32\%，优势随模型增大而扩大，体现对大规模模型传输的良好适应性。
-		\item 在拓扑稀疏性实验中，即使仅使用10\%的链路，LeMethod仍能降低总耗时约70\%，接近全连接时的最优值，表明少量链路即可获得大部分收益，降低了网络部署成本。
-		\item TCP拥塞控制消融实验表明，开启并发接收数限制（与上层拥塞控制协同）可将静态组标准差从7.854秒降至6.286秒，动态组标准差从7.198秒降至4.720秒，总耗时分别降低9.8\%和9.5\%，有效消除了长尾延迟，显著提升了系统稳定性，尤其在高动态场景下收益更为明显。
-		\item 算法在静态与动态场景下表现稳定，对计算时间波动不敏感，具有良好的鲁棒性；与TCP拥塞控制的协同设计有效避免了节点过载。
-		\item 与TSEngine的对比实验显示：在静态组（理想同步场景）中TSEngine性能优于LeMethod；但在更贴近真实训练的动态组（节点计算时间随机波动）中，LeMethod的总耗时和稳定性均优于TSEngine，体现了动态调度对实际环境的适应性。更重要的是，LeMethod仅需20\%的稀疏链路即可在动态组中达到TSEngine全连接拓扑下的训练耗时，而TSEngine依赖全连接才能发挥最佳性能。这一灵活性优势使LeMethod在链路资源受限或部署成本敏感的场景中更具实用价值。
-	\end{itemize}
+	\begin{table}[!htb]
+		\centering
+		\caption{LeMethod与TSEngine每轮耗时统计（随机延迟场景，单位：秒）}
+		\label{tab:compare_tsengine_random}
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\textbf{方案} & \textbf{平均值} & \textbf{标准差} & \textbf{最小值} & \textbf{最大值} & \textbf{总耗时} \\
+			\hline
+			TSEngine & 40.117 & 3.913 & 31.251 & 50.996 & 3508.528 \\
+			LeMethod & 39.845 & 5.510 & 27.906 & 54.995 & 3495.003 \\
+			\hline
+		\end{tabular}
+	\end{table}
 
-	综上所述，本章提出的网络拓扑扩展方法与动态调度算法有效解决了分布式训练中的通信瓶颈问题，实验充分验证了其在提升通信效率、稳定性和可扩展性方面的有效性与优越性，为实际部署提供了可靠依据。
+	从图\ref{fig:compare_tsengine_time_random}的逐轮变化来看，两种方法的耗时曲线大部分区域交织在一起，难以区分优劣，仅在个别轮次LeMethod的耗时会明显超过TSEngine。图\ref{fig:compare_tsengine_cdf_random}的累积分布进一步揭示了细粒度差异：在50分位以下区域，LeMethod的CDF曲线略高于TSEngine，说明其半数轮次的耗时更短；但在70分位以上区域，TSEngine的CDF曲线更靠左，表明其控制长尾的能力更强。整体而言，两种方法在随机延迟场景下性能基本相当，各有侧重。
+
+	实际分布式训练中节点计算时间必然存在波动，因此随机延迟场景的结果更具参考价值。两种方法在该场景下性能总体相当，表明LeMethod在真实运行环境中至少具备与TSEngine同等的通信效率。
+
+	尽管在全连接随机延迟场景中LeMethod与TSEngine性能接近，但LeMethod的核心优势体现在对稀疏拓扑的适应能力上。结合\ref{sec:20_dynamic_exp}节的拓扑稀疏性实验结果：LeMethod仅需20\%的链路（约245条）即可在随机延迟场景下达到总耗时3498.226秒，与TSEngine全连接（1225条链路）的3508.528秒基本持平；而TSEngine设计上依赖全连接拓扑，无法在稀疏链路条件下运行。当节点数增加时，全连接链路数量呈平方级增长，网络部署成本急剧攀升。LeMethod仅需约20\%的链路即可接近全连接性能，大幅降低了实际部署的网络成本，这一灵活性优势使其在链路资源受限或部署成本敏感的场景中更具实用价值。
+
+	综上，在同步计算场景中，TSEngine凭借即时调度获得了更优的性能与稳定性；而在更贴近实际训练环境的随机延迟场景中，LeMethod与TSEngine性能相当。更为关键的是，LeMethod仅需稀疏拓扑即可达到TSEngine全连接时的训练效率，兼具高效性与部署灵活性，更适合实际生产环境。
 
 	\section{本章小结}
 	\label{sec:schedule-summary}
 
-	本章针对分布式机器学习与联邦学习中的通信瓶颈问题，从架构优化到动态调度再到实验验证，进行了系统性的研究。
+	本章针对联邦学习中星型通信架构的集中瓶颈与节点间带宽资源闲置问题，从协作通信机制、问题建模、调度算法设计到实验验证进行了系统性研究。
 
-	首先，深入分析了传统星型通信架构的固有缺陷：服务器端单点瓶颈、节点间带宽资源闲置、TCP拥塞控制加剧性能波动等。仅靠提升服务器带宽难以实现可扩展性，需从架构层面分散负载。
+	首先，深入分析了传统星型架构的两大固有缺陷：PS作为集中式通信枢纽构成性能瓶颈，以及跨机构或跨设备场景中节点间的直连带宽资源被完全闲置。分析表明，仅靠提升PS硬件配置难以从根本上消除瓶颈，必须在架构层面引入节点间直接通信以分散负载。
 
-	其次，提出了一种网络拓扑扩展方法，允许工作节点在模型聚合与分发阶段直接通信。在聚合阶段，利用加权平均操作满足结合律与交换律的数学性质，将全局聚合分解为多次局部聚合，形成以服务器为根的汇聚树；在分发阶段，采用动态并发扩散策略，已收到模型的节点立即参与转发。该方法与标准星型架构保持数学等价性，不引入近似误差，且具有高度灵活性——即使仅增加少量节点间链路也能获得显著性能提升。
+	其次，提出了基于节点间协作的通信机制。在聚合阶段，利用加权平均操作满足结合律与交换律的性质，将全局聚合分解为多级局部聚合，形成以PS为根的汇聚树；在分发阶段，已收到模型的节点立即参与转发，形成树状分发路径。该机制在聚合函数性质与源模型同源性两个条件的约束下，保证最终结果与标准星型架构完全一致，不引入近似误差。
 
-	然后，针对拓扑扩展带来的复杂调度问题，设计并实现了一套完整的动态调度算法。算法以集中式调度器为核心，通过控制消息协议实现节点与调度器的高效交互。模型聚合阶段采用基于二分图最大权匹配的批量调度，优先选择计算中的空闲节点作为接收者，并通过节点转化评分隐式实现负载均衡；模型分发阶段采用贪心探测策略，在利用已知高带宽链路的同时以一定概率探索未知链路，适应网络时变性。算法与TCP上层拥塞控制协同，严格遵守并发接收数上限 \(R_{\max}\)，并通过接收确认与拒绝回退机制避免角色冲突与死锁。
+	随后，将协作机制下的路径构建问题形式化为一个在信息不完全条件下的在线优化问题。聚合阶段建模为批量最大权匹配问题，证明小批量等待在非关键路径上的延迟不会恶化全局目标，局部最大化选中链路总带宽等价于最小化本批平均传输时间；分发阶段建模为序贯决策问题，证明批量等待会通过级联转发逐级放大延迟，因此必须即时决策，单步选择当前已知带宽最大的目标，并以小概率探测未知链路来弥补信息缺失。
 
-	此外，本章阐述了所提方法（LeMethod）与去中心化架构的本质区别：LeMethod是一种中心化辅助协作架构，在保持中心化训练的简单性与收敛保证的前提下，通过有限度的节点间通信缓解服务器瓶颈，并未脱离中心化训练范畴，便于现有基础设施的渐进式升级。
+	基于上述建模，设计了完整的在线调度算法LeMethod。算法由运行于PS的调度器集中协调，通过控制消息与工作节点交互，调度决策与数据传输相互分离。聚合阶段采用批量最大权匹配策略，以KM算法统筹分配接收者，并通过询问确认与回退机制避免角色冲突；分发阶段采用即时贪心探测策略，在利用已知高带宽链路与探索未知链路之间动态权衡。两阶段策略均与其建模目标保持一致。
 
-	最后，通过丰富的实验全面评估了LeMethod的性能。预实验确定了调度数量 \(S\) 与贪心概率 \(p\) 的最优取值，发现算法对 \(p\) 极不敏感，易于调参。在不同工作节点数（10～100）下，LeMethod在静态和动态场景中最高降低总耗时82.47\%和84.76\%，增长曲线远缓于FedAvg，展现出优异可扩展性。在不同模型大小（240～1000 MB）下，LeMethod静态组最高降低77.44\%，动态组平均降低78.68\%。在拓扑稀疏性实验中，仅10\%链路即可获得约70\%的性能提升，接近全连接最优值，大幅降低了网络部署成本。TCP拥塞控制消融实验表明，开启并发接收数限制可将静态组标准差从7.854秒降至6.286秒，动态组标准差从7.198秒降至4.720秒，总耗时分别降低9.8\%和9.5\%，有效消除了长尾延迟。与TSEngine的对比实验显示：在更贴近真实训练的动态组中，LeMethod的总耗时和稳定性均优于TSEngine；且LeMethod仅需20\%稀疏链路即可达到TSEngine全连接拓扑下的训练耗时，充分体现了动态调度的灵活性与部署优势。
+	此外，从协调方式、通信拓扑、负载分布、收敛性与一致性、容错性五个维度，对比了LeMethod与完全去中心化架构的本质区别，指出LeMethod属于中心化辅助协作架构，在保留中心化训练收敛保证的前提下，通过有限度的节点间通信缓解PS瓶颈，适用于现有基础设施的渐进式升级。
 
-	综上所述，本章提出的网络拓扑扩展方法与动态调度算法有效解决了分布式训练中的通信瓶颈问题，在通信效率、稳定性、可扩展性和部署灵活性等方面均具有显著优势，为实际应用提供了可靠的理论与实验依据。
+	实验部分对算法进行了全面评估。预实验确定了调度数量$S$与贪心概率$p$的最优取值，发现算法对$p$极不敏感，同时验证了$S$的非单调变化规律与建模预期吻合。在不同工作节点数下，LeMethod在两种场景中总耗时增长远缓于FedAvg，展现出优异的可扩展性。在不同模型大小下，降低幅度稳定在四分之三以上，性能增益不随模型尺寸变化而衰减。在拓扑稀疏性实验中，仅10\%的链路即可获得约70\%的性能提升，链路数量超过一定阈值后边际收益递减，验证了算法对链路密度的不敏感性。与TSEngine的对比实验表明：在更贴近真实训练环境的随机延迟场景中，两者性能相当；但LeMethod仅需20\%的稀疏链路即可达到TSEngine全连接拓扑下的训练效率，而TSEngine依赖全连接才能正常工作，凸显了LeMethod在部署灵活性与成本控制方面的显著优势。
+
+	综上所述，本章提出的节点间协作通信机制与动态调度算法有效缓解了联邦学习中星型架构的通信瓶颈，在通信效率、稳定性、可扩展性和部署灵活性等方面均表现出显著优势，为实际应用提供了必要的理论与实验依据。
 
 	\chapter{全文总结与展望}
 
