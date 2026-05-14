@@ -382,16 +382,16 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[突发流量导致窗口过度减小]{
 			\includegraphics[width=0.48\linewidth]{tcp_window_crash.pdf}
 			\label{fig:tcp-problem1}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[窗口状态与通信模式失配引发的窗口震荡]{
 			\includegraphics[width=0.48\linewidth]{tcp_window_oscillation.pdf}
 			\label{fig:tcp-problem2}
 		}
-		\caption{传输层拥塞控制在全量并发模式下的典型问题示意图：(a) 突发流量导致窗口过度减小；(b) 窗口状态与通信模式失配引发的窗口震荡}
+		\caption{传输层拥塞控制在全量并发模式下的典型问题示意图}
 		\label{fig:tcp-problems-combined}
 	\end{figure}
 
@@ -867,7 +867,7 @@
 			\includegraphics[width=0.48\linewidth]{R_convergence_random}
 			\label{fig:R_convergence_random}
 		}
-		\caption{不同场景下并发接收数的收敛过程：\subref{fig:R_convergence_sync} 同步计算场景；\subref{fig:R_convergence_random} 随机延迟场景。}
+		\caption{不同场景下并发接收数的收敛过程}
 		\label{fig:R_convergence_combined}
 	\end{figure}
 
@@ -889,7 +889,7 @@
 			\includegraphics[width=0.48\linewidth]{ablation_threshold_random}
 			\label{fig:ablation_threshold_random}
 		}
-	\caption{有无动态阈值对并发接收数收敛过程的影响：\subref{fig:ablation_threshold_sync} 同步计算场景；\subref{fig:ablation_threshold_random} 随机延迟场景。}
+	\caption{有无动态阈值对并发接收数收敛过程的影响}
 	\label{fig:ablation_threshold_comparison}
 	\end{figure}
 
@@ -1286,16 +1286,16 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{param_schedule_sync}
 			\label{fig:param_s_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{param_schedule_random}
 			\label{fig:param_s_random}
 		}
-		\caption{调度数量 $S$ 对总耗时的影响：\subref{fig:param_s_sync}同步计算场景；\subref{fig:param_s_random}随机延迟场景（$W=32$, $p=1$）}
+		\caption{调度数量 $S$ 对总耗时的影响（$W=32$, $p=1$）}
 		\label{fig:param_s}
 	\end{figure}
 
@@ -1317,16 +1317,16 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{param_greedy_sync}
 			\label{fig:param_p_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{param_greedy_random}
 			\label{fig:param_p_random}
 		}
-		\caption{贪心概率 $p$ 对总耗时的影响：\subref{fig:param_p_sync}同步计算场景；\subref{fig:param_p_random}随机延迟场景（$W=32$, $S=1$）}
+		\caption{贪心概率 $p$ 对总耗时的影响（$W=32$, $S=1$）}
 		\label{fig:param_p}
 	\end{figure}
 
@@ -1348,16 +1348,16 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{scale_nodes_sync}
 			\label{fig:scale_nodes_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{scale_nodes_random}
 			\label{fig:scale_nodes_random}
 		}
-		\caption{不同工作节点数下的总耗时对比：\subref{fig:scale_nodes_sync}同步计算场景；\subref{fig:scale_nodes_random}随机延迟场景}
+		\caption{不同工作节点数下的总耗时对比}
 		\label{fig:scale_nodes_split}
 	\end{figure}
 
@@ -1431,16 +1431,16 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{scale_model_sync}
 			\label{fig:scale_model_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{scale_model_random}
 			\label{fig:scale_model_random}
 		}
-		\caption{不同模型大小下的总耗时对比：\subref{fig:scale_model_sync}同步计算场景；\subref{fig:scale_model_random}随机延迟场景（$W=50$）}
+		\caption{不同模型大小下的总耗时对比（$W=50$）}
 		\label{fig:scale_model_split}
 	\end{figure}
 
@@ -1515,16 +1515,16 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{sparse_sync}
 			\label{fig:sparse_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{sparse_random}
 			\label{fig:sparse_random}
 		}
-		\caption{不同链路比例下的总耗时对比：\subref{fig:sparse_sync}同步计算场景；\subref{fig:sparse_random}随机延迟场景（$W=50$）}
+		\caption{不同链路比例下的总耗时对比（$W=50$）}
 		\label{fig:sparse_split}
 	\end{figure}
 
@@ -1590,31 +1590,31 @@
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_time_sync}
 			\label{fig:compare_tsengine_time_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_time_random}
 			\label{fig:compare_tsengine_time_random}
 		}
-		\caption{LeMethod与TSEngine每轮训练耗时对比：\subref{fig:compare_tsengine_time_sync}同步计算场景；\subref{fig:compare_tsengine_time_random}随机延迟场景（$W=50$，240 MB）}
+		\caption{LeMethod与TSEngine每轮训练耗时对比（$W=50$，240 MB）}
 		\label{fig:compare_tsengine_time_split}
 	\end{figure}
 
 	\begin{figure}[!htb]
 		\centering
-		\subfloat[]{
+		\subfloat[同步计算场景]{
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_cdf_sync}
 			\label{fig:compare_tsengine_cdf_sync}
 		}
 		\hfill
-		\subfloat[]{
+		\subfloat[随机延迟场景]{
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_cdf_random}
 			\label{fig:compare_tsengine_cdf_random}
 		}
-		\caption{LeMethod与TSEngine每轮耗时CDF曲线：\subref{fig:compare_tsengine_cdf_sync}同步计算场景；\subref{fig:compare_tsengine_cdf_random}随机延迟场景（$W=50$，240 MB）}
+		\caption{LeMethod与TSEngine每轮耗时CDF曲线（$W=50$，240 MB）}
 		\label{fig:compare_tsengine_cdf_split}
 	\end{figure}
 
