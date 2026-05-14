@@ -744,6 +744,7 @@
 
 	\section{实验与结果分析}
 	\label{sec:tcp-experiments}
+	\nomchn{CDF}{Cumulative Distribution Function}{累积分布函数}
 
 	本节通过一系列对比实验验证本章所提并发控制机制的有效性。实验聚焦于两个核心问题：其一，算法能否在降低每轮通信耗时的同时抑制其波动；其二，并发接收数是否能够在不同负载模式下自适应收敛并保持稳定。以下首先介绍实验环境与参数配置，然后在同步计算和随机延迟两种场景下对比不启用与启用算法的通信性能，最后对并发接收数的收敛过程及稳定运行进行专门验证。
 
@@ -803,12 +804,12 @@
 
 	进一步观察图\ref{fig:congestion_sync}中每轮耗时的逐轮变化可以发现，启用算法后波动范围明显收窄。不启用算法时，耗时在高低之间剧烈震荡，部分轮次拖尾严重；启用算法后，各轮耗时被稳定在一个较窄的区间内。虽然少数原本极快的轻载轮次耗时略有增加，但高耗时的拖尾轮次被有效抑制。这说明算法以部分低负载轮次耗时的小幅增加为代价，换取了整体通信过程的平稳运行，避免了极端长尾对系统性能的冲击。
 
-	图\ref{fig:cdf_sync}的累积分布函数进一步印证了上述观察。与不启用算法相比，启用算法后的CDF曲线呈现出明显的两端内收特征：在曲线尾端，曲线整体左移，意味着长尾延迟得到显著缓解，耗时最高的轮次被压缩到了更短的时间范围内；在曲线首端，曲线出现轻度右移，反映部分轮次因算法引入的并发控制而无法像无约束时那样瞬时完成。整体而言，CDF曲线更为陡峭，每轮耗时的分布更加集中，系统性能的平稳性和可预测性得到明显改善。
+	图\ref{fig:cdf_sync}的累积分布函数（Cumulative Distribution Function, CDF）曲线进一步印证了上述观察。与不启用算法相比，启用算法后的CDF曲线呈现出明显的两端内收特征：在曲线尾端，曲线整体左移，意味着长尾延迟得到显著缓解，耗时最高的轮次被压缩到了更短的时间范围内；在曲线首端，曲线出现轻度右移，反映部分轮次因算法引入的并发控制而无法像无约束时那样瞬时完成。整体而言，CDF曲线更为陡峭，每轮耗时的分布更加集中，系统性能的平稳性和可预测性得到明显改善。
 
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.8\linewidth]{congestion_cdf_sync}
-		\caption{同步计算场景每轮耗时累积分布}
+		\caption{同步计算场景每轮耗时CDF曲线}
 		\label{fig:cdf_sync}
 	\end{figure}
 
@@ -841,12 +842,12 @@
 
 	从图\ref{fig:congestion_random}的逐轮变化来看，启用算法后波动范围同样明显收窄，各轮耗时被稳定在一个更窄的区间内，拖尾轮次得到有效控制。
 
-	图\ref{fig:cdf_random}的累积分布函数进一步印证了这一趋势。启用算法后的CDF曲线在尾端明显左移，高耗时的长尾轮次被有效压缩；在首端出现轻微右移，反映部分极快的轻载轮次因并发控制而不再瞬时完成。整体曲线更为陡峭，分布更集中，系统性能的平稳性和可预测性得到改善。这表明在节点计算时间存在随机波动的复杂场景下，算法依然能够有效缓解网络拥塞，具有良好的适应性。
+	图\ref{fig:cdf_random}的CDF曲线进一步印证了这一趋势。启用算法后的CDF曲线在尾端明显左移，高耗时的长尾轮次被有效压缩；在首端出现轻微右移，反映部分极快的轻载轮次因并发控制而不再瞬时完成。整体曲线更为陡峭，分布更集中，系统性能的平稳性和可预测性得到改善。这表明在节点计算时间存在随机波动的复杂场景下，算法依然能够有效缓解网络拥塞，具有良好的适应性。
 
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.8\linewidth]{congestion_cdf_random}
-		\caption{随机延迟场景每轮耗时累积分布}
+		\caption{随机延迟场景每轮耗时CDF曲线}
 		\label{fig:cdf_random}
 	\end{figure}
 
@@ -1343,7 +1344,7 @@
 
 	固定模型大小为240 MB，工作节点数从10开始，每次增加5，直至100。分别在同步计算场景和随机延迟场景下运行FedAvg与LeMethod（全连接拓扑），记录每轮耗时及总耗时。
 
-	图\ref{fig:scale_nodes_sync}和图\ref{fig:scale_nodes_random}分别展示了同步计算场景和随机延迟场景下总耗时随节点数的变化。表\ref{tab:scale_nodes_sync}和表\ref{tab:scale_nodes_random}列出了部分节点数下的具体数值。图\ref{fig:cdf_nodes_sync}和图\ref{fig:cdf_nodes_random}进一步给出了两种场景下每轮耗时的累积分布函数（CDF）。从图表中可以观察到以下现象并进行分析：
+	图\ref{fig:scale_nodes_sync}和图\ref{fig:scale_nodes_random}分别展示了同步计算场景和随机延迟场景下总耗时随节点数的变化。表\ref{tab:scale_nodes_sync}和表\ref{tab:scale_nodes_random}列出了部分节点数下的具体数值。图\ref{fig:cdf_nodes_sync}和图\ref{fig:cdf_nodes_random}进一步给出了两种场景下每轮耗时的CDF曲线。从图表中可以观察到以下现象并进行分析：
 
 	\begin{figure}[!htb]
 		\centering
@@ -1406,7 +1407,7 @@
 		\subfloat[20节点]{\includegraphics[width=0.48\linewidth]{20_cdf_sync}}\\
 		\subfloat[50节点]{\includegraphics[width=0.48\linewidth]{50_cdf_sync}}\hfill
 		\subfloat[100节点]{\includegraphics[width=0.48\linewidth]{100_cdf_sync}}
-		\caption{同步计算场景下不同节点规模的每轮耗时累积分布}
+		\caption{同步计算场景下不同节点规模的每轮耗时CDF曲线}
 		\label{fig:cdf_nodes_sync}
 	\end{figure}
 
@@ -1416,7 +1417,7 @@
 		\subfloat[20节点]{\includegraphics[width=0.48\linewidth]{20_cdf_random}}\\
 		\subfloat[50节点]{\includegraphics[width=0.48\linewidth]{50_cdf_random}}\hfill
 		\subfloat[100节点]{\includegraphics[width=0.48\linewidth]{100_cdf_random}}
-		\caption{随机延迟场景下不同节点规模的每轮耗时累积分布}
+		\caption{随机延迟场景下不同节点规模的每轮耗时CDF曲线}
 		\label{fig:cdf_nodes_random}
 	\end{figure}
 
@@ -1426,7 +1427,7 @@
 
 	固定工作节点数为50，模型大小从240 MB逐步增大至1000 MB。分别在静态组和动态组下运行FedAvg与LeMethod（全连接拓扑），记录每轮耗时及总耗时。
 
-	图\ref{fig:scale_model_split}展示了两种场景下总耗时随模型大小的变化。表\ref{tab:scale_model_sync}和表\ref{tab:scale_model_random}列出了部分模型尺寸下的具体数值。图\ref{fig:cdf_model_sync}和图\ref{fig:cdf_model_random}给出了每轮耗时的累积分布函数（CDF）。从图表中可以观察到以下现象并进行分析：
+	图\ref{fig:scale_model_split}展示了两种场景下总耗时随模型大小的变化。表\ref{tab:scale_model_sync}和表\ref{tab:scale_model_random}列出了部分模型尺寸下的具体数值。图\ref{fig:cdf_model_sync}和图\ref{fig:cdf_model_random}给出了每轮耗时的CDF曲线。从图表中可以观察到以下现象并进行分析：
 
 	\begin{figure}[!htb]
 		\centering
@@ -1481,7 +1482,7 @@
 
 	从降低百分比的整体趋势来看，LeMethod在同步计算场景下的降低幅度稳定在75.9\%和77.4\%之间，在随机延迟场景下稳定在75.2\%和78.7\%之间，均无明显随模型大小单调变化的趋势。这表明性能增益源于架构层面的负载分散机制，而非特定模型尺寸下的偶然优势。即使在240 MB这样相对较小的模型下，50个节点并发上传所产生的通信开销已不可忽视，LeMethod通过局部聚合和协作分发有效缓解了这一瓶颈，因此仍能大幅降低耗时。
 
-	从图\ref{fig:cdf_model_sync}可以观察到，同步计算场景下LeMethod的CDF曲线在所有模型尺寸下均相对FedAvg明显左移且更为陡峭，表明其每轮耗时整体更短、波动更小。以1000 MB模型为例，FedAvg的80分位每轮耗时约为640秒，而LeMethod仅为160秒左右，长尾延迟得到有效抑制。从图\ref{fig:cdf_model_random}可以观察到，随机延迟场景下LeMethod的CDF分布同样更为集中，验证了动态调度在不同负载模式下缓解长尾延迟的稳定能力。
+	从图\ref{fig:cdf_model_sync}可以观察到，同步计算场景下LeMethod的CDF曲线在所有模型尺寸下均相对FedAvg明显左移且更为陡峭，表明其每轮耗时整体更短、波动更小。以1000 MB模型为例，FedAvg的80分位每轮耗时约为640秒，而LeMethod仅为160秒左右，长尾延迟得到有效抑制。从图\ref{fig:cdf_model_random}可以观察到，随机延迟场景下LeMethod的CDF同样更为集中，验证了动态调度在不同负载模式下缓解长尾延迟的稳定能力。
 
 	综上所述，LeMethod在不同模型大小下均显著优于FedAvg，能够将总耗时降低超过四分之三，且性能增益稳定，不随模型尺寸变化而衰减。两种场景下的表现共同验证了该方法对大规模模型传输的良好适应性和稳定的可扩展性。
 
@@ -1491,7 +1492,7 @@
 		\subfloat[500 MB]{\includegraphics[width=0.48\linewidth]{500M_cdf_sync}}\\
 		\subfloat[800 MB]{\includegraphics[width=0.48\linewidth]{800M_cdf_sync}}\hfill
 		\subfloat[1000 MB]{\includegraphics[width=0.48\linewidth]{1000M_cdf_sync}}
-		\caption{同步计算场景下不同模型规模的每轮耗时累积分布}
+		\caption{同步计算场景下不同模型规模的每轮耗时CDF曲线}
 		\label{fig:cdf_model_sync}
 	\end{figure}
 
@@ -1501,7 +1502,7 @@
 		\subfloat[500 MB]{\includegraphics[width=0.48\linewidth]{500M_cdf_random}}\\
 		\subfloat[800 MB]{\includegraphics[width=0.48\linewidth]{800M_cdf_random}}\hfill
 		\subfloat[1000 MB]{\includegraphics[width=0.48\linewidth]{1000M_cdf_random}}
-		\caption{随机延迟场景下不同模型规模的每轮耗时累积分布}
+		\caption{随机延迟场景下不同模型规模的每轮耗时CDF曲线}
 		\label{fig:cdf_model_random}
 	\end{figure}
 
@@ -1585,7 +1586,7 @@
 
 	为进一步评估 LeMethod 相对于现有方法的优势，本节选取 TSEngine 作为对比方法。TSEngine 必须采用全连接链路拓扑，并基于历史带宽信息对每个到达请求进行在线调度，即系统在请求到达时立即根据当前状态完成调度决策。本组实验聚焦典型配置（固定工作节点数 50、模型大小 240 MB），在全连接拓扑下分别对同步计算场景和随机延迟场景进行充分对比。
 
-	图\ref{fig:compare_tsengine_time_split}展示了两种场景下每轮训练耗时的变化趋势，图\ref{fig:compare_tsengine_cdf_split}为相应的累积分布函数。同步计算场景的统计结果见表\ref{tab:compare_tsengine_sync}，随机延迟场景见表\ref{tab:compare_tsengine_random}。
+	图\ref{fig:compare_tsengine_time_split}展示了两种场景下每轮训练耗时的变化趋势，图\ref{fig:compare_tsengine_cdf_split}为相应的CDF曲线。同步计算场景的统计结果见表\ref{tab:compare_tsengine_sync}，随机延迟场景见表\ref{tab:compare_tsengine_random}。
 
 	\begin{figure}[!htb]
 		\centering
@@ -1613,7 +1614,7 @@
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_cdf_random}
 			\label{fig:compare_tsengine_cdf_random}
 		}
-		\caption{LeMethod与TSEngine每轮耗时累积分布函数：\subref{fig:compare_tsengine_cdf_sync}同步计算场景；\subref{fig:compare_tsengine_cdf_random}随机延迟场景（$W=50$，240 MB）}
+		\caption{LeMethod与TSEngine每轮耗时CDF曲线：\subref{fig:compare_tsengine_cdf_sync}同步计算场景；\subref{fig:compare_tsengine_cdf_random}随机延迟场景（$W=50$，240 MB）}
 		\label{fig:compare_tsengine_cdf_split}
 	\end{figure}
 
@@ -1633,7 +1634,7 @@
 		\end{tabular}
 	\end{table}
 
-	从图\ref{fig:compare_tsengine_time_sync}的逐轮变化来看，LeMethod的耗时曲线存在若干明显的尖峰，而TSEngine的曲线在低位窄幅波动。图\ref{fig:compare_tsengine_cdf_sync}的累积分布进一步印证了这一差异：TSEngine的CDF曲线整体位于LeMethod左侧，且更为陡峭，说明其耗时分布高度集中。因此，在同步计算这种所有节点计算节奏一致的场景下，TSEngine凭借即时调度策略取得了更优的性能与稳定性。
+	从图\ref{fig:compare_tsengine_time_sync}的逐轮变化来看，LeMethod的耗时曲线存在若干明显的尖峰，而TSEngine的曲线在低位窄幅波动。图\ref{fig:compare_tsengine_cdf_sync}的CDF曲线进一步印证了这一差异：TSEngine的CDF曲线整体位于LeMethod左侧，且更为陡峭，说明其耗时分布高度集中。因此，在同步计算这种所有节点计算节奏一致的场景下，TSEngine凭借即时调度策略取得了更优的性能与稳定性。
 
 	在随机延迟场景中，从表\ref{tab:compare_tsengine_random}可以看出，LeMethod的总耗时为3495.003秒，TSEngine为3508.528秒，两者几乎持平，LeMethod仅略低约0.4\%。平均每轮耗时方面，LeMethod为39.845秒，TSEngine为40.117秒，LeMethod同样略有优势。在波动性方面，TSEngine的标准差为3.913秒，最小值31.251秒，最大值50.996秒；而LeMethod的标准差为5.510秒，最小值27.906秒，最大值54.995秒。TSEngine的标准差仍然更小，但LeMethod在最小值上稍有优势。此时随机等待天然错开了节点的发送时间，缓解了同步突发带来的请求集中现象。LeMethod的批量调度在匹配时有更充裕的候选节点可供选择，部分轮次能够找到更优路径，从而在耗时下限上取得轻微优势；但部分轮次的匹配结果不够理想，导致极值和标准差偏高。
 
@@ -1651,7 +1652,7 @@
 		\end{tabular}
 	\end{table}
 
-	从图\ref{fig:compare_tsengine_time_random}的逐轮变化来看，两种方法的耗时曲线大部分区域交织在一起，难以区分优劣，仅在个别轮次LeMethod的耗时会明显超过TSEngine。图\ref{fig:compare_tsengine_cdf_random}的累积分布进一步揭示了细粒度差异：在50分位以下区域，LeMethod的CDF曲线略高于TSEngine，说明其半数轮次的耗时更短；但在70分位以上区域，TSEngine的CDF曲线更靠左，表明其控制长尾的能力更强。整体而言，两种方法在随机延迟场景下性能基本相当，各有侧重。
+	从图\ref{fig:compare_tsengine_time_random}的逐轮变化来看，两种方法的耗时曲线大部分区域交织在一起，难以区分优劣，仅在个别轮次LeMethod的耗时会明显超过TSEngine。图\ref{fig:compare_tsengine_cdf_random}的CDF曲线进一步揭示了细粒度差异：在50分位以下区域，LeMethod的CDF曲线略高于TSEngine，说明其半数轮次的耗时更短；但在70分位以上区域，TSEngine的CDF曲线更靠左，表明其控制长尾的能力更强。整体而言，两种方法在随机延迟场景下性能基本相当，各有侧重。
 
 	实际分布式训练中节点计算时间必然存在波动，因此随机延迟场景的结果更具参考价值。两种方法在该场景下性能总体相当，表明LeMethod在真实运行环境中至少具备与TSEngine同等的通信效率。
 
