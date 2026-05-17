@@ -1223,9 +1223,11 @@
 
 	基于上一节的模型，本节给出完整的在线调度算法，并将其命名为 LeMethod。调度器运行于PS节点，通过轻量级控制消息与工作节点交互，感知节点状态并做出路径分配决策。调度控制与数据传输相互分离，控制消息仅承载信令信息，实际模型数据的传输仍在工作节点之间以及工作节点与PS之间直接完成。
 
-	\subsection{消息类型与交互时序}
+	\subsection{调度控制原语与交互机制}
 
-	系统定义了一组标准化的消息用于协调各节点，如表 \ref{tab:messages} 所示。其中 \texttt{LOCAL\_AGGREGATION} 和 \texttt{MODEL\_DISTRIBUTION} 承载模型数据，属于数据平面；其余消息传递状态与控制信息，属于控制平面。
+	本节定义所提调度算法所依赖的控制原语及其基本交互流程，它们是支撑算法执行的底层通信约定。调度器运行于PS节点，通过下述轻量级控制消息与工作节点交互，感知节点状态并做出路径分配决策。调度控制与数据传输相互分离，控制消息仅承载信令信息，实际模型数据的传输仍在工作节点之间以及工作节点与PS之间直接完成。
+
+	系统采用表\ref{tab:messages}所列的消息作为算法交互的基本单元。其中 \texttt{LOCAL\_AGGREGATION} 和 \texttt{MODEL\_DISTRIBUTION} 承载模型数据，在算法执行中充当数据平面角色；其余消息传递状态与控制信息，充当控制平面角色。
 
 	\begin{table}[htbp]
 		\centering
@@ -1250,12 +1252,12 @@
 		\end{tabular}
 	\end{table}
 
-	为清晰说明交互流程，图\ref{fig:aggregation_sequence}和图\ref{fig:distribution_sequence}分别给出聚合阶段和分发阶段的消息时序示意。聚合阶段中，工作节点完成计算后向调度器发出请求，调度器通过匹配确定接收者并询问其意愿，待接收者同意后通知请求节点发起数据传输。分发阶段中，模型持有者反复向调度器查询下一个接收目标，逐一发送，直到所有节点均已覆盖。
+	为清晰说明交互流程，图\ref{fig:aggregation_sequence}和图\ref{fig:distribution_sequence}分别给出了聚合与分发阶段各原语之间的时序关系。聚合阶段中，工作节点完成计算后向调度器发出请求，调度器通过匹配确定接收者并询问其意愿，待接收者同意后通知请求节点发起数据传输。分发阶段中，模型持有者反复向调度器查询下一个接收目标，逐一发送，直到所有节点均已覆盖。
 
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.98\linewidth]{aggregation_sequence}
-		\caption{聚合阶段消息时序}
+		\caption{聚合阶段时序图}
 		\label{fig:aggregation_sequence}
 	\end{figure}
 
@@ -1266,7 +1268,7 @@
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.98\linewidth]{distribution_sequence}
-		\caption{分发阶段消息时序}
+		\caption{分发阶段时序图}
 		\label{fig:distribution_sequence}
 	\end{figure}
 
