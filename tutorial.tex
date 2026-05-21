@@ -558,7 +558,7 @@
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.7\linewidth]{tcp_no_coordination.pdf}
-		\caption{缺乏全局协调导致PS缓冲区堆积}
+		\caption{缺乏全局协调导致的多流流量分布不均}
 		\label{fig:tcp-problem3}
 	\end{figure}
 
@@ -953,7 +953,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{同步计算场景耗时统计（单位：秒）}
+		\caption{同步计算场景下耗时统计（单位：秒）}
 		\label{tab:stats_sync}
 		\begin{tabular}{|c|c|c|c|c|c|}
 			\hline
@@ -981,7 +981,7 @@
 	\begin{figure}[htb]
 		\centering
 		\includegraphics[width=0.8\linewidth]{congestion_cdf_sync}
-		\caption{同步计算场景每轮耗时CDF曲线}
+		\caption{同步计算场景下每轮耗时CDF曲线}
 		\label{fig:cdf_sync}
 	\end{figure}
 
@@ -998,7 +998,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{随机延迟场景耗时统计（单位：秒）}
+		\caption{随机延迟场景下耗时统计（单位：秒）}
 		\label{tab:stats_random}
 		\begin{tabular}{|c|c|c|c|c|c|}
 			\hline
@@ -1019,7 +1019,7 @@
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=0.8\linewidth]{congestion_cdf_random}
-		\caption{随机延迟场景每轮耗时CDF曲线}
+		\caption{随机延迟场景下每轮耗时CDF曲线}
 		\label{fig:cdf_random}
 	\end{figure}
 
@@ -1034,7 +1034,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{同步计算场景下静态与自适应并发控制性能对比（单位：秒）}
+		\caption{同步计算场景下静态与自适应并发控制耗时统计（单位：秒）}
 		\label{tab:static_sync}
 		\begin{tabular}{|c|c|c|c|c|}
 			\hline
@@ -1049,7 +1049,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{随机延迟场景下静态与自适应并发控制性能对比（单位：秒）}
+		\caption{随机延迟场景下静态与自适应并发控制耗时统计（单位：秒）}
 		\label{tab:static_random}
 		\begin{tabular}{|c|c|c|c|c|}
 			\hline
@@ -1079,7 +1079,7 @@
 			\includegraphics[width=0.48\linewidth]{static_vs_dynamic_random}
 			\label{fig:static_random}
 		}
-		\caption{静态与自适应并发控制的每轮聚合耗时对比}
+		\caption{不同场景下静态与自适应并发控制每轮聚合耗时对比}
 		\label{fig:static_combined}
 	\end{figure}
 
@@ -1125,7 +1125,7 @@
 			\includegraphics[width=0.48\linewidth]{ablation_threshold_random}
 			\label{fig:ablation_threshold_random}
 		}
-	\caption{有无动态阈值对并发接收数收敛过程的影响}
+	\caption{不同场景下有无动态阈值对并发接收数收敛过程的影响}
 	\label{fig:ablation_threshold_comparison}
 	\end{figure}
 
