@@ -801,7 +801,7 @@
 	\section{算法分析与参数配置}
 	\label{sec:analysis}
 
-	本节基于离散单谷特性 \eqref{eq:unimodal}，分析所提并发控制算法的收敛性与稳定性。由于观测噪声与环境扰动不可避免，算法不追求对单点 $R^*$ 的严格收敛，而是论证其能够以高概率使并发数 $R^{(t)}$ 稳定在 $R^*$ 的邻域内，并给出邻域宽度的理论界定。随后给出算法的参数配置与讨论。
+	本节基于离散单谷特性 \eqref{eq:unimodal}，首先分析所提并发控制算法的收敛性与稳定性。由于观测噪声与环境扰动不可避免，算法不追求对单点 $R^*$ 的严格收敛，而是论证其能够以高概率使并发数 $R^{(t)}$ 稳定在 $R^*$ 的邻域内，并给出邻域宽度的理论界定。随后给出算法的参数配置与讨论。
 
 	\subsection{收敛趋势与邻域稳定性}
 
@@ -1009,7 +1009,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{同步计算场景下静态与自适应并发控制耗时统计（单位：秒）}
+		\caption{同步计算场景下静态与自适应并发控制的耗时统计（单位：秒）}
 		\label{tab:static_sync}
 		\begin{tabular}{|c|c|c|c|c|}
 			\hline
@@ -1024,7 +1024,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{随机延迟场景下静态与自适应并发控制耗时统计（单位：秒）}
+		\caption{随机延迟场景下静态与自适应并发控制的耗时统计（单位：秒）}
 		\label{tab:static_random}
 		\begin{tabular}{|c|c|c|c|c|}
 			\hline
@@ -1054,7 +1054,7 @@
 			\includegraphics[width=0.48\linewidth]{static_vs_dynamic_random}
 			\label{fig:static_random}
 		}
-		\caption{不同场景下静态与自适应并发控制每轮聚合耗时}
+		\caption{两种场景下静态与自适应并发控制的每轮聚合耗时}
 		\label{fig:static_combined}
 	\end{figure}
 
@@ -1078,7 +1078,7 @@
 			\includegraphics[width=0.48\linewidth]{R_convergence_random}
 			\label{fig:R_convergence_random}
 		}
-		\caption{不同场景下并发接收数的收敛过程}
+		\caption{两种场景下并发接收数的收敛过程}
 		\label{fig:R_convergence_combined}
 	\end{figure}
 
@@ -1100,7 +1100,7 @@
 			\includegraphics[width=0.48\linewidth]{ablation_threshold_random}
 			\label{fig:ablation_threshold_random}
 		}
-	\caption{不同场景下有无动态阈值对并发接收数收敛过程的影响}
+	\caption{两种场景下有无动态阈值对并发接收数收敛过程的影响}
 	\label{fig:ablation_threshold_comparison}
 	\end{figure}
 
@@ -1490,7 +1490,7 @@
 			\includegraphics[width=0.48\linewidth]{param_schedule_random}
 			\label{fig:param_s_random}
 		}
-		\caption{不同场景下调度数量 $S$ 对总耗时的影响}
+		\caption{两种场景下调度数量 $S$ 对总耗时的影响}
 		\label{fig:param_s}
 	\end{figure}
 
@@ -1521,7 +1521,7 @@
 			\includegraphics[width=0.48\linewidth]{param_greedy_random}
 			\label{fig:param_p_random}
 		}
-		\caption{不同场景下贪心概率 $p$ 对总耗时的影响}
+		\caption{两种场景下贪心概率 $p$ 对总耗时的影响}
 		\label{fig:param_p}
 	\end{figure}
 
@@ -1552,7 +1552,7 @@
 			\includegraphics[width=0.48\linewidth]{scale_nodes_random}
 			\label{fig:scale_nodes_random}
 		}
-		\caption{不同场景下不同工作节点数量的总耗时}
+		\caption{两种场景下不同工作节点数量的总耗时}
 		\label{fig:scale_nodes_split}
 	\end{figure}
 
@@ -1620,7 +1620,7 @@
 
 	\subsubsection{模型大小的影响}
 
-	固定工作节点数量为50个，模型大小从240 MB逐步增大至1000 MB。分别在同步场景和随机延迟场景下运行FedAvg与LeMethod（全连接拓扑），记录每轮耗时及总耗时。
+	固定工作节点数量为50，模型大小从240 MB逐步增大至1000 MB。分别在同步场景和随机延迟场景下运行FedAvg与LeMethod（全连接拓扑），记录每轮耗时及总耗时。
 
 	图\ref{fig:scale_model_split}展示了两种场景下总耗时随模型大小的变化。表\ref{tab:scale_model_sync}和表\ref{tab:scale_model_random}列出了部分模型尺寸下的具体数值。图\ref{fig:cdf_model_sync}和图\ref{fig:cdf_model_random}给出了每轮耗时的CDF曲线。从图表中可以观察到以下现象并进行如下分析：
 
@@ -1635,7 +1635,7 @@
 			\includegraphics[width=0.48\linewidth]{scale_model_random}
 			\label{fig:scale_model_random}
 		}
-		\caption{不同场景下不同模型大小的总耗时}
+		\caption{两种场景下不同模型大小的总耗时}
 		\label{fig:scale_model_split}
 	\end{figure}
 
@@ -1723,7 +1723,7 @@
 			\includegraphics[width=0.48\linewidth]{sparse_random}
 			\label{fig:sparse_random}
 		}
-		\caption{不同场景下不同链路比例的总耗时}
+		\caption{两种场景下不同链路比例的总耗时}
 		\label{fig:sparse_split}
 	\end{figure}
 
@@ -1798,7 +1798,7 @@
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_time_random}
 			\label{fig:compare_tsengine_time_random}
 		}
-		\caption{不同场景下LeMethod与TSEngine每轮耗时}
+		\caption{两种场景下LeMethod与TSEngine的每轮耗时}
 		\label{fig:compare_tsengine_time_split}
 	\end{figure}
 
@@ -1806,7 +1806,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{同步计算场景下LeMethod与TSEngine耗时统计（单位：秒）}
+		\caption{同步计算场景下LeMethod与TSEngine的耗时统计（单位：秒）}
 		\label{tab:compare_tsengine_sync}
 		\begin{tabular}{|c|c|c|c|c|c|}
 			\hline
@@ -1831,7 +1831,7 @@
 			\includegraphics[width=0.48\linewidth]{compare_tsengine_cdf_random}
 			\label{fig:compare_tsengine_cdf_random}
 		}
-		\caption{不同场景下LeMethod与TSEngine每轮耗时CDF曲线}
+		\caption{两种场景下LeMethod与TSEngine的每轮耗时CDF曲线}
 		\label{fig:compare_tsengine_cdf_split}
 	\end{figure}
 
@@ -1839,7 +1839,7 @@
 
 	\begin{table}[!htb]
 		\centering
-		\caption{随机延迟场景下LeMethod与TSEngine耗时统计（单位：秒）}
+		\caption{随机延迟场景下LeMethod与TSEngine的耗时统计（单位：秒）}
 		\label{tab:compare_tsengine_random}
 		\begin{tabular}{|c|c|c|c|c|c|}
 			\hline
